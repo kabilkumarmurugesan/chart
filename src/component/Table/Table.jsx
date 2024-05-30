@@ -67,36 +67,51 @@ export default function BasicTable() {
         aria-label="simple table"
       >
         <TableRow>
-          <TableCell>Shift</TableCell>
+          <TableCellHeader title={"Shift"} />
           {series.map((item) => (
             <TableCell> {item.x}</TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Actual</TableCell>
+          <TableCellHeader title={"Actual"} />
           {series.map((item) => (
             <TableCell> {item.y}</TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Targat</TableCell>
+          <TableCellHeader title={"Targat"} />
           {series.map((item) => (
             <TableCell> {item.goals}</TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Line</TableCell>
+          <TableCellHeader title={"Line"} />
           {series.map((item) => (
             <TableCell> {item.line}</TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Down Time</TableCell>
+          <TableCellHeader title={"Down Time"} />
           {series.map((item) => (
             <TableCell> -</TableCell>
           ))}
         </TableRow>
       </Table>
     </TableContainer>
+  );
+}
+
+function TableCellHeader(props) {
+  return (
+    <TableCell
+      style={{
+        fontWeight: "bold",
+        fontSize: "1rem",
+        color: "#fff",
+        background: "#ff7f0e",
+      }}
+    >
+      {props.title}
+    </TableCell>
   );
 }

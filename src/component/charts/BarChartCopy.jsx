@@ -1,18 +1,41 @@
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+
 import SingleChart from "./SingleChart"; // Import the SingleChart component
+import { socket } from "../socket";
+import { Card } from "@mui/material";
 
 const BarChartCopy = () => {
   const [isBlinking, setIsBlinking] = useState(true);
   const [lastBarValue, setLastBarValue] = useState(20); // Initial value for the last bar of PRODUCT A
   const [showSingleChart, setShowSingleChart] = useState(false); // State to control showing SingleChart
+  const [categories, setCategories] = useState([
+    "9-10",
+    "10-11",
+    "11-12",
+    "12-01",
+    "01-02",
+    "02-03",
+    "03-04",
+  ]);
 
   const [series, setSeries] = useState([
     { name: "PRODUCT A", data: [87, 87, 90, 95, 95, lastBarValue] },
-    { name: "PRODUCT B", data: [0, 0, 0, 0, 0, 10] },
+    { name: "PRODUCT B", data: [0, 0, 0, 0, 0, 5] },
   ]);
 
   useEffect(() => {
+    socket.on("dataUpdate", (data) => {
+      let Tcategories = categories;
+      let temp = Object.keys(data);
+      let dataT = data[temp[0]];
+      if (temp[0] !== Tcategories[categories.length - 1]) {
+        Tcategories.push(temp[0]);
+        setCategories(Tcategories);
+      }
+      setLastBarValue(dataT[0].total_count);
+    });
+
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
     }, 1000);
@@ -21,21 +44,9 @@ const BarChartCopy = () => {
   }, []);
 
   useEffect(() => {
-    const incrementValue = () => {
-      setLastBarValue((prevValue) => prevValue + 1); // Increment the last value of PRODUCT A
-
-      setTimeout(incrementValue, 20000); // Recursively call incrementValue every 20 seconds
-    };
-
-    const timeout = setTimeout(incrementValue, 20000); // Initial call after 20 seconds
-
-    return () => clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
     setSeries([
       { name: "PRODUCT A", data: [87, 87, 90, 90, 95, 95, lastBarValue] },
-      { name: "PRODUCT B", data: [0, 0, 0, 0, 0,0, 10] },
+      { name: "PRODUCT B", data: [0, 0, 0, 0, 0, 0, 10] },
     ]);
   }, [lastBarValue]);
 
@@ -60,8 +71,8 @@ const BarChartCopy = () => {
     annotations: {
       xaxis: [
         {
-          x: "09-10",
-          x2: "10-11",
+          x: "9-10",
+          x2: "9-10",
           borderColor: "#000",
           fillColor: "#B3F7CA",
           opacity: 0.2,
@@ -74,8 +85,8 @@ const BarChartCopy = () => {
           },
         },
         {
-          x: "01-02",
-          x2: "02-03",
+          x: "9-10",
+          x2: "9-10",
           borderColor: "#000",
           fillColor: "#C9A1F7",
           opacity: 0.2,
@@ -101,15 +112,7 @@ const BarChartCopy = () => {
       },
     },
     xaxis: {
-      categories: [
-        "01-02",
-        "02-03",
-        "03-04",
-        "09-10",
-        "10-11",
-        "11-12",
-        "12-01",
-      ],
+      categories: categories,
     },
     legend: {
       show: false, // Disable legend
