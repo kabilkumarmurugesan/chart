@@ -136,7 +136,7 @@ class BarChart extends React.Component {
           ],
         },
       ],
-      
+
       options: {
         chart: {
           height: 350,
