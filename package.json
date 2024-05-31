@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@arction/lcjs": "^5.2.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.18",
@@ -11,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.49.1",
     "chart.js": "^4.4.3",
+    "qrcode.react": "^3.1.0",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-chartjs-2": "^5.2.0",
