@@ -10,7 +10,7 @@ const MainLayout = () => {
   const [showChart, setShowChart] = useState(1);
 
   useEffect(() => {
-    const timer = setInterval(switchView, 20000);
+    const timer = setInterval(switchView, 14000);
 
     return () => clearInterval(timer);
   }, []);

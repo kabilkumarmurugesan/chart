@@ -1,6 +1,99 @@
+/* import React, { useEffect } from "react";
+import ReactApexChart from "react-apexcharts";
+import { QRCodeCanvas } from "qrcode.react";
+
+class BarChart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      series: [
+        {
+          name: "Actual",
+          data: [
+            { x: "09-10", y: 1292, goals: [{ name: "Target", value: 5600, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "10-11", y: 4432, goals: [{ name: "Target", value: 5600, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "11-12", y: 5423, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "12-01", y: 6653, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "01-02", y: 8133, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "02-03", y: 7132, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "03-04", y: 7332, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "04-05", y: 6553, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            { x: "05-06", y: 6753, goals: [{ name: "Target", value: 5200, strokeHeight: 5, strokeWidth: 55, strokeColor: "#775DD0" }] },
+            // Adding new data with target lines for May 25, 26, 27, 28, 29
+            { x: "05-25", y: 7000, goals: [{ name: "Target", value: 8500, strokeHeight: 5, strokeWidth: 55, strokeColor: "#FF4560" }] },
+            { x: "05-26", y: 7000, goals: [{ name: "Target", value: 8500, strokeHeight: 5, strokeWidth: 55, strokeColor: "#FF4560" }] },
+            { x: "05-27", y: 7000, goals: [{ name: "Target", value: 10000, strokeHeight: 5, strokeWidth: 55, strokeColor: "#00E396" }] },
+            { x: "05-28", y: 7000, goals: [{ name: "Target", value: 10000, strokeHeight: 5, strokeWidth: 55, strokeColor: "#00E396" }] },
+            { x: "05-29", y: 7000, goals: [{ name: "Target", value: 10000, strokeHeight: 5, strokeWidth: 55, strokeColor: "#00E396" }] },
+          ],
+        },
+      ],
+      options: {
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "60%",
+          },
+        },
+        colors: ["#00E396"],
+        dataLabels: {
+          enabled: false,
+        },
+        legend: {
+          show: true,
+          showForSingleSeries: true,
+          customLegendItems: ["Actual", "Target"],
+          markers: {
+            fillColors: ["#00E396", "#775DD0"],
+          },
+        },
+        yaxis: {
+          max: 11000, // set the y-axis maximum value to accommodate the highest target
+        },
+      },
+    };
+  }
+
+  componentDidMount() {
+    this.blinkLastBar();
+  }
+
+  blinkLastBar = () => {
+    const lastBar = document.querySelector(".apexcharts-series:last-child .apexcharts-bar-series");
+    if (lastBar) {
+      lastBar.classList.add("blinking");
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <div id="chart">
+          <ReactApexChart
+            options={this.state.options}
+            series={this.state.series}
+            type="bar"
+            height={350}
+          />
+        </div>
+        <div id="qr-code" style={{ paddingLeft: "540px", paddingBottom: "10px" }}>
+          <QRCodeCanvas value="Hi Welcome to Lenovo" size={50} />
+        </div>
+        <div id="html-dist"></div>
+      </div>
+    );
+  }
+}
+
+export default BarChart; */
+
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-
+import { QRCodeCanvas } from "qrcode.react";
 import SingleChart from "./SingleChart"; // Import the SingleChart component
 import { socket } from "../socket";
 import { Card } from "@mui/material";
@@ -21,7 +114,7 @@ const BarChartCopy = () => {
 
   const [series, setSeries] = useState([
     { name: "PRODUCT A", data: [87, 87, 90, 95, 95, lastBarValue] },
-    { name: "PRODUCT B", data: [0, 0, 0, 0, 0, 5] },
+    { name: "PRODUCT B", data: [0, 0, 0, 0, 0, 10] },
   ]);
 
   useEffect(() => {
@@ -60,7 +153,8 @@ const BarChartCopy = () => {
   const options = {
     chart: {
       type: "bar",
-      height: 350,
+      height: 250,
+      width: 100,
       stacked: true,
       toolbar: { show: false },
       zoom: { enabled: false },
@@ -72,12 +166,40 @@ const BarChartCopy = () => {
       xaxis: [
         {
           x: "9-10",
-          x2: "9-10",
-          borderColor: "#000",
-          fillColor: "#B3F7CA",
-          opacity: 0.2,
+          x2: "11-12",
+          // borderColor: "#000",
+          // fillColor: "#B3F7CA",
+          fillColor: "none",
+          // label: {
+          //   text: "M709 - target: 85",
+          //   style: {
+          //     color: "#fff",
+          //     background: "#00E396",
+          //   },
+          // },
+        },
+        {
+          x: "12-01",
+          x2: "03-04",
+          // borderColor: "#000",
+          // fillColor: "#C9A1F7",
+          fillColor: "none",
+          // label: {
+          //   text: "M759 - target: 100",
+          //   style: {
+          //     color: "#fff",
+          //     background: "#775DD0",
+          //   },
+          // },
+        },
+      ],
+      yaxis: [
+        {
+          y: 85,
+          borderColor: "#00E396",
+          borderWidth: "15",
           label: {
-            text: "M709 - target: 85",
+            text: "Target: 85",
             style: {
               color: "#fff",
               background: "#00E396",
@@ -85,13 +207,11 @@ const BarChartCopy = () => {
           },
         },
         {
-          x: "9-10",
-          x2: "9-10",
-          borderColor: "#000",
-          fillColor: "#C9A1F7",
-          opacity: 0.2,
+          y: 100,
+          borderColor: "#775DD0",
+          borderWidth: "15",
           label: {
-            text: "M759 - target: 100",
+            text: "Target: 100",
             style: {
               color: "#fff",
               background: "#775DD0",
@@ -117,9 +237,9 @@ const BarChartCopy = () => {
     legend: {
       show: false, // Disable legend
     },
-    fill: {
-      opacity: 1,
-    },
+    // fill: {
+    //   opacity: 1,
+    // },
     colors: ["#1f77b4", isBlinking ? "#ff7f0e" : "#1f77b4"], // Set colors dynamically based on blinking state
   };
 
@@ -133,11 +253,13 @@ const BarChartCopy = () => {
             type="bar"
             height={350}
           />
+          <div id="qr-code" style={{ paddingLeft: "760px" }}>
+            <QRCodeCanvas value="Hi Welcome to Lenovo" size={60} />
+          </div>
         </div>
       ) : (
         <SingleChart lastBarValue={lastBarValue} /> // Render SingleChart with lastBarValue
       )}
-      <div id="html-dist"></div>
     </div>
   );
 };

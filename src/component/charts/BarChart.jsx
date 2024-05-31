@@ -1,6 +1,6 @@
-import { Card, CardContent } from "@mui/material";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { Card, CardContent } from "@mui/material";
 
 class BarChart extends React.Component {
   constructor(props) {
@@ -167,13 +167,15 @@ class BarChart extends React.Component {
   render() {
     return (
       <div>
-        <ReactApexChart
-          options={this.state.options}
-          series={this.state.series}
-          type="bar"
-          height={350}
-        />
-        <div id="chart"></div>
+        <div id="chart">
+          <ReactApexChart
+            options={this.state.options}
+            series={this.state.series}
+            type="bar"
+            height={350}
+          />
+        </div>
+
         <div id="html-dist"></div>
       </div>
     );

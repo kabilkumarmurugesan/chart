@@ -1,3 +1,4 @@
+import { QRCodeCanvas } from "qrcode.react";
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { socket } from "../socket";
@@ -109,6 +110,9 @@ const SingleChart = ({ lastBarValue }) => {
           type="bar"
           height={350}
         />
+        <div id="qr-code" style={{ paddingLeft: "760px" }}>
+          <QRCodeCanvas value="Hi Welcome to Lenovo" size={60} />
+        </div>
       </div>
       <div id="html-dist"></div>
     </div>
