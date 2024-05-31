@@ -76,3 +76,17 @@
 .td {
   border: "1px solid rgba(224, 224, 224, 1)";
 }
+.qr-code-flow{
+  
+  position: absolute;
+  right: 2rem;
+}
+div#chart canvas {
+  width: 100% !important;
+}
+.close-qr-code-flow{
+
+  position: absolute;
+  right: 5rem;
+
+}

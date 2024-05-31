@@ -13,7 +13,7 @@ const MainLayout = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % 3);
-    }, 5000);
+    }, 14000);
     return () => clearInterval(interval);
   }, []);
 
@@ -103,7 +103,7 @@ const MainLayout = () => {
                         <Box style={{ padding: "5px" }}>Time - 07:30</Box>{" "}
                       </Box>
                     </Box>
-                    <BarChartCopy />
+                    <BarChartCopy type={'overview'}/>
                   </Card>{" "}
                 </Box>
               </Box>
@@ -135,7 +135,7 @@ const MainLayout = () => {
             >
               <Box style={{ flex: "1 2 50%" }}>
                 <Card sx={{ minWidth: 275 }}>
-                  <BarChartCopy />
+                  <BarChartCopy type={'close'}/>
                 </Card>
               </Box>
               <Box style={{ flex: "1 1", padding: "20px" }}>

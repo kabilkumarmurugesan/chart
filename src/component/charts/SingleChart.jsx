@@ -1,118 +1,101 @@
-import { QRCodeCanvas } from "qrcode.react";
 import React, { useState, useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
-import { socket } from "../socket";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
+import { socket } from "../socket"; // Ensure you have configured your socket connection properly
 
-const SingleChart = ({ lastBarValue }) => {
+ChartJS.register(CategoryScale, LinearScale, BarElement);
+
+const SingleChart = () => {
   const [isBlinking, setIsBlinking] = useState(true);
-  const [addValue, setaddValue] = useState(0);
-  const [categories, setCategories] = useState([]);
-  const [series, setSeries] = useState([
-    { name: "PRODUCT A", data: [addValue] },
-    { name: "PRODUCT B", data: [5] },
-  ]);
+  const [addValue, setAddValue] = useState(0);
 
   useEffect(() => {
-    socket.on('dataUpdate', (data) => {
-      let Tcategories = categories
-     let temp = Object.keys(data)
-     let dataT = data[temp[0]]
-     if (temp[0] !== Tcategories[categories.length - 1]) {
-       Tcategories.push(temp[0])
-       setCategories(Tcategories)
-     }
-     setaddValue(dataT[0].total_count)
-     setSeries((prevSeries) => [
-      { name: "PRODUCT A", data: [dataT[0].total_count] },
-      { name: "PRODUCT B", data: [5] },
-    ]);
-   });
+    // Socket listener for data updates
+    socket.on("dataUpdate", (data) => {
+      const temp = Object.keys(data)[0];
+      const dataT = data[temp];
+      if (temp === "03-04") {
+        setAddValue(dataT[0].total_count);
+      }
+    });
+
+    // Interval for blinking effect
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
-    }, 1000);
+    }, 1000); // Blink every second
 
-    return () => clearInterval(blinkInterval);
-  }, []);
+    // Interval for incrementing Product A value
+    const incrementInterval = setInterval(() => {
+      setAddValue((prevValue) => prevValue + 1);
+    }, 10000); // Increment every 10 seconds
 
-  useEffect(() => {
-    const incrementValue = () => {
-      setSeries((prevSeries) => [
-        { name: "PRODUCT A", data: [prevSeries[0].data[0] + 1] },
-        { name: "PRODUCT B", data: [10] },
-      ]);
-
-      setTimeout(incrementValue, 20000); // Recursively call incrementValue every 20 seconds
+    // Cleanup intervals on component unmount
+    return () => {
+      clearInterval(blinkInterval);
+      clearInterval(incrementInterval);
     };
-
-    const timeout = setTimeout(incrementValue, 20000); // Initial call after 20 seconds
-
-    return () => clearTimeout(timeout);
   }, []);
 
-  const options = {
-    chart: {
-      type: "bar",
-      height: 250,
-      stacked: true,
-      toolbar: { show: false },
-      zoom: { enabled: false },
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        borderRadius: 0,
-        borderRadiusApplication: "end",
-        borderRadiusWhenStacked: "last",
-        dataLabels: {
-          enabled: false,
-        },
+  // Data for the chart
+  const data = {
+    labels: ["03-04"],
+    datasets: [
+      {
+        label: "PRODUCT A",
+        data: [addValue],
+        backgroundColor: "#1f77b4",
+        stack: "Stack 0",
       },
-    },
-    xaxis: {
-      type: "datetime",
-      categories: ["2024-05-30T00:00:00.000Z"], // Ensure the format matches your data
-      tickAmount: 1,
-      labels: {
-        format: "MMM dd",
-        style: {
-          colors: [],
-          fontSize: "12px",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          fontWeight: 400,
-          cssClass: "apexcharts-xaxis-label",
-        },
-        offsetX: 0,
-        offsetY: 10, // Adjust the vertical position
-        formatter: function (value, timestamp) {
-          return new Date(timestamp).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          });
-        },
+      {
+        label: "PRODUCT B",
+        data: [10],
+        backgroundColor: isBlinking ? "#ff7f0e" : "#1f77b4",
+        stack: "Stack 0",
       },
-    },
+    ],
+  };
 
-    legend: {
-      show: false, // Disable legend
+  // Chart options
+  const options = {
+    scales: {
+      x: {
+        display: true, // Hide x-axis labels
+        stacked: true,
+      },
+      y: {
+        display: true, // Hide y-axis labels
+        beginAtZero: true,
+        max: 20,
+        stacked: true,
+      },
     },
-    fill: {
-      opacity: 1,
+    plugins: {
+      legend: {
+        display: false, // Hide legend
+      },
+      tooltip: {
+        enabled: false, // Disable tooltips
+      },
     },
-    colors: ["#1f77b4", isBlinking ? "#ff7f0e" : "#1f77b4"], // Set colors dynamically based on blinking state
+    responsive: true,
+    maintainAspectRatio: false,
+    /* layout: {
+      padding: {
+        left: 50, // Adjust this value to center the bars horizontally
+        right: 50,
+      },
+    }, */
   };
 
   return (
-    <div>
-      <div id="chart">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="bar"
-          height={350}
-        />
-        <div id="qr-code" style={{ paddingLeft: "760px" }}>
-          <QRCodeCanvas value="Hi Welcome to Lenovo" size={60} />
-        </div>
+    <div style={{ height: "400px", display: "flex", justifyContent: "center" }}>
+      <div style={{ width: "50%" }}>
+        <Bar data={data} options={options} />
       </div>
       <div id="html-dist"></div>
     </div>
