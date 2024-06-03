@@ -18,7 +18,7 @@ export default function AppHeader() {
       <AppBar position="static" color="default">
         <Toolbar sx={{ height: 80 }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            INVINCIBLE
+            LENOVA 24Hr UPH DASHBOAD
           </Typography>
 
           <IconButton

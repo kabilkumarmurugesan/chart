@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import BarChart from "../charts/BarChart";
-import { Box, Card, Grid } from "@mui/material";
+import { Box, Card, Grid, Typography, useTheme } from "@mui/material";
 import BasicTable from "../Table/Table";
+import BasicAction from "../Card/BasicAction";
 import BarChartCopy from "../charts/BarChartCopy";
-import SingleChart from "../charts/SingleChart";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 // import "../MainLayout.css"; // Ensure this CSS file is correctly linked
 
 const AppContainer = () => {
+  const theme = useTheme();
+  const { primary, secondary } = theme.palette;
+  // console.log(secondary, "primary", primary);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % 2);
-      // setCurrentSlide((prevSlide) => 1);
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % 2); // Adjusted to 2 slides
     }, 14000);
     return () => clearInterval(interval);
   }, []);
@@ -22,152 +24,125 @@ const AppContainer = () => {
     <SwitchTransition>
       <CSSTransition
         key={currentSlide}
-        timeout={500}
+        timeout={600}
         classNames="zoom-fade"
         unmountOnExit
       >
-        <Box className="zoom-fade-container">
+        <Box
+          className="zoom-fade-container"
+          sx={{ background: "#ff7f0e", fontWeight: "bold" }}
+        >
           {currentSlide === 0 ? (
-            <>
-              <Box
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  padding: "20px 20px 0px 20px",
-                }}
-              >
-                <Box style={{ flex: "1 1 10%", padding: "20px 20px 0px 20px" }}>
-                  <Card sx={{ minWidth: 275  }}>
+            <Box sx={{ p: 2 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Card sx={{ minWidth: 275 }}>
                     <Box
-                      style={{
+                      sx={{
                         display: "flex",
                         flexDirection: "row",
-                        padding: "10px",
+                        p: 2,
                         alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
-                      <Box
-                        style={{
-                          padding: "5px",
-                          color: "#ff7f0e",
-                          fontWeight: "bold",
-                        }}
+                      <Typography
+                        sx={{ p: 1, color: "#ff7f0e", fontWeight: "bold" }}
                       >
                         Shift - 2
-                      </Box>
-                      <Box
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          padding: "10px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Box style={{ padding: "5px" }}>Data- 29/05/2024</Box>
-                        <Box style={{ padding: "5px" }}>Time - 07:30</Box>
+                      </Typography>
+                      <Box sx={{ display: "flex", flexDirection: "row" }}>
+                        <Typography sx={{ p: 1 }}>Date - 29/05/2024</Typography>
+                        <Typography sx={{ p: 1 }}>
+                          Time - 09:00 AM - 05:30PM (shift 2)
+                        </Typography>
+                        <Typography sx={{ p: 1 }}>OverTime 07:30PM</Typography>
                       </Box>
                     </Box>
                     <BarChart />
-                  </Card>{" "}
-                </Box>
-                <Box style={{ flex: "1 1 10%", padding: "20px 20px 0px 20px" }}>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
                     <Box
-                      style={{
+                      sx={{
                         display: "flex",
                         flexDirection: "row",
-                        padding: "10px",
+                        p: 2,
                         alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
-                      <Box
-                        style={{
-                          padding: "5px",
-                          color: "#ff7f0e",
-                          fontWeight: "bold",
-                        }}
+                      <Typography
+                        sx={{ p: 1, color: "#ff7f0e", fontWeight: "bold" }}
                       >
                         Shift - 1
-                      </Box>
-
-                      <Box
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          padding: "10px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Box style={{ padding: "5px" }}>Data- 30/05/2024</Box>
-                        <Box style={{ padding: "5px" }}>Time - 07:30</Box>{" "}
+                      </Typography>
+                      <Box sx={{ display: "flex", flexDirection: "row" }}>
+                        <Typography sx={{ p: 1 }}>Date - 30/05/2024</Typography>
+                        <Typography sx={{ p: 1 }}>
+                          Time - 09:00 AM - 05:30PM(shift 1)
+                        </Typography>
+                        <br />
+                        <Typography sx={{ p: 1 }}>OverTime 07:30PM</Typography>
                       </Box>
                     </Box>
                     <BarChartCopy />
-                  </Card>{" "}
-                </Box>
-              </Box>
-              <Box style={{ display: "flex", flexDirection: "column" }}>
-                <Box
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px",
-                  }}
-                >
-                  <Box style={{ flex: "1 1", padding: "20px" }}>
-                    <BasicTable />
-                  </Box>
-                  <Box style={{ flex: "1 1", padding: "20px" }}>
-                    <BasicTable />
-                  </Box>
-                </Box>
-              </Box>
-            </>
+                  </Card>
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid item xs={12} md={6}>
+                  <BasicTable />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <BasicTable />
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid item xs={12} md={6}>
+                  <BasicAction />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <BasicAction />
+                </Grid>
+              </Grid>
+            </Box>
           ) : (
-            <Box
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                padding: "20px",
-              }}
-            >
-              <Box style={{ flex: "1 2 50%", padding: "20px" }}>
-                <Card sx={{ minWidth: 275 }}>
-                  <BarChartCopy />
-                </Card>
-              </Box>
-              <Box style={{ flex: "1 1", padding: "20px" }}>
-                <Box
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
+            <Box sx={{ p: 2 }}>
+              <Grid container spacing={2} direction="column-reverse">
+                <Grid item xs={12}>
+                  <Card sx={{ minWidth: 275 }}>
+                    <BarChartCopy />
+                  </Card>
+                </Grid>
+                <Grid item xs={12}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6} md={6}>
-                      <CardElement title={"Shift Actual"} value={"15"} />
+                    <Grid item xs={6} md={3}>
+                      <Card sx={{ minWidth: 275 }}>
+                        <Typography sx={{ p: 2 }}>Shift Actual: 15</Typography>
+                      </Card>
                     </Grid>
-                    <Grid item xs={6} md={6}>
-                      <CardElement title={"Shift Target"} value={"15"} />
-                    </Grid>{" "}
-                    <Grid item xs={6} md={6}>
-                      <CardElement title={"Shift UPH"} value={"15"} />
-                    </Grid>{" "}
-                    <Grid item xs={6} md={6}>
-                      <CardElement title={"Shift Down Time"} value={"15"} />
+                    <Grid item xs={6} md={3}>
+                      <Card sx={{ minWidth: 275 }}>
+                        <Typography sx={{ p: 2 }}>Shift Target: 15</Typography>
+                      </Card>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <Card sx={{ minWidth: 275 }}>
+                        <Typography sx={{ p: 2 }}>Shift UPH: 15</Typography>
+                      </Card>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <Card sx={{ minWidth: 275 }}>
+                        <Typography sx={{ p: 2 }}>
+                          Shift Down Time: 15
+                        </Typography>
+                      </Card>
                     </Grid>
                   </Grid>
-                </Box>
-                <Box style={{ flex: "1 2", padding: "20px" }}>
-                  <Card sx={{ minWidth: 275, padding: "20px" }}>
-                    <SingleChart />
-                  </Card>
-                </Box>
-              </Box>
+                </Grid>
+              </Grid>
             </Box>
           )}
         </Box>
