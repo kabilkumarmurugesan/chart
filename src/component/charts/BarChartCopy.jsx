@@ -240,7 +240,7 @@ const BarChartCopy = () => {
     // fill: {
     //   opacity: 1,
     // },
-    colors: ["#1f77b4", isBlinking ? "#ff7f0e" : "#1f77b4"], // Set colors dynamically based on blinking state
+    colors: ["#1f77b4", isBlinking ? "#ff7f0e" : "#fff"], // Set colors dynamically based on blinking state
   };
 
   return (

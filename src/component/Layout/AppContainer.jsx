@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-import BarChart from "./charts/BarChart";
+import BarChart from "../charts/BarChart";
 import { Box, Card, Grid } from "@mui/material";
-import BasicTable from "./Table/Table";
-import BarChartCopy from "./charts/BarChartCopy";
-import SingleChart from "./charts/SingleChart";
+import BasicTable from "../Table/Table";
+import BarChartCopy from "../charts/BarChartCopy";
+import SingleChart from "../charts/SingleChart";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import "../MainLayout.css"; // Ensure this CSS file is correctly linked
-import IconButton from "@mui/material/IconButton";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+// import "../MainLayout.css"; // Ensure this CSS file is correctly linked
 
-const MainLayout = () => {
+const AppContainer = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -41,7 +37,7 @@ const MainLayout = () => {
                 }}
               >
                 <Box style={{ flex: "1 1 10%", padding: "20px 20px 0px 20px" }}>
-                  <Card sx={{ minWidth: 275,}}>
+                  <Card sx={{ minWidth: 275  }}>
                     <Box
                       style={{
                         display: "flex",
@@ -180,7 +176,7 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default AppContainer;
 
 const CardElement = (props) => {
   return (
@@ -196,67 +192,3 @@ const CardElement = (props) => {
     </Grid>
   );
 };
-
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-
-function MyApp() {
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "background.default",
-        color: "text.primary",
-        borderRadius: 1,
-        p: 3,
-      }}
-    >
-      {theme.palette.mode} mode
-      <IconButton
-        sx={{ ml: 1 }}
-        onClick={colorMode.toggleColorMode}
-        color="inherit"
-      >
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon />
-        ) : (
-          <Brightness4Icon />
-        )}
-      </IconButton>
-    </Box>
-  );
-}
-
-export function ToggleColorMode() {
-  const [mode, setMode] = useState("light");
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-      },
-    }),
-    []
-  );
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode]
-  );
-
-  return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <MainLayout />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
-  );
-}
