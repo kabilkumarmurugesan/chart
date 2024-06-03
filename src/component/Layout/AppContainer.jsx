@@ -10,7 +10,6 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 const AppContainer = () => {
   const theme = useTheme();
   const { primary, secondary } = theme.palette;
-  // console.log(secondary, "primary", primary);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -30,63 +29,61 @@ const AppContainer = () => {
       >
         <Box
           className="zoom-fade-container"
-          sx={{ background: "#ff7f0e", fontWeight: "bold" }}
+          sx={{ background: primary.main, fontWeight: "bold" }}
         >
           {currentSlide === 0 ? (
             <Box sx={{ p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
+                    {" "}
+                    <Typography sx={{ p: 1 }}>
+                      Date - 29/05/2024
+                    </Typography>{" "}
+                    <hr />
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "row",
-                        p: 2,
+                        p: 1,
                         alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
-                      <Typography
-                        sx={{ p: 1, color: "#ff7f0e", fontWeight: "bold" }}
-                      >
-                        Shift - 2
+                      {" "}
+                      <Typography sx={{ p: 1 }}>
+                        Time - 09:00 AM - 05:30PM (shift 2)
                       </Typography>
                       <Box sx={{ display: "flex", flexDirection: "row" }}>
-                        <Typography sx={{ p: 1 }}>Date - 29/05/2024</Typography>
-                        <Typography sx={{ p: 1 }}>
-                          Time - 09:00 AM - 05:30PM (shift 2)
-                        </Typography>
                         <Typography sx={{ p: 1 }}>OverTime 07:30PM</Typography>
                       </Box>
-                    </Box>
+                    </Box>{" "}
+                    <hr />
                     <BarChart />
                   </Card>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
+                    {" "}
+                    <Typography sx={{ p: 1 }}>Date - 30/05/2024</Typography>
+                    <hr />
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "row",
-                        p: 2,
+                        p: 1,
                         alignItems: "center",
                         justifyContent: "space-between",
                       }}
                     >
-                      <Typography
-                        sx={{ p: 1, color: "#ff7f0e", fontWeight: "bold" }}
-                      >
-                        Shift - 1
+                      <Typography sx={{ p: 1 }}>
+                        Time - 09:00 AM - 05:30PM(shift 1)
                       </Typography>
                       <Box sx={{ display: "flex", flexDirection: "row" }}>
-                        <Typography sx={{ p: 1 }}>Date - 30/05/2024</Typography>
-                        <Typography sx={{ p: 1 }}>
-                          Time - 09:00 AM - 05:30PM(shift 1)
-                        </Typography>
-                        <br />
                         <Typography sx={{ p: 1 }}>OverTime 07:30PM</Typography>
-                      </Box>
+                      </Box>{" "}
                     </Box>
+                    <hr />
                     <BarChartCopy />
                   </Card>
                 </Grid>

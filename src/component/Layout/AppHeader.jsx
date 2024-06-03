@@ -11,6 +11,7 @@ import { MUIWrapperContext } from "../MUIWrapper";
 
 export default function AppHeader() {
   const theme = useTheme();
+  const { primary, secondary } = theme.palette;
   const { locale, setLocale, toggleColorMode } =
     React.useContext(MUIWrapperContext);
   return (

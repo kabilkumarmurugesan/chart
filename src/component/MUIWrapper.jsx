@@ -9,14 +9,45 @@ export const MUIWrapperContext = createContext({
 
 export default function MUIWrapper({ children }) {
   const [mode, setMode] = useState("light");
+  const [primary, setPrimary] = useState({
+    main: "#fcfcfe",
+    pending: "#ffec31",
+    complete: "#3D860B",
+    incomplete: "#e3004d",
+  });
+  const [secondary, setSecondary] = useState({
+    main: "rgb(255, 255, 255)",
+  });
   const [locale, setLocale] = useState([0]);
   const muiWrapperUtils = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        if (mode !== "dark") {
+          setPrimary((prev) => ({
+            main: "#111827",
+            incomplete: "#ff3199",
+            complete: "#00E396",
+            pending: "#ffec31",
+          }));
+          setSecondary((prev) => ({
+            main: "#1f2937",
+          }));
+        } else {
+          setPrimary((prev) => ({
+            main: "#fcfcfe",
+            complete: "#3D860B",
+            incomplete: "#e3004d",
+
+            pending: "#ffec31",
+          }));
+          setSecondary((prev) => ({
+            main: "rgb(255, 255, 255)",
+          }));
+        }
       },
     }),
-    []
+    [mode]
   );
 
   useEffect(() => {
@@ -29,6 +60,8 @@ export default function MUIWrapper({ children }) {
         {
           palette: {
             mode,
+            primary,
+            secondary,
           },
         },
         locale.muiCore
