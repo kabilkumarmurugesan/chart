@@ -107,6 +107,7 @@ class BarChart extends React.Component {
             display: false,
           },
         },
+        animations: false,
         scales: {
           x: {
             stacked: true,

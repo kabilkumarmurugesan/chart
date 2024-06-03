@@ -138,6 +138,7 @@ const BarChartCopy = (props) => {
         beginAtZero: true,
       },
     },
+    animations: false,
     plugins: {
       legend: {
         display: false, // Disable legend
@@ -189,60 +190,58 @@ const BarChartCopy = (props) => {
 
   return (
     <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
-      <div>
-        <div id="chart">
-          <Bar
-            data={data}
-            options={options}
-            height={90}
-            style={{ width: "100%" }}
-          />
+      <div id="chart">
+        <Bar
+          data={data}
+          options={options}
+          height={90}
+          style={{ width: "100%" }}
+        />
+        <div
+          className="qr-code-container"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            paddingTop: "15px",
+          }}
+        >
+          {data.labels.map((label, index) => (
+            <div key={index} style={{ padding: "10px" }}>
+              {/*   <div key={index} className="qr-code-item"> */}
+              {visibleQRCodeIndex === index ? (
+                <QRCodeCanvas value={`Bar ${index + 1}`} size={50} />
+              ) : (
+                <button
+                  className="btn-orange"
+                  style={{ width: "50px" }}
+                  onClick={() => handleButtonClick(index)}
+                >
+                  QR
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+        {tooltipVisible && (
           <div
-            className="qr-code-container"
+            ref={tooltipRef}
+            className="custom-tooltip"
             style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              paddingTop: "15px",
+              position: "absolute",
+              left: tooltipPosition.x,
+              top: tooltipPosition.y,
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+              pointerEvents: "none",
+              transform: "translate(-50%, -50%)",
             }}
           >
-            {data.labels.map((label, index) => (
-              <div key={index} style={{ padding: "10px" }}>
-                {/*   <div key={index} className="qr-code-item"> */}
-                {visibleQRCodeIndex === index ? (
-                  <QRCodeCanvas value={`Bar ${index + 1}`} size={50} />
-                ) : (
-                  <button
-                    className="btn-orange"
-                    style={{ width: "50px" }}
-                    onClick={() => handleButtonClick(index)}
-                  >
-                    QR
-                  </button>
-                )}
-              </div>
-            ))}
+            {tooltipContent}
           </div>
-          {tooltipVisible && (
-            <div
-              ref={tooltipRef}
-              className="custom-tooltip"
-              style={{
-                position: "absolute",
-                left: tooltipPosition.x,
-                top: tooltipPosition.y,
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
-                color: "#fff",
-                padding: "5px",
-                borderRadius: "5px",
-                pointerEvents: "none",
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              {tooltipContent}
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </Card>
   );

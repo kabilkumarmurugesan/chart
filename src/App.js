@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import "./App.css";
-import MainLayout from "./component/layout";
+import Laoyout from "./component/Layout/Laoyout";
 
 function App() {
   return (
     <div className="App">
-      <MainLayout />
+      <Laoyout />
     </div>
   );
 }

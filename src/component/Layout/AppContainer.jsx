@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import BarChart from "./charts/BarChart";
-import { Box, Card, Grid, Typography } from "@mui/material";
-import BasicTable from "./Table/Table";
-import BasicAction from "./Card/BasicAction";
-import BarChartCopy from "./charts/BarChartCopy";
+import BarChart from "../charts/BarChart";
+import { Box, Card, Grid, Typography, useTheme } from "@mui/material";
+import BasicTable from "../Table/Table";
+import BasicAction from "../Card/BasicAction";
+import BarChartCopy from "../charts/BarChartCopy";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import "../MainLayout.css"; // Ensure this CSS file is correctly linked
+// import "../MainLayout.css"; // Ensure this CSS file is correctly linked
 
-const MainLayout = () => {
+const AppContainer = () => {
+  const theme = useTheme();
+  const { primary, secondary } = theme.palette;
+  // console.log(secondary, "primary", primary);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -21,18 +24,19 @@ const MainLayout = () => {
     <SwitchTransition>
       <CSSTransition
         key={currentSlide}
-        timeout={500}
+        timeout={600}
         classNames="zoom-fade"
         unmountOnExit
       >
-        <Box className="zoom-fade-container">
+        <Box
+          className="zoom-fade-container"
+          sx={{ background: "#ff7f0e", fontWeight: "bold" }}
+        >
           {currentSlide === 0 ? (
             <Box sx={{ p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
-                    <Typography sx={{ p: 1 }}>Date - 29/05/2024</Typography>
-                    <hr />
                     <Box
                       sx={{
                         display: "flex",
@@ -60,8 +64,6 @@ const MainLayout = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
-                    <Typography sx={{ p: 1 }}>Date - 30/05/2024</Typography>
-                    <hr />
                     <Box
                       sx={{
                         display: "flex",
@@ -149,7 +151,7 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default AppContainer;
 
 const CardElement = (props) => {
   return (
