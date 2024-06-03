@@ -1,60 +1,61 @@
 import * as React from "react";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
 const series = [
-  { line: 1, x: "09-10", y: 1292, goals: 5600 },
+  { line: 1, x: "09-10", y: 1292, goals: 5600, dn: "DT" },
   {
     x: "10-11",
     line: 1,
-    y: 4432,
-    goals: 5600,
+    y: 432,
+    goals: 560,
+    dn: "DT",
   },
   {
     x: "11-12",
-    y: 5423,
+    y: 423,
     line: 1,
-    goals: 5200,
+    goals: 520,
+    dn: "DT",
   },
   {
     x: "12-01",
     line: 1,
-    y: 6653,
-    goals: 5200,
+    y: 653,
+    goals: 520,
+    dn: "DT",
   },
   {
     x: "01-02",
-    y: 8133,
+    y: 133,
     line: 1,
-    goals: 5200,
+    goals: 520,
+    dn: "DT",
   },
-  { line: 1, x: "02-03", y: 7132, goals: 5200 },
+  { line: 1, x: "02-03", y: 7132, goals: 5200, dn: "NB" },
   {
     x: "03-04",
     line: 1,
-    y: 7332,
-    goals: 5200,
+    y: 332,
+    goals: 520,
+    dn: "NB",
   },
   {
     x: "04-05",
     line: 1,
-    y: 6553,
-    goals: 5200,
+    y: 553,
+    goals: 520,
+    dn: "NB",
   },
   {
     x: "05-06",
     line: 1,
-    y: 6753,
-    goals: 5200,
+    y: 753,
+    goals: 520,
+    dn: "NB",
   },
 ];
 
@@ -79,9 +80,15 @@ export default function BasicTable() {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"Targat"} />
+          <TableCellHeader title={"Target"} />
           {series.map((item) => (
             <TableCell> {item.goals}</TableCell>
+          ))}
+        </TableRow>
+        <TableRow>
+          <TableCellHeader title={"DT/NB"} />
+          {series.map((item) => (
+            <TableCell> {item.dn}</TableCell>
           ))}
         </TableRow>
         <TableRow>
@@ -108,7 +115,7 @@ function TableCellHeader(props) {
         fontWeight: "bold",
         fontSize: "1rem",
         color: "#fff",
-        background: "#ff7f0e",
+        background: "rgb(4, 142, 254)",
       }}
     >
       {props.title}

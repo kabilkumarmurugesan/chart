@@ -1,163 +1,118 @@
 import React from "react";
-import ReactApexChart from "react-apexcharts";
+import { Bar } from "react-chartjs-2";
 import { Card, CardContent } from "@mui/material";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 class BarChart extends React.Component {
   constructor(props) {
     super(props);
 
+    const data = [
+      { x: "09-10", y: 1292, target: 5600 },
+      { x: "10-11", y: 4432, target: 5600 },
+      { x: "11-12", y: 5423, target: 5200 },
+      { x: "12-01", y: 6653, target: 5200 },
+      { x: "01-02", y: 8133, target: 5200 },
+      { x: "02-03", y: 7132, target: 5200 },
+      { x: "03-04", y: 7332, target: 5200 },
+      { x: "04-05", y: 6553, target: 5200 },
+      { x: "05-06", y: 6753, target: 5200 },
+    ];
+
+    const processedData = data.map((item) => ({
+      x: item.x || "",
+      y: item.y || 0,
+      target: item.target || 0,
+    }));
+
     this.state = {
-      series: [
-        {
-          name: "Actual",
-          data: [
-            {
-              x: "09-10",
-              y: 1292,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5600,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-
-                  strokeColor: "#775DD0",
-                },
-              ],
+      data: {
+        labels: processedData.map((item) => item.x),
+        datasets: [
+          {
+            label: "Actual",
+            data: processedData.map((item) => item.y),
+            backgroundColor: "#3D860B",
+          },
+          {
+            label: "Target",
+            data: processedData.map((item) => item.target),
+            type: "line",
+            borderColor: (context) => {
+              const index = context.dataIndex;
+              if (
+                processedData[index] &&
+                processedData[index].target !== undefined
+              ) {
+                return processedData[index].target >= processedData[index].y
+                  ? "rgb(4, 142, 254)"
+                  : "rgb(30, 239, 44)";
+              }
+              return "rgb(0, 0, 0)"; // default color if something goes wrong
             },
-            {
-              x: "10-11",
-              y: 4432,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5600,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "11-12",
-              y: 5423,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "12-01",
-              y: 6653,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "01-02",
-              y: 8133,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "02-03",
-              y: 7132,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "03-04",
-              y: 7332,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "04-05",
-              y: 6553,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-            {
-              x: "05-06",
-              y: 6753,
-              goals: [
-                {
-                  name: "Target",
-                  value: 5200,
-                  strokeHeight: 5,
-                  strokeWidth: 55,
-                  strokeColor: "#775DD0",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0,
+          },
+        ],
+      },
       options: {
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            columnWidth: "60%",
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "top",
+            labels: {
+              generateLabels: (chart) => {
+                return [
+                  {
+                    text: "Target",
+                    fillStyle: "rgb(4, 142, 254)",
+                    hidden: false,
+                  },
+                  {
+                    text: "Actual",
+                    fillStyle: "#3D860B",
+                    hidden: false,
+                  },
+                ];
+              },
+            },
+          },
+          tooltip: {
+            mode: "index",
+            intersect: false,
+          },
+          title: {
+            display: false,
           },
         },
-        colors: ["#00E396"],
-        dataLabels: {
-          enabled: false,
-        },
-        legend: {
-          show: true,
-          showForSingleSeries: true,
-          customLegendItems: ["Actual", "Target"],
-          markers: {
-            fillColors: ["#00E396", "#775DD0"],
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true,
           },
         },
       },
@@ -166,18 +121,11 @@ class BarChart extends React.Component {
 
   render() {
     return (
-      <div>
-        <div id="chart">
-          <ReactApexChart
-            options={this.state.options}
-            series={this.state.series}
-            type="bar"
-            height={350}
-          />
-        </div>
-
-        <div id="html-dist"></div>
-      </div>
+      <Card>
+        <CardContent>
+          <Bar data={this.state.data} options={this.state.options} />
+        </CardContent>
+      </Card>
     );
   }
 }

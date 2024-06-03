@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { socket } from "../socket";
 
-const SingleChart = ({ lastBarValue }) => {
+const SingleChart = () => {
   const [isBlinking, setIsBlinking] = useState(true);
   const [addValue, setaddValue] = useState(0);
   const [categories, setCategories] = useState([]);
@@ -13,20 +13,20 @@ const SingleChart = ({ lastBarValue }) => {
   ]);
 
   useEffect(() => {
-    socket.on('dataUpdate', (data) => {
-      let Tcategories = categories
-     let temp = Object.keys(data)
-     let dataT = data[temp[0]]
-     if (temp[0] !== Tcategories[categories.length - 1]) {
-       Tcategories.push(temp[0])
-       setCategories(Tcategories)
-     }
-     setaddValue(dataT[0].total_count)
-     setSeries((prevSeries) => [
-      { name: "PRODUCT A", data: [dataT[0].total_count] },
-      { name: "PRODUCT B", data: [5] },
-    ]);
-   });
+    socket.on("dataUpdate", (data) => {
+      let Tcategories = categories;
+      let temp = Object.keys(data);
+      let dataT = data[temp[0]];
+      if (temp[0] !== Tcategories[categories.length - 1]) {
+        Tcategories.push(temp[0]);
+        setCategories(Tcategories);
+      }
+      setaddValue(dataT[0].total_count);
+      setSeries((prevSeries) => [
+        { name: "PRODUCT A", data: [dataT[0].total_count] },
+        { name: "PRODUCT B", data: [5] },
+      ]);
+    });
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
     }, 1000);
