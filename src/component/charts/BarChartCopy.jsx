@@ -365,8 +365,8 @@ const BarChartCopy = (props) => {
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
-        borderWidth: 1,
-        barThickness: 20,
+        borderWidth: 20,
+        barThickness: 24,
       },
       {
         label: "PRODUCT B",
@@ -383,8 +383,8 @@ const BarChartCopy = (props) => {
             ? "rgba(255, 127, 14, 0.6)"
             : '#0000000a';
         },
-        borderWidth: 1,
-        barThickness: 20,
+        borderWidth: 20,
+        barThickness: 24,
       },
     ],
   };

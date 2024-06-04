@@ -45,8 +45,7 @@ const BarChart = () => {
     y: item.y || 0,
     target: item.target || 0,
   }));
-  console.log("v", processedData);
-  const [chartData] = useState({
+   const [chartData] = useState({
     labels: processedData.map((item) => item.x),
     datasets: [
       {
@@ -76,7 +75,8 @@ const BarChart = () => {
           }
           return "rgb(0, 0, 0)"; // default color if something goes wrong
         },
-        borderWidth: 2,
+        barThickness: 4,
+        borderWidth: 4,
         fill: false,
         pointRadius: 0,
       },
@@ -117,9 +117,12 @@ const BarChart = () => {
     scales: {
       x: {
         stacked: true,
+        barThickness:20
       },
       y: {
         stacked: true,
+        barThickness:20
+
       },
     },
   });
