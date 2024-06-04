@@ -400,7 +400,7 @@ const BarChartCopy = (props) => {
         beginAtZero: true,
       },
     },
-    animations: false,
+    animations: props.animations,
     plugins: {
       legend: {
         display: false, // Disable legend
@@ -471,7 +471,7 @@ const BarChartCopy = (props) => {
           {data.labels.map((label, index) => (
             <div key={index} style={{ padding: "10px" }}>
               {visibleQRCodeIndex === index ? (
-                <QRCodeCanvas value={`Bar ${index + 1}`} size={50} />
+                <QRCodeCanvas value={"MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"} size={50} />
               ) : (
                 <button
                   className="btn-orange"

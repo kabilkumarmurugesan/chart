@@ -85,18 +85,18 @@ export default function BasicTable() {
             <TableCell> {item.goals}</TableCell>
           ))}
         </TableRow>
-        <TableRow>
+       {/*  <TableRow>
           <TableCellHeader title={"DT/NB"} />
           {series.map((item) => (
             <TableCell> {item.dn}</TableCell>
           ))}
-        </TableRow>
-        <TableRow>
+        </TableRow> */}
+     {/*    <TableRow>
           <TableCellHeader title={"Line"} />
           {series.map((item) => (
             <TableCell> {item.line}</TableCell>
           ))}
-        </TableRow>
+        </TableRow> */}
         <TableRow>
           <TableCellHeader title={"Down Time"} />
           {series.map((item) => (

@@ -18,8 +18,9 @@ export default function AppHeader() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="default">
         <Toolbar sx={{ height: 80 }}>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            LENOVA 24Hr UPH DASHBOAD
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}
+          style={{fontFamily:"sans-serif",textAlign:"center", fontStyle:"oblique", fontWeight:"bold"}}>
+            LENOVA 24Hr UPH DASHBOARD
           </Typography>
 
           <IconButton
@@ -30,12 +31,12 @@ export default function AppHeader() {
             disableRipple
           >
             {theme.palette.mode === "dark" ? (
-              <span role="img" aria-label="sun">
-                Go Light ☀️
+              <span role="img" aria-label="sun" style={{fontFamily:"sans-serif",textAlign:"center", fontStyle:"oblique"}}>
+                Light ☀️
               </span>
             ) : (
-              <span role="img" aria-label="moon">
-                Go Dark 🌚
+              <span role="img" aria-label="moon" style={{fontFamily:"sans-serif",textAlign:"center", fontStyle:"oblique"}}>
+                Dark 🌚
               </span>
             )}
           </IconButton>
