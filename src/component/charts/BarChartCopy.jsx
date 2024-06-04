@@ -14,7 +14,7 @@ import {
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
 import "./BarChartCopy.css";
-import { Card } from "@mui/material";
+import { Card, useTheme } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +27,8 @@ ChartJS.register(
 );
 
 const BarChartCopy = (props) => {
+  const theme = useTheme();
+  const { primary, secondary } = theme.palette;
   const [isBlinking, setIsBlinking] = useState(true);
   const [lastBarValue, setLastBarValue] = useState(20); // Initial value for the last bar of PRODUCT A
   const [categories, setCategories] = useState([
@@ -113,13 +115,13 @@ const BarChartCopy = (props) => {
           const index = context.dataIndex;
           return index === 6 && isBlinking
             ? "rgba(255, 127, 14, 0.6)"
-            : "#FFFFFF";
+            : '#0000000a';
         },
         borderColor: (context) => {
           const index = context.dataIndex;
           return index === 6 && isBlinking
             ? "rgba(255, 127, 14, 0.6)"
-            : "#FFFFFF";
+            : '#0000000a';
         },
         borderWidth: 1,
         barThickness: 20,
