@@ -177,7 +177,7 @@ const AppContainer = () => {
                           </Typography>
                         </Box>
                         <img
-                          src="./checklist.gif"
+                          src="./checklist.png"
                           alt="GIF"
                           style={{ width: '60px', height: '60px' }}
                         />
@@ -211,7 +211,7 @@ const AppContainer = () => {
                           </Typography>
                         </Box>
                         <img
-                          src="./target.gif"
+                          src="./target.png"
                           alt="GIF"
                           style={{ width: '60px', height: '60px' }}
                         />
@@ -245,7 +245,7 @@ const AppContainer = () => {
                           </Typography>
                         </Box>
                         <img
-                          src="./presentation.gif"
+                          src="./presentation.png"
                           alt="GIF"
                           style={{ width: '60px', height: '60px' }}
                         />
@@ -279,7 +279,7 @@ const AppContainer = () => {
                           </Typography>
                         </Box>
                         <img
-                          src="./hourglass.gif"
+                          src="./hourglass.png"
                           alt="GIF"
                           style={{ width: '60px', height: '60px' }}
                         />
