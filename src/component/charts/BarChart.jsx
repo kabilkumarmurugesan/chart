@@ -1,137 +1,180 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Bar } from "react-chartjs-2";
-import { Card, CardContent, useTheme } from "@mui/material";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
-  PointElement,
-  LineElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
+import "chartjs-plugin-annotation";
+import "./BarChartCopy.css";
+import { Card, useTheme } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  annotationPlugin
 );
 
-const BarChart = () => {
-  const theme = useTheme();
-  const { primary, secondary } = theme.palette;
-  console.log("primary.complete", primary.complete);
-  const data = [
-    { x: "09-10", y: 1292, target: 5600 },
-    { x: "10-11", y: 4432, target: 5600 },
-    { x: "11-12", y: 5423, target: 5200 },
-    { x: "12-01", y: 6653, target: 5200 },
-    { x: "01-02", y: 8133, target: 5200 },
-    { x: "02-03", y: 7132, target: 5200 },
-    { x: "03-04", y: 7332, target: 5200 },
-    { x: "04-05", y: 6553, target: 5200 },
-    { x: "05-06", y: 6753, target: 5200 },
-  ];
+const BarChart = (props) => {
+  const theme = useTheme(); // Initial value for the last bar of PRODUCT A
+  const { primary } = theme.palette;
+  const [categories, setCategories] = useState([
+    "09-10",
+    "10-11",
+    "11-12",
+    "12-01",
+    "01-02",
+    "02-03",
+    "03-04",
+  ]);
 
-  const processedData = data.map((item) => ({
-    x: item.x || "",
-    y: item.y || 0,
-    target: item.target || 0,
-  }));
-   const [chartData] = useState({
-    labels: processedData.map((item) => item.x),
+  const [series, setSeries] = useState([75, 80, 90, 95, 95, 95, 90]);
+  const [tooltipContent, setTooltipContent] = useState("");
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const tooltipRef = useRef(null);
+
+  const showTooltip = (event, content) => {
+    const rect = event.chart.canvas.getBoundingClientRect();
+    setTooltipContent(content);
+    setTooltipPosition({
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    });
+    setTooltipVisible(true);
+  };
+
+  const hideTooltip = () => {
+    setTooltipVisible(false);
+  };
+
+  const getColor = (value) => {
+    if (value < 30) return primary.incomplete;
+    if (value < 80) return primary.pending;
+    return primary.complete;
+  };
+
+  const data = {
+    labels: categories,
     datasets: [
       {
-        label: "Actual",
-        data: processedData.map((item) => item.y),
-        backgroundColor: processedData.map((item) =>
-          item.y > item.target
-            ? primary.complete
-            : item.target / 2 < item.y
-            ? primary.pending
-            : primary.incomplete
-        ),
-      },
-      {
-        label: "Target",
-        data: processedData.map((item) => item.target),
-        type: "line",
-        borderColor: (context) => {
-          const index = context.dataIndex;
-          if (
-            processedData[index] &&
-            processedData[index].target !== undefined
-          ) {
-            return processedData[index].target >= processedData[index].y
-              ? "rgb(4, 142, 254)"
-              : "rgb(30, 239, 44)";
-          }
-          return "rgb(0, 0, 0)"; // default color if something goes wrong
-        },
-        barThickness: 4,
-        borderWidth: 4,
-        fill: false,
-        pointRadius: 0,
+        label: "PRODUCT A",
+        data: series,
+        backgroundColor: series.map(getColor),
+        borderColor: series.map(getColor),
+        borderWidth: 20,
+        barThickness: 24,
       },
     ],
-  });
+  };
 
-  const [chartOptions] = useState({
+  const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
-        labels: {
-          generateLabels: (chart) => {
-            return [
-              {
-                text: "Target",
-                fillStyle: "rgb(4, 142, 254)",
-                hidden: false,
-              },
-              {
-                text: "Actual",
-                fillStyle: "#3D860B",
-                hidden: false,
-              },
-            ];
+        display: false, // Disable legend
+      },
+      annotation: {
+        annotations: {
+          line1: {
+            type: "line",
+            yMin: 85,
+            yMax: 85,
+            xMin: -1, // Start from the beginning of the chart
+            xMax: 2, // End at the index of "10-11"
+            borderColor: "rgb(4, 142, 254)",
+            borderWidth: 3,
+            label: {
+              content: "Target: 85", // This is where you specify the label text
+              enabled: true,
+              position: "start", // Change to 'start' or 'center'
+              backgroundColor: "rgb(4, 142, 254)",
+              yAdjust: -15,
+              xAdjust: -5,
+            },
+            onEnter: (e) => showTooltip(e, "Target: 85"),
+            onLeave: hideTooltip,
+          },
+          line2: {
+            type: "line",
+            yMin: 100,
+            yMax: 100,
+            xMin: 2, // Start at the index of "11-12"
+            xMax: 6, // End at the index of "03-04"
+            borderColor: "rgb(30, 239, 44)",
+            borderWidth: 7,
+            label: {
+              content: "Target: 100", // This is where you specify the label text
+              enabled: true,
+              position: "start", // Change to 'start' or 'center'
+              backgroundColor: "rgb(30, 239, 44)",
+              yAdjust: -15,
+              xAdjust: -5,
+            },
+            onEnter: (e) => showTooltip(e, "Target: 100"),
+            onLeave: hideTooltip,
           },
         },
       },
-      tooltip: {
-        mode: "index",
-        intersect: false,
-      },
-      title: {
-        display: false,
-      },
     },
-    animations: false,
+    animations: props.animations,
+    maintainAspectRatio: false,
     scales: {
       x: {
         stacked: true,
-        barThickness:20
       },
       y: {
         stacked: true,
-        barThickness:20
-
+        beginAtZero: true,
       },
     },
-  });
+  };
 
   return (
-    <Card>
-      <CardContent>
-        <Bar data={chartData} options={chartOptions} />
-      </CardContent>
+    <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
+      <div
+        id="chart"
+        style={{ position: "relative", width: "100%", height: "300px" }}
+      >
+        <Bar
+          data={data}
+          options={options}
+          style={{ width: "100%", height: "100%" }}
+        />
+        {tooltipVisible && (
+          <div
+            ref={tooltipRef}
+            className="custom-tooltip"
+            style={{
+              position: "absolute",
+              left: tooltipPosition.x,
+              top: tooltipPosition.y,
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+              pointerEvents: "none",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            {tooltipContent}
+          </div>
+        )}
+      </div>
+      <div
+        style={{
+          padding: "10px",
+        }}
+      ></div>
     </Card>
   );
 };

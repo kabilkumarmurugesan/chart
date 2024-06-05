@@ -1,122 +1,149 @@
-import { QRCodeCanvas } from "qrcode.react";
 import React, { useState, useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
+import { Bar } from "react-chartjs-2";
 import { socket } from "../socket";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Card, useTheme } from "@mui/material";
+import { QRCodeCanvas } from "qrcode.react";
 
-const SingleChart = () => {
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const SingleBarChart = () => {
+  const theme = useTheme();
+  const { primary } = theme.palette;
+  const [lastBarValue, setLastBarValue] = useState(50); // Initial value for the last bar of PRODUCT A
   const [isBlinking, setIsBlinking] = useState(true);
-  const [addValue, setaddValue] = useState(0);
-  const [categories, setCategories] = useState([]);
-  const [series, setSeries] = useState([
-    { name: "PRODUCT A", data: [addValue] },
-    { name: "PRODUCT B", data: [5] },
-  ]);
+  const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
-      let Tcategories = categories;
-      let temp = Object.keys(data);
-      let dataT = data[temp[0]];
-      if (temp[0] !== Tcategories[categories.length - 1]) {
-        Tcategories.push(temp[0]);
-        setCategories(Tcategories);
-      }
-      setaddValue(dataT[0].total_count);
-      setSeries((prevSeries) => [
-        { name: "PRODUCT A", data: [dataT[0].total_count] },
-        { name: "PRODUCT B", data: [5] },
-      ]);
+      let dataT = Object.values(data)[0];
+      setLastBarValue(dataT[0].total_count);
     });
+
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
     }, 1000);
 
-    return () => clearInterval(blinkInterval);
-  }, []);
+    const increaseValuesInterval = setInterval(() => {
+      setLastBarValue((prev) => prev + 1); // Increase PRODUCT A's last bar value
+    }, 10000);
 
-  useEffect(() => {
-    const incrementValue = () => {
-      setSeries((prevSeries) => [
-        { name: "PRODUCT A", data: [prevSeries[0].data[0] + 1] },
-        { name: "PRODUCT B", data: [10] },
-      ]);
-
-      setTimeout(incrementValue, 20000); // Recursively call incrementValue every 20 seconds
+    return () => {
+      clearInterval(blinkInterval);
+      clearInterval(increaseValuesInterval);
     };
-
-    const timeout = setTimeout(incrementValue, 20000); // Initial call after 20 seconds
-
-    return () => clearTimeout(timeout);
   }, []);
 
-  const options = {
-    chart: {
-      type: "bar",
-      height: 250,
-      stacked: true,
-      toolbar: { show: false },
-      zoom: { enabled: false },
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        borderRadius: 0,
-        borderRadiusApplication: "end",
-        borderRadiusWhenStacked: "last",
-        dataLabels: {
-          enabled: false,
-        },
+  const getColor = (value) => {
+    if (value < 30) return primary.incomplete;
+    if (value < 80) return primary.pending;
+    return primary.complete;
+  };
+  const data = {
+    labels: ["03-04"], // Only last bar label
+    datasets: [
+      {
+        label: "PRODUCT A",
+        data: [lastBarValue], // Only last bar value
+        backgroundColor: [getColor(lastBarValue)],
+        borderColor: [getColor(lastBarValue)],
+        borderWidth: 20,
+        barThickness: 24,
       },
-    },
-    xaxis: {
-      type: "datetime",
-      categories: ["2024-05-30T00:00:00.000Z"], // Ensure the format matches your data
-      tickAmount: 1,
-      labels: {
-        format: "MMM dd",
-        style: {
-          colors: [],
-          fontSize: "12px",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          fontWeight: 400,
-          cssClass: "apexcharts-xaxis-label",
-        },
-        offsetX: 0,
-        offsetY: 10, // Adjust the vertical position
-        formatter: function (value, timestamp) {
-          return new Date(timestamp).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          });
-        },
+      {
+        label: "PRODUCT B",
+        data: [10], // Only last bar value
+        backgroundColor: isBlinking ? "rgba(255, 127, 14, 0.6)" : "#0000000a",
+        borderColor: isBlinking ? "rgba(255, 127, 14, 0.6)" : "#0000000a",
+        borderWidth: 20,
+        barThickness: 24,
       },
-    },
-
-    legend: {
-      show: false, // Disable legend
-    },
-    fill: {
-      opacity: 1,
-    },
-    colors: ["#1f77b4", isBlinking ? "#ff7f0e" : "#1f77b4"], // Set colors dynamically based on blinking state
+    ],
   };
 
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+        min: 0,
+        max: 100,
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        display: false, // Disable legend
+      },
+    },
+  };
+
+  const handleButtonClick = (index) => {
+    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
   return (
-    <div>
+    <Card
+      className="mb-4"
+      style={{ height: "100%", position: "relative", padding: "20px" }}
+    >
       <div id="chart">
-        <ReactApexChart
+        <Bar
+          data={data}
           options={options}
-          series={series}
-          type="bar"
-          height={350}
+          height={90}
+          style={{ width: "100%" }}
         />
-        <div id="qr-code" style={{ paddingLeft: "760px" }}>
-          <QRCodeCanvas value="Hi Welcome to Lenovo" size={60} />
+        <div
+          className="qr-code-container"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            paddingTop: "15px",
+          }}
+        >
+          {data.labels.map((_label, index) => (
+            <div key={index} style={{ padding: "10px" }}>
+              {visibleQRCodeIndex === index ? (
+                <QRCodeCanvas
+                  value={
+                    "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+                  }
+                  size={50}
+                />
+              ) : (
+                <button
+                  className="btn-orange"
+                  style={{ width: "50px" }}
+                  onClick={() => handleButtonClick(index)}
+                >
+                  QR
+                </button>
+              )}
+            </div>
+          ))}
         </div>
       </div>
-      <div id="html-dist"></div>
-    </div>
+    </Card>
   );
 };
 
-export default SingleChart;
+export default SingleBarChart;

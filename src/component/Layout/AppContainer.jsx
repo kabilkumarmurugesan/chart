@@ -5,16 +5,11 @@ import BasicTable from "../Table/Table";
 import BasicAction from "../Card/BasicAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-// import "../MainLayout.css"; // Ensure this CSS file is correctly linked
-import UpdateOutlinedIcon from "@mui/icons-material/UpdateOutlined";
-import NorthOutlinedIcon from "@mui/icons-material/NorthOutlined";
-import TrackChangesOutlinedIcon from "@mui/icons-material/TrackChangesOutlined";
-import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import SingleChart from "../charts/SingleChart";
 
 const AppContainer = () => {
   const theme = useTheme();
-  const { primary, secondary } = theme.palette;
+  const { primary } = theme.palette;
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -44,7 +39,11 @@ const AppContainer = () => {
                     {" "}
                     <Typography
                       sx={{ p: 1 }}
-                      style={{ fontFamily: "sans-serif", fontStyle: "oblique" }}
+                      style={{
+                        fontFamily: "cursive",
+                        fontStyle: "italic",
+                        fontSize: "20px",
+                      }}
                     >
                       Date - 29/05/2024
                     </Typography>{" "}
@@ -59,11 +58,27 @@ const AppContainer = () => {
                       }}
                     >
                       {" "}
-                      <Typography sx={{ p: 1 }}>
+                      <Typography
+                        sx={{ p: 1 }}
+                        style={{
+                          fontFamily: "cursive",
+                          fontStyle: "italic",
+                          fontSize: "15px",
+                        }}
+                      >
                         Time - 09:00 AM - 05:30PM (shift 2)
                       </Typography>
                       <Box sx={{ display: "flex", flexDirection: "row" }}>
-                        <Typography sx={{ p: 1 }}>OverTime 07:30PM</Typography>
+                        <Typography
+                          sx={{ p: 1 }}
+                          style={{
+                            fontFamily: "cursive",
+                            fontStyle: "italic",
+                            fontSize: "15px",
+                          }}
+                        >
+                          OverTime 07:30PM
+                        </Typography>
                       </Box>
                     </Box>{" "}
                     <hr />
@@ -75,7 +90,11 @@ const AppContainer = () => {
                     {" "}
                     <Typography
                       sx={{ p: 1 }}
-                      style={{ fontFamily: "sans-serif", fontStyle: "oblique" }}
+                      style={{
+                        fontFamily: "cursive",
+                        fontStyle: "italic",
+                        fontSize: "20px",
+                      }}
                     >
                       Date - 30/05/2024
                     </Typography>
@@ -89,11 +108,27 @@ const AppContainer = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <Typography sx={{ p: 1 }}>
+                      <Typography
+                        sx={{ p: 1 }}
+                        style={{
+                          fontFamily: "cursive",
+                          fontStyle: "italic",
+                          fontSize: "15px",
+                        }}
+                      >
                         Time - 09:00 AM - 05:30PM(shift 1)
                       </Typography>
                       <Box sx={{ display: "flex", flexDirection: "row" }}>
-                        <Typography sx={{ p: 1 }}>OverTime 07:30PM</Typography>
+                        <Typography
+                          sx={{ p: 1 }}
+                          style={{
+                            fontFamily: "cursive",
+                            fontStyle: "italic",
+                            fontSize: "15px",
+                          }}
+                        >
+                          OverTime 07:30PM
+                        </Typography>
                       </Box>{" "}
                     </Box>
                     <hr />
@@ -120,175 +155,172 @@ const AppContainer = () => {
             </Box>
           ) : (
             <Box sx={{ p: 2 }}>
-              <Grid
-                container
-                spacing={2}
-                direction="column-reverse"
-                sx={{ mt: 2 }}
-              >
-                <Grid item xs={12} md={6}>
-                  <Card sx={{ minWidth: 275 }}>
-                    <BarChartCopy
-                      animations={{
-                        tension: {
-                          duration: 10000,
-                          easing: "linear",
-                          from: 1,
-                          to: 0,
-                        },
-                      }}
-                    />
-                  </Card>
-                  <Grid item xs={12} md={6}>
-                    <SingleChart />
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} md={3}>
+                    <Card sx={{ minWidth: 275, padding: 2 }}>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Box>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            Shift Actual
+                          </Typography>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            15
+                          </Typography>
+                        </Box>
+                        <img
+                          src="./checklist.gif"
+                          alt="GIF"
+                          style={{ width: "60px", height: "60px" }}
+                        />
+                        {/*  <ListAltOutlinedIcon style={{ fontSize: '40px' }} /> */}
+                      </Box>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <Card sx={{ minWidth: 275, padding: 2 }}>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Box>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            Shift Target
+                          </Typography>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            15
+                          </Typography>
+                        </Box>
+                        <img
+                          src="./target.gif"
+                          alt="GIF"
+                          style={{ width: "60px", height: "60px" }}
+                        />
+                        {/*  <TrackChangesOutlinedIcon style={{ fontSize: '40px' }} /> */}
+                      </Box>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <Card sx={{ minWidth: 275, padding: 2 }}>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Box>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            Shift UPH
+                          </Typography>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            15
+                          </Typography>
+                        </Box>
+                        <img
+                          src="./presentation.gif"
+                          alt="GIF"
+                          style={{ width: "60px", height: "60px" }}
+                        />
+                        {/*  <NorthOutlinedIcon style={{ fontSize: '40px' }} /> */}
+                      </Box>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <Card sx={{ minWidth: 275, padding: 2 }}>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Box>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            Shift Down Time
+                          </Typography>
+                          <Typography
+                            style={{
+                              fontFamily: "cursive",
+                              fontStyle: "italic",
+                              fontSize: "20px",
+                            }}
+                          >
+                            15
+                          </Typography>
+                        </Box>
+                        <img
+                          src="./hourglass.gif"
+                          alt="GIF"
+                          style={{ width: "60px", height: "60px" }}
+                        />
+                        {/*     <UpdateOutlinedIcon style={{ fontSize: '40px' }} /> */}
+                      </Box>
+                    </Card>
                   </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6} md={3}>
-                      <Card sx={{ minWidth: 275, padding: 2 }}>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Box>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              Shift Actual
-                            </Typography>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              15
-                            </Typography>
-                          </Box>
-                          <img
-                            src="./checklist.gif"
-                            alt="GIF"
-                            style={{ width: "60px", height: "60px" }}
-                          />
-                          {/*  <ListAltOutlinedIcon style={{ fontSize: '40px' }} /> */}
-                        </Box>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <Card sx={{ minWidth: 275, padding: 2 }}>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Box>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              Shift Target
-                            </Typography>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              15
-                            </Typography>
-                          </Box>
-                          <img
-                            src="./target.gif"
-                            alt="GIF"
-                            style={{ width: "60px", height: "60px" }}
-                          />
-                          {/*  <TrackChangesOutlinedIcon style={{ fontSize: '40px' }} /> */}
-                        </Box>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <Card sx={{ minWidth: 275, padding: 2 }}>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Box>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              Shift UPH
-                            </Typography>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              15
-                            </Typography>
-                          </Box>
-                          <img
-                            src="./presentation.gif"
-                            alt="GIF"
-                            style={{ width: "60px", height: "60px" }}
-                          />
-                          {/*  <NorthOutlinedIcon style={{ fontSize: '40px' }} /> */}
-                        </Box>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <Card sx={{ minWidth: 275, padding: 2 }}>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Box>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              Shift Down Time
-                            </Typography>
-                            <Typography
-                              style={{
-                                fontFamily: "cursive",
-                                fontStyle: "italic",
-                                fontSize: "20px",
-                              }}
-                            >
-                              15
-                            </Typography>
-                          </Box>
-                          <img
-                            src="./hourglass.gif"
-                            alt="GIF"
-                            style={{ width: "60px", height: "60px" }}
-                          />
-                          {/*     <UpdateOutlinedIcon style={{ fontSize: '40px' }} /> */}
-                        </Box>
-                      </Card>
-                    </Grid>
+              </Grid>
+              <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid item xs={12} container spacing={2}>
+                  <Grid item xs={12} md={8}>
+                    <Card sx={{ minWidth: 275 }}>
+                      <BarChartCopy
+                        animations={{
+                          tension: {
+                            duration: 10000,
+                            easing: "linear",
+                            from: 1,
+                            to: 0,
+                          },
+                        }}
+                      />
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <SingleChart />
                   </Grid>
                 </Grid>
               </Grid>
@@ -301,18 +333,3 @@ const AppContainer = () => {
 };
 
 export default AppContainer;
-
-const CardElement = (props) => {
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={6} md={8}>
-        <Box style={{ padding: "10px" }}>
-          <Card sx={{ minWidth: 175 }}>
-            <Box>{props.title}</Box>
-            <Box style={{ padding: "10px" }}>{props.value}</Box>
-          </Card>
-        </Box>{" "}
-      </Grid>
-    </Grid>
-  );
-};
