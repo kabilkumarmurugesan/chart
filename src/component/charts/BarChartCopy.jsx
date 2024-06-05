@@ -83,22 +83,16 @@ const BarChartCopy = (props) => {
         Tcategories.push(temp[0]);
         setCategories(Tcategories);
       }
-
-      setLastBarValue(dataT[0].total_count);
+      let intit = parseInt(dataT[0].total_count);
+      setLastBarValue(intit);
     });
 
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
     }, 600);
 
-    // Increase the last bar value for PRODUCT A every 10 seconds
-    // const increaseValuesInterval = setInterval(() => {
-    //   setLastBarValue((prev) => prev + 1); // Increase PRODUCT A's last bar value
-    // }, 10000);
-
     return () => {
       clearInterval(blinkInterval);
-      // clearInterval(increaseValuesInterval);
     };
   }, [categories]);
 
@@ -107,11 +101,38 @@ const BarChartCopy = (props) => {
     let emt = emtSeries;
     emt[Tcategories.length - 1] = 8;
     setEmtSeries(emt);
-    setSeries([...Tseries, lastBarValue]);
+    console.log('lastBarValue', series);
+    let tempSeries = [...series];
+    tempSeries[Tcategories.length - 1] = lastBarValue;
+    setSeries(tempSeries);
   }, [categories, lastBarValue]);
 
   const handleButtonClick = (index) => {
+    getUpdateData();
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
+  const getUpdateData = async () => {
+    const url = 'http://localhost:8001/api/v1/general/1';
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((updatedData) => {
+        console.log('Data updated:', updatedData);
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
   };
 
   const showTooltip = (event, content) => {
@@ -133,7 +154,6 @@ const BarChartCopy = (props) => {
     if (value < 80) return primary.pending;
     return primary.complete;
   };
-
   const data = {
     labels: categories,
     datasets: [

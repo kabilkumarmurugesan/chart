@@ -98,8 +98,33 @@ const SingleBarChart = () => {
   };
 
   const handleButtonClick = (index) => {
+    getUpdateData();
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
   };
+
+  const getUpdateData = async () => {
+    const url = 'http://localhost:8001/api/v1/general/1';
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((updatedData) => {
+        console.log('Data updated:', updatedData);
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+  };
+
   return (
     <Card
       className="mb-4"
