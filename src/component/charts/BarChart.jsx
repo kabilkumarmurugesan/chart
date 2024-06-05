@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Bar } from "react-chartjs-2";
+import React, { useState, useRef, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,11 +8,11 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import annotationPlugin from "chartjs-plugin-annotation";
-import "chartjs-plugin-annotation";
-import "./BarChartCopy.css";
-import { Card, useTheme } from "@mui/material";
+} from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
+import 'chartjs-plugin-annotation';
+import './BarChartCopy.css';
+import { Card, useTheme } from '@mui/material';
 
 ChartJS.register(
   CategoryScale,
@@ -21,27 +21,50 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin
+  annotationPlugin,
 );
 
 const BarChart = (props) => {
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
   const [categories, setCategories] = useState([
-    "09-10",
-    "10-11",
-    "11-12",
-    "12-01",
-    "01-02",
-    "02-03",
-    "03-04",
+    '09-10',
+    '10-11',
+    '11-12',
+    '12-01',
+    '01-02',
+    '02-03',
+    '03-04',
   ]);
 
   const [series, setSeries] = useState([75, 80, 90, 95, 95, 95, 90]);
-  const [tooltipContent, setTooltipContent] = useState("");
+  const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const tooltipRef = useRef(null);
+
+  useEffect(() => {
+    getData('L1');
+  }, []);
+
+  const getData = async (line) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8001/api/v1/general/shiftdata?line=${line}`,
+      );
+      const result = await response.json();
+      let temp = [];
+      let categories = [];
+      result.data.map((item) => {
+        temp.push(item.y);
+        categories.push(item.x);
+      });
+      setSeries(temp);
+      setCategories(categories);
+    } catch (error) {
+      console.error(`Download error: ${error.message}`);
+    }
+  };
 
   const showTooltip = (event, content) => {
     const rect = event.chart.canvas.getBoundingClientRect();
@@ -67,7 +90,7 @@ const BarChart = (props) => {
     labels: categories,
     datasets: [
       {
-        label: "PRODUCT A",
+        label: 'PRODUCT A',
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
@@ -86,41 +109,41 @@ const BarChart = (props) => {
       annotation: {
         annotations: {
           line1: {
-            type: "line",
+            type: 'line',
             yMin: 85,
             yMax: 85,
             xMin: -1, // Start from the beginning of the chart
             xMax: 2, // End at the index of "10-11"
-            borderColor: "rgb(4, 142, 254)",
+            borderColor: 'rgb(4, 142, 254)',
             borderWidth: 3,
             label: {
-              content: "Target: 85", // This is where you specify the label text
+              content: 'Target: 85', // This is where you specify the label text
               enabled: true,
-              position: "start", // Change to 'start' or 'center'
-              backgroundColor: "rgb(4, 142, 254)",
+              position: 'start', // Change to 'start' or 'center'
+              backgroundColor: 'rgb(4, 142, 254)',
               yAdjust: -15,
               xAdjust: -5,
             },
-            onEnter: (e) => showTooltip(e, "Target: 85"),
+            onEnter: (e) => showTooltip(e, 'Target: 85'),
             onLeave: hideTooltip,
           },
           line2: {
-            type: "line",
+            type: 'line',
             yMin: 100,
             yMax: 100,
             xMin: 2, // Start at the index of "11-12"
             xMax: 6, // End at the index of "03-04"
-            borderColor: "rgb(30, 239, 44)",
+            borderColor: 'rgb(30, 239, 44)',
             borderWidth: 7,
             label: {
-              content: "Target: 100", // This is where you specify the label text
+              content: 'Target: 100', // This is where you specify the label text
               enabled: true,
-              position: "start", // Change to 'start' or 'center'
-              backgroundColor: "rgb(30, 239, 44)",
+              position: 'start', // Change to 'start' or 'center'
+              backgroundColor: 'rgb(30, 239, 44)',
               yAdjust: -15,
               xAdjust: -5,
             },
-            onEnter: (e) => showTooltip(e, "Target: 100"),
+            onEnter: (e) => showTooltip(e, 'Target: 100'),
             onLeave: hideTooltip,
           },
         },
@@ -140,30 +163,30 @@ const BarChart = (props) => {
   };
 
   return (
-    <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
+    <Card className="mb-4" style={{ position: 'relative', padding: '20px' }}>
       <div
         id="chart"
-        style={{ position: "relative", width: "100%", height: "300px" }}
+        style={{ position: 'relative', width: '100%', height: '300px' }}
       >
         <Bar
           data={data}
           options={options}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: '100%', height: '100%' }}
         />
         {tooltipVisible && (
           <div
             ref={tooltipRef}
             className="custom-tooltip"
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: tooltipPosition.x,
               top: tooltipPosition.y,
-              backgroundColor: "rgba(0, 0, 0, 0.7)",
-              color: "#fff",
-              padding: "5px",
-              borderRadius: "5px",
-              pointerEvents: "none",
-              transform: "translate(-50%, -50%)",
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              color: '#fff',
+              padding: '5px',
+              borderRadius: '5px',
+              pointerEvents: 'none',
+              transform: 'translate(-50%, -50%)',
             }}
           >
             {tooltipContent}
@@ -172,7 +195,7 @@ const BarChart = (props) => {
       </div>
       <div
         style={{
-          padding: "10px",
+          padding: '10px',
         }}
       ></div>
     </Card>

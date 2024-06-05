@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import BarChart from "../charts/BarChart";
-import { Box, Card, Grid, Typography, useTheme } from "@mui/material";
-import BasicTable from "../Table/Table";
-import BasicAction from "../Card/BasicAction";
-import BarChartCopy from "../charts/BarChartCopy";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
-import SingleChart from "../charts/SingleChart";
+import React, { useEffect, useState } from 'react';
+import BarChart from '../charts/BarChart';
+import { Box, Card, Grid, Typography, useTheme } from '@mui/material';
+import BasicTable from '../Table/Table';
+import BasicAction from '../Card/BasicAction';
+import BarChartCopy from '../charts/BarChartCopy';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import SingleChart from '../charts/SingleChart';
 
 const AppContainer = () => {
   const theme = useTheme();
@@ -29,71 +29,67 @@ const AppContainer = () => {
       >
         <Box
           className="zoom-fade-container"
-          sx={{ background: primary.main, fontWeight: "bold" }}
+          sx={{ background: primary.main, fontWeight: 'bold', height: '100vh' }}
         >
           {currentSlide === 0 ? (
             <Box sx={{ p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
-                    {" "}
+                    {' '}
                     <Typography
                       sx={{ p: 1 }}
                       style={{
-                        fontFamily: "cursive",
-                        fontStyle: "italic",
-                        fontSize: "20px",
+                        fontFamily: 'cursive',
+                        fontSize: '20px',
                       }}
                     >
                       Date - 29/05/2024
-                    </Typography>{" "}
+                    </Typography>{' '}
                     <hr />
                     <Box
                       sx={{
-                        display: "flex",
-                        flexDirection: "row",
+                        display: 'flex',
+                        flexDirection: 'row',
                         p: 1,
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
                       }}
                     >
-                      {" "}
+                      {' '}
                       <Typography
                         sx={{ p: 1 }}
                         style={{
-                          fontFamily: "cursive",
-                          fontStyle: "italic",
-                          fontSize: "15px",
+                          fontFamily: 'cursive',
+                          fontSize: '15px',
                         }}
                       >
                         Time - 09:00 AM - 05:30PM (shift 2)
                       </Typography>
-                      <Box sx={{ display: "flex", flexDirection: "row" }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Typography
                           sx={{ p: 1 }}
                           style={{
-                            fontFamily: "cursive",
-                            fontStyle: "italic",
-                            fontSize: "15px",
+                            fontFamily: 'cursive',
+                            fontSize: '15px',
                           }}
                         >
                           OverTime 07:30PM
                         </Typography>
                       </Box>
-                    </Box>{" "}
+                    </Box>{' '}
                     <hr />
                     <BarChart />
                   </Card>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
-                    {" "}
+                    {' '}
                     <Typography
                       sx={{ p: 1 }}
                       style={{
-                        fontFamily: "cursive",
-                        fontStyle: "italic",
-                        fontSize: "20px",
+                        fontFamily: 'cursive',
+                        fontSize: '20px',
                       }}
                     >
                       Date - 30/05/2024
@@ -101,35 +97,33 @@ const AppContainer = () => {
                     <hr />
                     <Box
                       sx={{
-                        display: "flex",
-                        flexDirection: "row",
+                        display: 'flex',
+                        flexDirection: 'row',
                         p: 1,
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
                       }}
                     >
                       <Typography
                         sx={{ p: 1 }}
                         style={{
-                          fontFamily: "cursive",
-                          fontStyle: "italic",
-                          fontSize: "15px",
+                          fontFamily: 'cursive',
+                          fontSize: '15px',
                         }}
                       >
                         Time - 09:00 AM - 05:30PM(shift 1)
                       </Typography>
-                      <Box sx={{ display: "flex", flexDirection: "row" }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Typography
                           sx={{ p: 1 }}
                           style={{
-                            fontFamily: "cursive",
-                            fontStyle: "italic",
-                            fontSize: "15px",
+                            fontFamily: 'cursive',
+                            fontSize: '15px',
                           }}
                         >
                           OverTime 07:30PM
                         </Typography>
-                      </Box>{" "}
+                      </Box>{' '}
                     </Box>
                     <hr />
                     <BarChartCopy animations={false} />
@@ -167,18 +161,16 @@ const AppContainer = () => {
                         <Box>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             Shift Actual
                           </Typography>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             15
@@ -187,7 +179,7 @@ const AppContainer = () => {
                         <img
                           src="./checklist.gif"
                           alt="GIF"
-                          style={{ width: "60px", height: "60px" }}
+                          style={{ width: '60px', height: '60px' }}
                         />
                         {/*  <ListAltOutlinedIcon style={{ fontSize: '40px' }} /> */}
                       </Box>
@@ -203,18 +195,16 @@ const AppContainer = () => {
                         <Box>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             Shift Target
                           </Typography>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             15
@@ -223,7 +213,7 @@ const AppContainer = () => {
                         <img
                           src="./target.gif"
                           alt="GIF"
-                          style={{ width: "60px", height: "60px" }}
+                          style={{ width: '60px', height: '60px' }}
                         />
                         {/*  <TrackChangesOutlinedIcon style={{ fontSize: '40px' }} /> */}
                       </Box>
@@ -239,18 +229,16 @@ const AppContainer = () => {
                         <Box>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             Shift UPH
                           </Typography>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             15
@@ -259,7 +247,7 @@ const AppContainer = () => {
                         <img
                           src="./presentation.gif"
                           alt="GIF"
-                          style={{ width: "60px", height: "60px" }}
+                          style={{ width: '60px', height: '60px' }}
                         />
                         {/*  <NorthOutlinedIcon style={{ fontSize: '40px' }} /> */}
                       </Box>
@@ -275,18 +263,16 @@ const AppContainer = () => {
                         <Box>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             Shift Down Time
                           </Typography>
                           <Typography
                             style={{
-                              fontFamily: "cursive",
-                              fontStyle: "italic",
-                              fontSize: "20px",
+                              fontFamily: 'cursive',
+                              fontSize: '20px',
                             }}
                           >
                             15
@@ -295,7 +281,7 @@ const AppContainer = () => {
                         <img
                           src="./hourglass.gif"
                           alt="GIF"
-                          style={{ width: "60px", height: "60px" }}
+                          style={{ width: '60px', height: '60px' }}
                         />
                         {/*     <UpdateOutlinedIcon style={{ fontSize: '40px' }} /> */}
                       </Box>
@@ -311,7 +297,7 @@ const AppContainer = () => {
                         animations={{
                           tension: {
                             duration: 10000,
-                            easing: "linear",
+                            easing: 'linear',
                             from: 1,
                             to: 0,
                           },
