@@ -85,6 +85,10 @@ div#chart canvas {
   width: 100% !important;
   height: 95% !important;
 }
+div#single canvas {
+  width: 100% !important;
+  height: 90% !important;
+}
 .close-qr-code-flow{
   position: absolute;
   right: 5rem;

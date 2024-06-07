@@ -11,8 +11,9 @@ import {
 } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-plugin-annotation';
-import './BarChartCopy.css';
 import { Card, useTheme } from '@mui/material';
+import { QRCodeCanvas } from 'qrcode.react';
+import '../../asset/BarChartCopy.css'
 
 ChartJS.register(
   CategoryScale,
@@ -35,9 +36,17 @@ const BarChart = (props) => {
     '01-02',
     '02-03',
     '03-04',
+    '04-05',
+    '05-06',
   ]);
+  const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
+  const handleButtonClick = (index) => {
+    // getUpdateData();
+    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
 
-  const [series, setSeries] = useState([75, 80, 90, 95, 95, 95, 90]);
+
+  const [series, setSeries] = useState([75, 80, 90, 95, 25, 95, 95, 65, 95, 95]);
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -94,8 +103,8 @@ const BarChart = (props) => {
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
-        borderWidth: 20,
-        barThickness: 24,
+        borderWidth: 34,
+        barThickness: 35,
       },
     ],
   };
@@ -110,42 +119,42 @@ const BarChart = (props) => {
         annotations: {
           line1: {
             type: 'line',
-            yMin: 85,
-            yMax: 85,
+            yMin: 95,
+            yMax: 95,
             xMin: -1, // Start from the beginning of the chart
-            xMax: 2, // End at the index of "10-11"
-            borderColor: 'rgb(4, 142, 254)',
-            borderWidth: 3,
+            xMax: 6, // End at the index of "10-11"
+            borderColor: '#80808099',
+            borderWidth: 2,
             label: {
               content: 'Target: 85', // This is where you specify the label text
               enabled: true,
               position: 'start', // Change to 'start' or 'center'
-              backgroundColor: 'rgb(4, 142, 254)',
+              backgroundColor: '#80808099',
               yAdjust: -15,
               xAdjust: -5,
             },
             onEnter: (e) => showTooltip(e, 'Target: 85'),
             onLeave: hideTooltip,
           },
-          line2: {
-            type: 'line',
-            yMin: 100,
-            yMax: 100,
-            xMin: 2, // Start at the index of "11-12"
-            xMax: 6, // End at the index of "03-04"
-            borderColor: 'rgb(30, 239, 44)',
-            borderWidth: 7,
-            label: {
-              content: 'Target: 100', // This is where you specify the label text
-              enabled: true,
-              position: 'start', // Change to 'start' or 'center'
-              backgroundColor: 'rgb(30, 239, 44)',
-              yAdjust: -15,
-              xAdjust: -5,
-            },
-            onEnter: (e) => showTooltip(e, 'Target: 100'),
-            onLeave: hideTooltip,
-          },
+          // line2: {
+          //   type: 'line',
+          //   yMin: 100,
+          //   yMax: 100,
+          //   xMin: 2, // Start at the index of "11-12"
+          //   xMax: 6, // End at the index of "03-04"
+          //   borderColor: '#80808099',
+          //   borderWidth: 3,
+          //   label: {
+          //     content: 'Target: 100', // This is where you specify the label text
+          //     enabled: true,
+          //     position: 'start', // Change to 'start' or 'center'
+          //     backgroundColor: '#80808099',
+          //     yAdjust: -15,
+          //     xAdjust: -5,
+          //   },
+          //   onEnter: (e) => showTooltip(e, 'Target: 100'),
+          //   onLeave: hideTooltip,
+          // },
         },
       },
     },
@@ -154,10 +163,16 @@ const BarChart = (props) => {
     scales: {
       x: {
         stacked: true,
+        grid: {
+          display: false,
+        },
+
       },
       y: {
         stacked: true,
-        beginAtZero: true,
+        beginAtZero: true,            ticks: {
+          stepSize: 20 // Set the step size for the y-axis labels and grid lines
+      }
       },
     },
   };
@@ -165,14 +180,42 @@ const BarChart = (props) => {
   return (
     <Card className="mb-4" style={{ position: 'relative', padding: '20px' }}>
       <div
-        id="chart"
-        style={{ position: 'relative', width: '100%', height: '300px' }}
+        id="charts"
+        style={{ position: 'relative', width: '100%', height: '42vh' }}
       >
         <Bar
           data={data}
-          options={options}
+           options={options}
           style={{ width: '100%', height: '100%' }}
-        />
+        /><div
+          className="qr-code-container"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            // paddingTop: "15px",
+          }}
+        >
+          {data.labels.map((label, index) => (
+            <div key={index} style={{ padding: '10px' }}>
+              {visibleQRCodeIndex === index ? (
+                <QRCodeCanvas
+                  value={
+                    'MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5'
+                  }
+                  size={50}
+                />
+              ) : (
+                <button
+                  className="btn-one"
+                  style={{ width: '10px', height: "5px" }}
+                  onClick={() => handleButtonClick(index)}
+                >
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
         {tooltipVisible && (
           <div
             ref={tooltipRef}

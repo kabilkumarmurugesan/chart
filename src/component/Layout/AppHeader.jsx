@@ -17,7 +17,7 @@ export default function AppHeader() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="default">
-        <Toolbar sx={{ height: 80 }}>
+        <Toolbar sx={{ height: 70 }}>
           <Typography
             variant="h6"
             component="div"
@@ -25,7 +25,7 @@ export default function AppHeader() {
             style={{
               fontFamily: 'sans-serif',
               textAlign: 'center',
-              fontStyle: 'oblique',
+                
               fontWeight: 'bold',
             }}
           >
@@ -46,7 +46,7 @@ export default function AppHeader() {
                 style={{
                   fontFamily: 'sans-serif',
                   textAlign: 'center',
-                  fontStyle: 'oblique',
+                    
                 }}
               >
                 Light ☀️
@@ -58,7 +58,7 @@ export default function AppHeader() {
                 style={{
                   fontFamily: 'sans-serif',
                   textAlign: 'center',
-                  fontStyle: 'oblique',
+                    
                 }}
               >
                 Dark 🌚

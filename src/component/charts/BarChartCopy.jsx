@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-plugin-annotation';
-import './BarChartCopy.css';
+import '../../asset/BarChartCopy.css'
 import { Card, useTheme } from '@mui/material';
 
 ChartJS.register(
@@ -39,9 +39,11 @@ const BarChartCopy = (props) => {
     '01-02',
     '02-03',
     '03-04',
+    '04-05',
+    '05-06',
   ]);
-  const [Tseries, setTSeries] = useState([75, 80, 90, 95, 95, 95]);
-  const [emtSeries, setEmtSeries] = useState([0, 0, 0, 0, 0, 10]);
+  const [Tseries, setTSeries] = useState([75, 80, 90, 95, 25, 95, 95, 65, 95, 95]);
+  const [emtSeries, setEmtSeries] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 5]);
   const [series, setSeries] = useState([...Tseries, lastBarValue]);
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [tooltipContent, setTooltipContent] = useState('');
@@ -89,7 +91,7 @@ const BarChartCopy = (props) => {
 
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
-    }, 600);
+    }, 500);
 
     return () => {
       clearInterval(blinkInterval);
@@ -99,7 +101,7 @@ const BarChartCopy = (props) => {
   useEffect(() => {
     let Tcategories = [...categories];
     let emt = emtSeries;
-    emt[Tcategories.length - 1] = 8;
+    emt[Tcategories.length - 1] = 5;
     setEmtSeries(emt);
     console.log('lastBarValue', series);
     let tempSeries = [...series];
@@ -149,10 +151,15 @@ const BarChartCopy = (props) => {
     setTooltipVisible(false);
   };
 
-  const getColor = (value) => {
-    if (value < 30) return primary.incomplete;
-    if (value < 80) return primary.pending;
-    return primary.complete;
+  const getColor = (value, index) => {
+    if (index < 8) {
+      if (value < 30) return primary.incomplete;
+      if (value < 80) return primary.pending;
+      return primary.complete;
+    } else {
+      return primary.complete;
+
+    }
   };
   const data = {
     labels: categories,
@@ -162,26 +169,25 @@ const BarChartCopy = (props) => {
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
-        borderWidth: 20,
-        barThickness: 24,
+        borderWidth: 35,
+        barThickness: 34,
       },
       {
         label: 'PRODUCT B',
         data: emtSeries,
         backgroundColor: (context) => {
           const index = context.dataIndex;
-          return index == categories.length - 1 && isBlinking
-            ? 'rgba(255, 127, 14, 0.6)'
-            : '#0000000a';
+          return index === (categories.length - 1) && isBlinking
+            ? '#fff' : primary.complete
         },
         borderColor: (context) => {
           const index = context.dataIndex;
-          return index == categories.length - 1 && isBlinking
-            ? 'rgba(255, 127, 14, 0.6)'
-            : '#0000000a';
+          debugger
+          return index === (categories.length - 1) && isBlinking
+            ? '#fff' : primary.complete
         },
-        borderWidth: 20,
-        barThickness: 24,
+        borderWidth: 35,
+        barThickness: 34,
       },
     ],
   };
@@ -190,9 +196,15 @@ const BarChartCopy = (props) => {
     responsive: true,
     scales: {
       x: {
+        grid: {
+          display: false,
+        },
         stacked: true,
       },
       y: {
+        ticks: {
+          stepSize: 20 // Set the step size for the y-axis labels and grid lines
+        },
         stacked: true,
         beginAtZero: true,
       },
@@ -206,40 +218,21 @@ const BarChartCopy = (props) => {
         annotations: {
           line1: {
             type: 'line',
-            yMin: 85,
-            yMax: 85,
+            yMin: 95,
+            yMax: 95,
             xMin: -1, // Start from the beginning of the chart
-            xMax: 2, // End at the index of "10-11"
-            borderColor: 'rgb(4, 142, 254)',
-            borderWidth: 3,
+            xMax: 6, // End at the index of "10-11"
+            borderColor: '#80808099',
+            borderWidth: 2,
             label: {
               content: 'Target: 85', // This is where you specify the label text
               enabled: true,
               position: 'start', // Change to 'start' or 'center'
-              backgroundColor: 'rgb(4, 142, 254)',
+              backgroundColor: '#80808099',
               yAdjust: -15,
               xAdjust: -5,
             },
             onEnter: (e) => showTooltip(e, 'Target: 85'),
-            onLeave: hideTooltip,
-          },
-          line2: {
-            type: 'line',
-            yMin: 100,
-            yMax: 100,
-            xMin: 2, // Start at the index of "11-12"
-            xMax: 6, // End at the index of "03-04"
-            borderColor: 'rgb(30, 239, 44)',
-            borderWidth: 7,
-            label: {
-              content: 'Target: 100', // This is where you specify the label text
-              enabled: true,
-              position: 'start', // Change to 'start' or 'center'
-              backgroundColor: 'rgb(30, 239, 44)',
-              yAdjust: -15,
-              xAdjust: -5,
-            },
-            onEnter: (e) => showTooltip(e, 'Target: 100'),
             onLeave: hideTooltip,
           },
         },
@@ -249,12 +242,13 @@ const BarChartCopy = (props) => {
 
   return (
     <Card className="mb-4" style={{ position: 'relative', padding: '20px' }}>
-      <div id="chart">
+      <div id={props.id == 'single' ? 'single' : "chart"}
+        style={{ position: 'relative', width: '100%', height: props.id == 'single' ? '50vh' : '45vh' }}
+      >
         <Bar
           data={data}
           options={options}
-          height={90}
-          style={{ width: '100%' }}
+          style={{ width: '100%', height: "300px" }}
         />
         <div
           className="qr-code-container"
@@ -276,11 +270,10 @@ const BarChartCopy = (props) => {
                 />
               ) : (
                 <button
-                  className="btn-orange"
-                  style={{ width: '50px' }}
+                  className="btn-one"
+                  style={{ width: '10px', height: "5px" }}
                   onClick={() => handleButtonClick(index)}
                 >
-                  QR
                 </button>
               )}
             </div>

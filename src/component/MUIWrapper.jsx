@@ -18,6 +18,7 @@ export default function MUIWrapper({ children }) {
   const [secondary, setSecondary] = useState({
     main: 'rgb(255, 255, 255)',
   });
+  // #111827bf
   const [locale, setLocale] = useState([0]);
   const muiWrapperUtils = useMemo(
     () => ({
@@ -25,7 +26,7 @@ export default function MUIWrapper({ children }) {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
         if (mode !== 'dark') {
           setPrimary((prev) => ({
-            main: '#111827',
+            main: '#111827bf',
             incomplete: '#ff3199',
             complete: '#3D860B',
             pending: '#ffec31',
