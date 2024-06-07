@@ -2,7 +2,10 @@
 .App {
   text-align: center;
 }
-
+hr {
+  
+  border-color:rgba(0,0,0,0.12) ;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -29,8 +32,27 @@
 }
 
 /* Button styles */
+.btn-one {
+  background-color: rgb(220, 223, 224);
+  border: none;
+  color: rgb(158, 157, 157);
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn-one:hover {
+  background-color: rgb(220, 223, 224);
+}
+/* Button styles */
 .btn-orange {
-  background-color: rgb(4, 142, 254);
+  background-color: rgb(117, 119, 120);
   border: none;
   color: white;
   padding: 5px 10px;
@@ -45,7 +67,7 @@
 }
 
 .btn-orange:hover {
-  background-color: rgb(43, 0, 255);
+  background-color: rgb(129, 128, 131);
 }
 
 /* Tooltip styles */
@@ -115,6 +137,10 @@
   }
 }
 
+#chart-live {
+  height: 300px !important;
+}
+
 /* Annotation tooltip styles */
 .annotation-tooltip {
   position: absolute;
@@ -130,7 +156,7 @@
   .qr-code-container {
     display: flex;
     justify-content: space-around;
-    margin-top: 2px;
+    /* margin-top: 2px; */
   }
   .qr-code-item {
     display: flex;

@@ -83,6 +83,7 @@
 }
 div#chart canvas {
   width: 100% !important;
+  height: 95% !important;
 }
 .close-qr-code-flow{
   position: absolute;
@@ -124,7 +125,7 @@ div#chart canvas {
   flex-wrap: wrap;
   justify-content: center;
   padding-left: 20px;
-  padding-top: 15px;
+  /* padding-top: 15px; */
 }
 
 .qr-code-item {
@@ -194,7 +195,7 @@ div#chart canvas {
 
 
 .btn-orange {
-  background-color: rgb(4, 142, 254);
+  background-color: rgb(121, 123, 124);
   color: white;
   border: none;
   padding: 10px;
