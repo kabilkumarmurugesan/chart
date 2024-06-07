@@ -146,7 +146,7 @@ const SingleBarChart = () => {
             paddingTop: '15px',
           }}
         >
-          {data.labels.map((_label, index) => (
+          {/* {data.labels.map((_label, index) => (
             <div key={index} style={{ padding: '10px' }}>
               {visibleQRCodeIndex === index ? (
                 <QRCodeCanvas
@@ -165,7 +165,7 @@ const SingleBarChart = () => {
                 </button>
               )}
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </Card>
