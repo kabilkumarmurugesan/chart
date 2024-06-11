@@ -54,7 +54,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const AppContainer = () => {
+const AppContainer = ({ refreshRate }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [shift, setShift] = useState(false);
@@ -66,9 +66,9 @@ const AppContainer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % 2); // Adjusted to 2 slides
-    }, 12000);
+    }, refreshRate);
     return () => clearInterval(interval);
-  }, []);
+  }, [refreshRate]);
 
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -136,15 +136,17 @@ const AppContainer = () => {
                         </Typography>
                       </Box>
                     </Box>{" "}
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Typography>6Hrs</Typography>
-                      <AntSwitch
-                        onChange={(e) => handleOnShift(e)}
-                        checked={shift}
-                        inputProps={{ "aria-label": "ant design" }}
-                      />
-                      <Typography>9Hrs</Typography>
-                    </Stack>
+                    <Box sx={{ p: 2 }}>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Typography>6Hrs</Typography>
+                        <AntSwitch
+                          onChange={(e) => handleOnShift(e)}
+                          checked={shift}
+                          inputProps={{ "aria-label": "ant design" }}
+                        />
+                        <Typography>9Hrs</Typography>
+                      </Stack>
+                    </Box>
                     <hr />
                     <BarChart />
                   </Card>
@@ -189,15 +191,17 @@ const AppContainer = () => {
                         </Typography>
                       </Box>{" "}
                     </Box>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Typography>6Hrs</Typography>
-                      <AntSwitch
-                        onChange={(e) => handleOnShift(e)}
-                        checked={shift}
-                        inputProps={{ "aria-label": "ant design" }}
-                      />
-                      <Typography>9Hrs</Typography>
-                    </Stack>
+                    <Box sx={{ p: 2 }}>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography>6Hrs</Typography>
+                        <AntSwitch
+                          onChange={(e) => handleOnShift(e)}
+                          checked={shift}
+                          inputProps={{ "aria-label": "ant design" }}
+                        />
+                        <Typography>9Hrs</Typography>
+                      </Stack>
+                    </Box>
                     <hr />
                     <BarChartCopy animations={false} />
                   </Card>

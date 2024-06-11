@@ -68,7 +68,7 @@ export default function BasicTable() {
         aria-label="simple table"
       >
         <TableRow>
-          <TableCellHeader title={"Actual"} />
+          <TableCellHeader title={"UPH"} />
           {series.map((item) => (
             <TableCell
               style={{
@@ -80,7 +80,19 @@ export default function BasicTable() {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"Target"} />
+          <TableCellHeader title={"Operator"} />
+          {series.map((item) => (
+            <TableCell
+              style={{
+                textAlign: "center",
+              }}
+            >
+              {item.y}
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableRow>
+          <TableCellHeader title={"UPPH"} />
           {series.map((item) => (
             <TableCell
               style={{
@@ -92,7 +104,7 @@ export default function BasicTable() {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"DT"} />
+          <TableCellHeader title={"Down Time"} />
           {series.map((item) => (
             <TableCell
               style={{

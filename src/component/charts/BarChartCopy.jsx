@@ -241,8 +241,8 @@ const BarChartCopy = (props) => {
 
   return (
     <Card className="mb-4" style={{ position: 'relative', padding: '20px' }}>
-      <div id={props.id == 'single' ? 'single' : "chart"}
-        style={{ position: 'relative', width: '100%', height: props.id == 'single' ? '50vh' : '45vh' }}
+      <div id={props.id === 'single' ? 'single' : "chart"}
+        style={{ position: 'relative', width: '100%', height: props.id === 'single' ? '50vh' : '45vh' }}
       >
         <Bar
           data={data}
