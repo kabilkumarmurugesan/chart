@@ -2,22 +2,28 @@ import {
   AppBar,
   Box,
   IconButton,
+  Stack,
   Toolbar,
   Typography,
   useTheme,
 } from "@mui/material";
 import React from "react";
 import { MUIWrapperContext } from "../MUIWrapper";
+import CachedIcon from '@mui/icons-material/Cached';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-export default function AppHeader() {
+export default function AppHeader({ handleRefresh, refreshRate, ShowShift, handleShiftUpdate }) {
   const theme = useTheme();
-  const { primary, secondary } = theme.palette;
-  const { locale, setLocale, toggleColorMode } =
+  const { toggleColorMode } =
     React.useContext(MUIWrapperContext);
 
-
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box style={{
+      fontFamily: "sans-serif",
+      textAlign: "center",
+      fontWeight: "bold",
+    }}
+      sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="default">
         <Toolbar sx={{ height: 70 }}>
           <Typography
@@ -32,7 +38,27 @@ export default function AppHeader() {
           >
             LENOVO 24Hr UPH DASHBOARD
           </Typography>
+          <Box sx={{
+            p: 2, cursor: 'pointer'
+          }} onClick={(e) => { handleShiftUpdate(e) }}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Box >
+                {ShowShift === 'All' ? 'Shift'
+                  : 'Day'}
+              </Box>
+              <CalendarMonthIcon />
+            </Stack>
+          </Box>
 
+          <IconButton
+            sx={{ fontSize: "1rem" }}
+            onClick={handleRefresh}
+            color="inherit"
+            disableTouchRipple
+            disableRipple
+          >{refreshRate === 15000 ? '30' : '15'} sec
+            <CachedIcon />
+          </IconButton>
           <IconButton
             sx={{ fontSize: "1rem" }}
             onClick={toggleColorMode}

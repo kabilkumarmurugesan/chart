@@ -125,9 +125,9 @@ function TableCellHeader(props) {
     <TableCell
       style={{
         fontWeight: "bold",
-        fontSize: "18px",
+        fontSize: "15px",
         color: "#fff",
-        width: "15px",
+        width: "10px",
         background: "#048efe8a",
       }}
     >

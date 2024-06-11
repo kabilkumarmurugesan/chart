@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BarChart from "../charts/BarChart";
 import { Box, Card, Grid, Typography, useTheme } from "@mui/material";
 import BasicTable from "../Table/Table";
-// import BasicAction from "../Card/BasicAction";
+import BasicAction from "../Card/BasicAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 // import SingleChart from "../charts/SingleChart";
@@ -57,7 +57,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 const AppContainer = ({ refreshRate }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
-  const [shift, setShift] = useState(false);
+  const [shift, setShift] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
   let dateString = yesterday.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
@@ -136,8 +136,16 @@ const AppContainer = ({ refreshRate }) => {
                         </Typography>
                       </Box>
                     </Box>{" "}
-                    <Box sx={{ p: 2 }}>
-                      <Stack direction="row" spacing={2} alignItems="center">
+                    <Box sx={{
+                      pl: 1,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: 'right',
+                    }}
+                    >
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography>Report:</Typography>
                         <Typography>6Hrs</Typography>
                         <AntSwitch
                           onChange={(e) => handleOnShift(e)}
@@ -191,8 +199,16 @@ const AppContainer = ({ refreshRate }) => {
                         </Typography>
                       </Box>{" "}
                     </Box>
-                    <Box sx={{ p: 2 }}>
+                    <Box sx={{
+                      pl: 1,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: 'right',
+                    }}
+                    >
                       <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography>Report:</Typography>
                         <Typography>6Hrs</Typography>
                         <AntSwitch
                           onChange={(e) => handleOnShift(e)}
@@ -215,14 +231,6 @@ const AppContainer = ({ refreshRate }) => {
                   <BasicTable />
                 </Grid>
               </Grid>
-              {/* <Grid container spacing={2} sx={{ mt: 2 }}>
-                <Grid item xs={12} md={6}>
-                  <BasicAction />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <BasicAction />
-                </Grid>
-              </Grid> */}
             </Box>
           ) : (
             <Box sx={{ p: 2 }}>
@@ -279,6 +287,25 @@ const AppContainer = ({ refreshRate }) => {
                     />
                   </Card>
                 </Grid>
+                <Box sx={{
+                  pl: 1,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: 'right',
+                }}
+                >
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography>Report:</Typography>
+                    <Typography>6Hrs</Typography>
+                    <AntSwitch
+                      onChange={(e) => handleOnShift(e)}
+                      checked={shift}
+                      inputProps={{ "aria-label": "ant design" }}
+                    />
+                    <Typography>9Hrs</Typography>
+                  </Stack>
+                </Box>
                 <Grid item xs={4} md={2}>
                   <Card sx={{ height: "100%" }}>
                     <Grid container spacing={3}>
@@ -405,8 +432,11 @@ const AppContainer = ({ refreshRate }) => {
                     </Grid>
                   </Card>
                 </Grid>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={6} md={10}>
                   <BasicTable />
+                </Grid>
+                <Grid item xs={6} md={10}>
+                  <BasicAction />
                 </Grid>
                 {/* <Grid item xs={12} md={8}>
                 <SingleChart />
