@@ -35,21 +35,21 @@ const series = [
     goals: 520,
     dn: "DT",
   },
-  // { line: 1, x: "02-03", y: 7132, goals: 5200, dn: "NB" },
-  // {
-  //   x: "03-04",
-  //   line: 1,
-  //   y: 332,
-  //   goals: 520,
-  //   dn: "NB",
-  // },
-  // {
-  //   x: "04-05",
-  //   line: 1,
-  //   y: 553,
-  //   goals: 520,
-  //   dn: "NB",
-  // },
+  { line: 1, x: "02-03", y: 7132, goals: 5200, dn: "NB" },
+  {
+    x: "03-04",
+    line: 1,
+    y: 332,
+    goals: 520,
+    dn: "NB",
+  },
+  {
+    x: "04-05",
+    line: 1,
+    y: 553,
+    goals: 520,
+    dn: "NB",
+  },
   {
     x: "05-06",
     line: 1,
@@ -67,40 +67,40 @@ export default function BasicTable() {
         sx={{ minWidth: 650 }}
         aria-label="simple table"
       >
-        {/* <TableRow>
-          <TableCellHeader title={"Shift"} />
-          {series.map((item) => (
-            <TableCell> {item.x}</TableCell>
-          ))}
-        </TableRow> */}
         <TableRow>
           <TableCellHeader title={"Actual"} />
           {series.map((item) => (
-            <TableCell> {item.y}</TableCell>
+            <TableCell
+              style={{
+                textAlign: "center",
+              }}
+            >
+              {item.y}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
           <TableCellHeader title={"Target"} />
           {series.map((item) => (
-            <TableCell> {item.goals}</TableCell>
+            <TableCell
+              style={{
+                textAlign: "center",
+              }}
+            >
+              {item.goals}
+            </TableCell>
           ))}
         </TableRow>
-       {/*  <TableRow>
-          <TableCellHeader title={"DT/NB"} />
-          {series.map((item) => (
-            <TableCell> {item.dn}</TableCell>
-          ))}
-        </TableRow> */}
-     {/*    <TableRow>
-          <TableCellHeader title={"Line"} />
-          {series.map((item) => (
-            <TableCell> {item.line}</TableCell>
-          ))}
-        </TableRow> */}
         <TableRow>
-          <TableCellHeader title={"Down Time"} />
+          <TableCellHeader title={"DT"} />
           {series.map((item) => (
-            <TableCell> -</TableCell>
+            <TableCell
+              style={{
+                textAlign: "center",
+              }}
+            >
+              -
+            </TableCell>
           ))}
         </TableRow>
       </Table>
@@ -113,9 +113,9 @@ function TableCellHeader(props) {
     <TableCell
       style={{
         fontWeight: "bold",
-        fontSize: '18px',
+        fontSize: "18px",
         color: "#fff",
-        width:"120px",
+        width: "15px",
         background: "#048efe8a",
       }}
     >

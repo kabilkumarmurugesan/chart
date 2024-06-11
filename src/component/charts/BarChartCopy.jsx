@@ -182,7 +182,6 @@ const BarChartCopy = (props) => {
         },
         borderColor: (context) => {
           const index = context.dataIndex;
-          debugger
           return index === (categories.length - 1) && isBlinking
             ? '#fff' : primary.complete
         },

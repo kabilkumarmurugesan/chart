@@ -11,7 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Card, useTheme } from '@mui/material';
-import { QRCodeCanvas } from 'qrcode.react';
+// import { QRCodeCanvas } from 'qrcode.react';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +28,7 @@ const SingleBarChart = () => {
   const [labels, setlabels] = useState(['03-04']); // Initial value for the last bar of PRODUCT A
   const [lastBarValue, setLastBarValue] = useState(50); // Initial value for the last bar of PRODUCT A
   const [isBlinking, setIsBlinking] = useState(true);
-  const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
+  // const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
 
   useEffect(() => {
     socket.on('dataUpdate', (data) => {
@@ -97,33 +97,33 @@ const SingleBarChart = () => {
     },
   };
 
-  const handleButtonClick = (index) => {
-    getUpdateData();
-    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
+  // const handleButtonClick = (index) => {
+  //   getUpdateData();
+  //   setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+  // };
 
-  const getUpdateData = async () => {
-    const url = 'http://localhost:8001/api/v1/general/1';
-    const options = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    fetch(url, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((updatedData) => {
-        console.log('Data updated:', updatedData);
-      })
-      .catch((error) => {
-        console.error('Error updating data:', error);
-      });
-  };
+  // const getUpdateData = async () => {
+  //   const url = 'http://localhost:8001/api/v1/general/1';
+  //   const options = {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   };
+  //   fetch(url, options)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error ${response.status}`);
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((updatedData) => {
+  //       console.log('Data updated:', updatedData);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error updating data:', error);
+  //     });
+  // };
 
   return (
     <Card

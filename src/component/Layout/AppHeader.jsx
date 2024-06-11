@@ -5,15 +5,17 @@ import {
   Toolbar,
   Typography,
   useTheme,
-} from '@mui/material';
-import React from 'react';
-import { MUIWrapperContext } from '../MUIWrapper';
+} from "@mui/material";
+import React from "react";
+import { MUIWrapperContext } from "../MUIWrapper";
 
 export default function AppHeader() {
   const theme = useTheme();
   const { primary, secondary } = theme.palette;
   const { locale, setLocale, toggleColorMode } =
     React.useContext(MUIWrapperContext);
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="default">
@@ -23,30 +25,28 @@ export default function AppHeader() {
             component="div"
             sx={{ flexGrow: 1 }}
             style={{
-              fontFamily: 'sans-serif',
-              textAlign: 'center',
-                
-              fontWeight: 'bold',
+              fontFamily: "sans-serif",
+              textAlign: "center",
+              fontWeight: "bold",
             }}
           >
             LENOVO 24Hr UPH DASHBOARD
           </Typography>
 
           <IconButton
-            sx={{ fontSize: '1rem' }}
+            sx={{ fontSize: "1rem" }}
             onClick={toggleColorMode}
             color="inherit"
             disableTouchRipple
             disableRipple
           >
-            {theme.palette.mode === 'dark' ? (
+            {theme.palette.mode === "dark" ? (
               <span
                 role="img"
                 aria-label="sun"
                 style={{
-                  fontFamily: 'sans-serif',
-                  textAlign: 'center',
-                    
+                  fontFamily: "sans-serif",
+                  textAlign: "center",
                 }}
               >
                 Light ☀️
@@ -56,9 +56,8 @@ export default function AppHeader() {
                 role="img"
                 aria-label="moon"
                 style={{
-                  fontFamily: 'sans-serif',
-                  textAlign: 'center',
-                    
+                  fontFamily: "sans-serif",
+                  textAlign: "center",
                 }}
               >
                 Dark 🌚
