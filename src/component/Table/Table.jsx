@@ -132,7 +132,7 @@ function TableCellHeader(props) {
         fontSize: "15px",
         color: "#fff",
         width: "10px",
-        background: "#048efe8a",
+        background: "#4d5a81",
       }}
     >
       {props.title}

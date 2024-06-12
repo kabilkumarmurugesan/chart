@@ -13,7 +13,6 @@ const ShiftCardDetailList = [
   { title: "MOTHLY ORDER", value: 135 },
   { title: "P.M TARGET", value: 135 },
   { title: "P.M ACTUAL", value: 135 },
-
 ];
 const AppContainer = ({ ShowShift, refreshRate }) => {
   const theme = useTheme();
@@ -89,7 +88,6 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                         </Typography>
                       </Box>
                     </Box>{" "}
-                    <hr />
                     <BarChart />
                   </Card>
                 </Grid>
@@ -133,7 +131,6 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                         </Typography>
                       </Box>{" "}
                     </Box>
-                    <hr />
                     <BarChartCopy animations={false} />
                   </Card>
                 </Grid>
@@ -161,7 +158,6 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                         justifyContent: "space-between",
                       }}
                     >
-                      {" "}
                       <Typography
                         sx={{ p: 1 }}
                         style={{
@@ -203,16 +199,24 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                   </Card>
                 </Grid>
                 <Grid item xs={4} md={2}>
-                  <Card sx={{ height: "100%" }}>
+                  <Card>
                     <Grid container spacing={4}>
-                      <Grid item xs={6} md={12}>
+                      <Grid
+                        item
+                        xs={6}
+                        md={12}
+                        sx={{
+                          background: "#241773",
+                          color: "#fff",
+                          borderBottom: "2px solid #fff",
+                        }}
+                      >
                         <Box
                           sx={{
-                            padding: "24px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            height: "30px", // Match this height to the other Boxes
+                            height: "100px", // Match this height to the other Boxes
                           }}
                         >
                           <Box>
@@ -233,16 +237,23 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                             </Typography>
                           </Box>
                         </Box>
-                        <hr />
                       </Grid>
-                      <Grid item xs={6} md={12}>
+                      <Grid
+                        item
+                        xs={6}
+                        md={12}
+                        sx={{
+                          borderBottom: "2px solid #fff",
+                          background: "#3d860b",
+                          color: "#fff",
+                        }}
+                      >
                         <Box
                           sx={{
-                            padding: "22px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            height: "30px", // Set a fixed height or a percentage value
+                            height: "80px", // Set a fixed height or a percentage value
                           }}
                         >
                           <Box>
@@ -263,16 +274,23 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                             </Typography>
                           </Box>
                         </Box>
-                        <hr />
                       </Grid>
-                      <Grid item xs={6} md={12}>
+                      <Grid
+                        item
+                        xs={6}
+                        md={12}
+                        sx={{
+                          background: "#483456",
+                          borderBottom: "2px solid #fff",
+                          color: "#fff",
+                        }}
+                      >
                         <Box
                           sx={{
-                            padding: "24px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            height: "25px", // Match this height to the other Boxes
+                            height: "80px", // Match this height to the other Boxes
                           }}
                         >
                           <Box>
@@ -294,12 +312,19 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                             </Typography>
                           </Box>
                         </Box>
-                        <hr />
                       </Grid>
-                      <Grid item xs={6} md={12}>
+                      <Grid
+                        item
+                        xs={6}
+                        md={12}
+                        sx={{
+                          background: "#e1140a",
+                          color: "#fff",
+                          borderBottom: "2px solid #fff",
+                        }}
+                      >
                         <Box
                           sx={{
-                            padding: "24px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -333,11 +358,11 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
                 <Grid item xs={4} md={2}>
                   <Card>
                     <Grid container spacing={1}>
-                      {ShiftCardDetailList.map((item, index) => 
+                      {ShiftCardDetailList.map((item, index) => (
                         <Grid item xs={6} md={12} key={index}>
                           <ShiftCardDetails {...item} index={index} />
                         </Grid>
-                      )}
+                      ))}
                     </Grid>
                   </Card>
                 </Grid>
@@ -357,4 +382,3 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
 };
 
 export default AppContainer;
-

@@ -23,7 +23,9 @@ header {
 .App-link {
   color: #61dafb;
 }
-
+.MuiToolbar-root {
+  padding: 0px 20px 0px 0px !important;
+}
 /* Keyframes for animation */
 @keyframes App-logo-spin {
   from {

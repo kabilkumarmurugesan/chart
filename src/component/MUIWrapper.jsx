@@ -13,7 +13,7 @@ export default function MUIWrapper({ children }) {
     main: '#fcfcfe',
     pending: '#ffec31',
     complete: '#3D860B',
-    incomplete: '#e3004d',
+    incomplete: '#e1140a',
   });
   const [secondary, setSecondary] = useState({
     main: 'rgb(255, 255, 255)',
@@ -38,7 +38,7 @@ export default function MUIWrapper({ children }) {
           setPrimary((prev) => ({
             main: '#fcfcfe',
             complete: '#3D860B',
-            incomplete: '#e3004d',
+            incomplete: '#e1140a',
             pending: '#ffec31',
           }));
           setSecondary((prev) => ({

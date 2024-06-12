@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   AppBar,
   Box,
@@ -13,6 +13,7 @@ import CachedIcon from "@mui/icons-material/Cached";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
+import logo from "../../asset/img/Logo.png";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -67,7 +68,7 @@ export default function AppHeader({
   ShowShiftDate,
 }) {
   const theme = useTheme();
-  const { toggleColorMode } = React.useContext(MUIWrapperContext);
+  const { toggleColorMode } = useContext(MUIWrapperContext);
   const [shift, setShift] = useState(true);
 
   const handleOnShift = (e) => {
@@ -83,10 +84,11 @@ export default function AppHeader({
         fontWeight: "bold",
         background: "#9e7c0c",
       }}
-      sx={{ flexGrow: 1 }}
+      // sx={{ flexGrow: 1 }}
     >
       <AppBar position="static" color="default">
-        <Toolbar sx={{ height: 65 }}>
+        <Toolbar sx={{ height: 60, padding: "0px 10px 0px 0px" }}>
+          <img src={logo} alt="Logo" style={{ width: 150, height: 63 }} />
           <Typography
             variant="h6"
             component="div"
@@ -97,7 +99,6 @@ export default function AppHeader({
               fontWeight: "bold",
             }}
           >
-            {/* LENOVO 24Hr UPH DASHBOARD */}
             LENOVO SMART MPG PRODUCTIVITY DASHBOARD
           </Typography>
           <Box
@@ -108,7 +109,7 @@ export default function AppHeader({
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography>Report:</Typography>
+              <Box>Report:</Box>
               <Typography>6Hrs</Typography>
               <AntSwitch
                 onChange={(e) => handleOnShift(e)}
@@ -118,9 +119,8 @@ export default function AppHeader({
               <Typography>9Hrs</Typography>
             </Stack>
           </Box>
-
           <Box
-            sx={{ p: 2, cursor: "pointer" }}
+            sx={{ p: 1, cursor: "pointer" }}
             onClick={(e) => {
               handleShiftDateUpdate(e);
             }}
@@ -130,9 +130,8 @@ export default function AppHeader({
               <CalendarMonthIcon />
             </Stack>
           </Box>
-
           <Box
-            sx={{ p: 2, cursor: "pointer" }}
+            sx={{ p: 1, cursor: "pointer" }}
             onClick={(e) => {
               handleShiftUpdate(e);
             }}
@@ -142,7 +141,6 @@ export default function AppHeader({
               <CalendarMonthIcon />
             </Stack>
           </Box>
-
           <IconButton
             sx={{ fontSize: "1rem" }}
             onClick={handleRefresh}
@@ -150,7 +148,7 @@ export default function AppHeader({
             disableTouchRipple
             disableRipple
           >
-            {refreshRate === 15000 ? "30" : "15"} sec
+            <Box>{refreshRate === 15000 ? "30" : "15"} sec</Box>
             <CachedIcon />
           </IconButton>
           <IconButton
@@ -183,7 +181,7 @@ export default function AppHeader({
                 Dark 🌚
               </span>
             )}
-          </IconButton>
+          </IconButton>{" "}
         </Toolbar>
       </AppBar>
     </Box>

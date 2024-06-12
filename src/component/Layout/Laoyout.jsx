@@ -1,6 +1,5 @@
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
-import MUIWrapper from "../MUIWrapper";
 import { useState } from "react";
 import { Box } from "@mui/material";
 
@@ -15,7 +14,7 @@ function Laoyout() {
   };
 
   const handleShiftUpdate = (e) => {
-    let temp = e.currentTarget.innerText == "Shift" ? "Day" : "All";
+    let temp = e.currentTarget.innerText === "Shift" ? "Day" : "All";
     setShowShift(temp);
   };
 
