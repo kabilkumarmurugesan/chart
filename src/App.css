@@ -17,7 +17,9 @@ hr {
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+header {
+  background-color: #9e7c0c !important;
+}
 .App-link {
   color: #61dafb;
 }

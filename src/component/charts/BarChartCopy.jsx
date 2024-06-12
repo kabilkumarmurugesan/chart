@@ -103,7 +103,6 @@ const BarChartCopy = (props) => {
     let emt = emtSeries;
     emt[Tcategories.length - 1] = 5;
     setEmtSeries(emt);
-    console.log('lastBarValue', series);
     let tempSeries = [...series];
     tempSeries[Tcategories.length - 1] = lastBarValue;
     setSeries(tempSeries);

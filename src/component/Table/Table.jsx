@@ -69,8 +69,9 @@ export default function BasicTable() {
       >
         <TableRow>
           <TableCellHeader title={"UPH"} />
-          {series.map((item) => (
+          {series.map((item, i) => (
             <TableCell
+              key={i}
               style={{
                 textAlign: "center",
               }}
@@ -81,8 +82,9 @@ export default function BasicTable() {
         </TableRow>
         <TableRow>
           <TableCellHeader title={"Operator"} />
-          {series.map((item) => (
+          {series.map((item, i) => (
             <TableCell
+              key={i}
               style={{
                 textAlign: "center",
               }}
@@ -93,8 +95,9 @@ export default function BasicTable() {
         </TableRow>
         <TableRow>
           <TableCellHeader title={"UPPH"} />
-          {series.map((item) => (
+          {series.map((item, i) => (
             <TableCell
+              key={i}
               style={{
                 textAlign: "center",
               }}
@@ -105,8 +108,9 @@ export default function BasicTable() {
         </TableRow>
         <TableRow>
           <TableCellHeader title={"Down Time"} />
-          {series.map((item) => (
+          {series.map((item, i) => (
             <TableCell
+              key={i}
               style={{
                 textAlign: "center",
               }}

@@ -5,63 +5,22 @@ import BasicTable from "../Table/Table";
 import BasicAction from "../Card/BasicAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { ShiftCardDetails } from "../Card/ShiftCardDetails";
 // import SingleChart from "../charts/SingleChart";
-import Switch from "@mui/material/Switch";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
-  width: 28,
-  height: 16,
-  padding: 0,
-  display: "flex",
-  "&:active": {
-    "& .MuiSwitch-thumb": {
-      width: 15,
-    },
-    "& .MuiSwitch-switchBase.Mui-checked": {
-      transform: "translateX(9px)",
-    },
-  },
-  "& .MuiSwitch-switchBase": {
-    padding: 2,
-    "&.Mui-checked": {
-      transform: "translateX(12px)",
-      color: "#fff",
-      "& + .MuiSwitch-track": {
-        opacity: 1,
-        backgroundColor: theme.palette.mode === "dark" ? "#177ddc" : "#1890ff",
-      },
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxShadow: "0 2px 4px 0 rgb(0 35 11 / 20%)",
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    transition: theme.transitions.create(["width"], {
-      duration: 200,
-    }),
-  },
-  "& .MuiSwitch-track": {
-    borderRadius: 16 / 2,
-    opacity: 1,
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? "rgba(255,255,255,.35)"
-        : "rgba(0,0,0,.25)",
-    boxSizing: "border-box",
-  },
-}));
+const ShiftCardDetailList = [
+  { title: "MODEL", value: 155 },
+  { title: "MOTHLY ORDER", value: 135 },
+  { title: "P.M TARGET", value: 135 },
+  { title: "P.M ACTUAL", value: 135 },
 
-const AppContainer = ({ refreshRate }) => {
+];
+const AppContainer = ({ ShowShift, refreshRate }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
-  const [shift, setShift] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-  let dateString = yesterday.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
-  const [yseterdate, setYestrdate] = useState(dateString);
+  const yseterdate = yesterday.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -77,10 +36,6 @@ const AppContainer = ({ refreshRate }) => {
     return `${day}/${month}/${year}`;
   };
 
-  const handleOnShift = (e) => {
-    setShift(e.target.checked);
-  };
-
   return (
     <SwitchTransition>
       <CSSTransition
@@ -93,17 +48,15 @@ const AppContainer = ({ refreshRate }) => {
           className="zoom-fade-container"
           sx={{ background: primary.main, fontWeight: "bold", height: "100vh" }}
         >
-          {currentSlide === 0 ? (
+          {currentSlide === 0 && ShowShift === "All" ? (
             <Box sx={{ p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Card sx={{ minWidth: 275 }}>
-                    {" "}
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "row",
-                        pl: 1,
                         alignItems: "center",
                         justifyContent: "space-between",
                       }}
@@ -136,25 +89,6 @@ const AppContainer = ({ refreshRate }) => {
                         </Typography>
                       </Box>
                     </Box>{" "}
-                    <Box sx={{
-                      pl: 1,
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: 'right',
-                    }}
-                    >
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <Typography>Report:</Typography>
-                        <Typography>6Hrs</Typography>
-                        <AntSwitch
-                          onChange={(e) => handleOnShift(e)}
-                          checked={shift}
-                          inputProps={{ "aria-label": "ant design" }}
-                        />
-                        <Typography>9Hrs</Typography>
-                      </Stack>
-                    </Box>
                     <hr />
                     <BarChart />
                   </Card>
@@ -198,25 +132,6 @@ const AppContainer = ({ refreshRate }) => {
                           <b> OT:</b> 07:30PM
                         </Typography>
                       </Box>{" "}
-                    </Box>
-                    <Box sx={{
-                      pl: 1,
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: 'right',
-                    }}
-                    >
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <Typography>Report:</Typography>
-                        <Typography>6Hrs</Typography>
-                        <AntSwitch
-                          onChange={(e) => handleOnShift(e)}
-                          checked={shift}
-                          inputProps={{ "aria-label": "ant design" }}
-                        />
-                        <Typography>9Hrs</Typography>
-                      </Stack>
                     </Box>
                     <hr />
                     <BarChartCopy animations={false} />
@@ -287,28 +202,9 @@ const AppContainer = ({ refreshRate }) => {
                     />
                   </Card>
                 </Grid>
-                <Box sx={{
-                  pl: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: 'right',
-                }}
-                >
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Typography>Report:</Typography>
-                    <Typography>6Hrs</Typography>
-                    <AntSwitch
-                      onChange={(e) => handleOnShift(e)}
-                      checked={shift}
-                      inputProps={{ "aria-label": "ant design" }}
-                    />
-                    <Typography>9Hrs</Typography>
-                  </Stack>
-                </Box>
                 <Grid item xs={4} md={2}>
                   <Card sx={{ height: "100%" }}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={4}>
                       <Grid item xs={6} md={12}>
                         <Box
                           sx={{
@@ -339,7 +235,6 @@ const AppContainer = ({ refreshRate }) => {
                         </Box>
                         <hr />
                       </Grid>
-
                       <Grid item xs={6} md={12}>
                         <Box
                           sx={{
@@ -434,6 +329,17 @@ const AppContainer = ({ refreshRate }) => {
                 </Grid>
                 <Grid item xs={6} md={10}>
                   <BasicTable />
+                </Grid>{" "}
+                <Grid item xs={4} md={2}>
+                  <Card>
+                    <Grid container spacing={1}>
+                      {ShiftCardDetailList.map((item, index) => 
+                        <Grid item xs={6} md={12} key={index}>
+                          <ShiftCardDetails {...item} index={index} />
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Card>
                 </Grid>
                 <Grid item xs={6} md={10}>
                   <BasicAction />
@@ -451,3 +357,4 @@ const AppContainer = ({ refreshRate }) => {
 };
 
 export default AppContainer;
+
