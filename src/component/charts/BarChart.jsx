@@ -41,7 +41,6 @@ const BarChart = (props) => {
   ]);
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const handleButtonClick = (index) => {
-    // getUpdateData();
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 

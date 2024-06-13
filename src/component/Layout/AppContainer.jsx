@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { FullShift } from "../FullShift";
-import SingleShift from "../SingleShift";
+import FullShift from "../Shift/FullShift";
+import SingleShift from "../Shift/SingleShift";
 
 const ShiftCardDetailList = [
   { title: "MODEL", value: 155 },
@@ -10,6 +10,7 @@ const ShiftCardDetailList = [
   { title: "P.M TARGET", value: 135 },
   { title: "P.M ACTUAL", value: 135 },
 ];
+
 const AppContainer = ({ ShowShift, refreshRate }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -41,12 +42,15 @@ const AppContainer = ({ ShowShift, refreshRate }) => {
       >
         <Box
           className="zoom-fade-container"
-          sx={{ background: primary.main, fontWeight: "bold", height: "100vh" }}
+          sx={{ background: primary.main, fontWeight: "bold", height: "100%" }}
         >
           {currentSlide === 0 && ShowShift === "All" ? (
             <FullShift yseterdate={yseterdate} formatDate={formatDate} />
           ) : (
-            <SingleShift formatDate={formatDate} ShiftCardDetailList={ShiftCardDetailList} />
+            <SingleShift
+              formatDate={formatDate}
+              ShiftCardDetailList={ShiftCardDetailList}
+            />
           )}
         </Box>
       </CSSTransition>

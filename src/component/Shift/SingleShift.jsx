@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Card, Grid, Typography } from "@mui/material";
-import BasicTable from "./Table/Table";
-import BasicAction from "./Card/BasicAction";
-import BarChartCopy from "./charts/BarChartCopy";
-import ShiftCardDetails from "./Card/ShiftCardDetails";
+import BasicTable from "../Table/Table";
+import BasicAction from "../Card/BasicAction";
+import BarChartCopy from "../charts/BarChartCopy";
+import ShiftCardDetails from "../Card/ShiftCardDetails";
 
 const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
   return (
@@ -62,9 +62,9 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
         </Grid>
         <Grid item xs={4} md={2}>
           <Card>
-            <Box class="grid-container">
+            <Box className="grid-container">
               <Box
-                class="grid-item"
+                className="grid-item"
                 style={{
                   background: "#241773",
                   color: "#fff",
@@ -99,7 +99,7 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
                 </Box>
               </Box>
               <Box
-                class="grid-item"
+                className="grid-item"
                 style={{
                   borderBottom: "2px solid #fff",
                   background: "#3d860b",
@@ -134,7 +134,7 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
                 </Box>
               </Box>
               <Box
-                class="grid-item"
+                className="grid-item"
                 style={{
                   background: "#483456",
                   borderBottom: "2px solid #fff",
@@ -170,7 +170,7 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
                 </Box>
               </Box>
               <Box
-                class="grid-item"
+                className="grid-item"
                 style={{
                   background: "#e1140a",
                   color: "#fff",
@@ -181,33 +181,24 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    // height: "80px", // Set a fixed height or a percentage value
+                    // height: "25px", // Match this height to the other Boxes
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      // height: "25px", // Match this height to the other Boxes
-                    }}
-                  >
-                    <Box>
-                      <Typography
+                  <Box>
+                    <Typography
+                      style={{
+                        fontSize: "15px",
+                      }}
+                    >
+                      DOWN TIME <br />
+                      <b
                         style={{
-                          fontSize: "15px",
+                          fontSize: "30px",
                         }}
                       >
-                        DOWN TIME <br />
-                        <b
-                          style={{
-                            fontSize: "30px",
-                          }}
-                        >
-                          145
-                        </b>
-                      </Typography>
-                    </Box>
+                        145
+                      </b>
+                    </Typography>
                   </Box>
                 </Box>
               </Box>

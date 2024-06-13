@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Card, Grid, Typography } from "@mui/material";
-import BasicTable from "./Table/Table";
-import BarChart from "./charts/BarChart";
-import BarChartCopy from "./charts/BarChartCopy";
+import BasicTable from "../Table/Table";
+import BarChart from "../charts/BarChart";
+import BarChartCopy from "../charts/BarChartCopy";
 
-export const FullShift = ({ yseterdate, formatDate }) => {
+ const FullShift = ({ yseterdate, formatDate }) => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={2}>
@@ -104,3 +104,5 @@ export const FullShift = ({ yseterdate, formatDate }) => {
     </Box>
   );
 };
+
+export default FullShift;

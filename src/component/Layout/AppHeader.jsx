@@ -14,7 +14,6 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import logo from "../../asset/img/Logo.png";
-import { color } from "chart.js/helpers";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
