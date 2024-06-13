@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
-export const ShiftCardDetails = (props) => {
+const ShiftCardDetails = (props) => {
   return (
     <Box
       sx={{
@@ -10,7 +10,7 @@ export const ShiftCardDetails = (props) => {
         justifyContent: "flex-start",
         alignItems: "center",
         textAlign: "left",
-        borderBottom:"1px solid #0000001f"
+        borderBottom: "1px solid #0000001f",
       }}
     >
       <Typography
@@ -24,3 +24,5 @@ export const ShiftCardDetails = (props) => {
     </Box>
   );
 };
+
+export default ShiftCardDetails;

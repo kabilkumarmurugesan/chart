@@ -14,6 +14,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import logo from "../../asset/img/Logo.png";
+import { color } from "chart.js/helpers";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -83,12 +84,19 @@ export default function AppHeader({
         textAlign: "center",
         fontWeight: "bold",
         background: "#9e7c0c",
+        color: "#fff",
       }}
       // sx={{ flexGrow: 1 }}
     >
       <AppBar position="static" color="default">
-        <Toolbar sx={{ height: 60, padding: "0px 10px 0px 0px" }}>
-          <img src={logo} alt="Logo" style={{ width: 150, height: 63 }} />
+        <Toolbar sx={{ height: 65, padding: "0px 10px 0px 0px" }}>
+          <Box style={{ width: 150, height: 65 }}>
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </Box>
           <Typography
             variant="h6"
             component="div"
@@ -125,8 +133,10 @@ export default function AppHeader({
               handleShiftDateUpdate(e);
             }}
           >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>{ShowShiftDate === "Yesterday" ? "Today" : "Yesterday"}</Box>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Box sx={{ width: "75px" }}>
+                {ShowShiftDate === "Yesterday" ? "Today" : "Yesterday"}
+              </Box>
               <CalendarMonthIcon />
             </Stack>
           </Box>
@@ -136,8 +146,10 @@ export default function AppHeader({
               handleShiftUpdate(e);
             }}
           >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>{ShowShift === "All" ? "Shift" : "Day"}</Box>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Box sx={{ width: "45px" }}>
+                {ShowShift === "All" ? "Shift" : "Day"}
+              </Box>
               <CalendarMonthIcon />
             </Stack>
           </Box>

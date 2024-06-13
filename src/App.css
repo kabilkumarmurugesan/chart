@@ -19,12 +19,13 @@ hr {
 }
 header {
   background-color: #9e7c0c !important;
+  color: #e4e0e0 !important;
 }
 .App-link {
   color: #61dafb;
 }
 .MuiToolbar-root {
-  padding: 0px 20px 0px 0px !important;
+  padding: 0px 10px 0px 0px !important;
 }
 /* Keyframes for animation */
 @keyframes App-logo-spin {
@@ -189,4 +190,18 @@ header {
   .qr-code-item {
     width: 20%;
   }
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto;
+  /* background-color: #2196f3; */
+  /* padding: 10px; */
+}
+
+.grid-item {
+  /* background-color: rgba(255, 255, 255, 0.8); */
+  /* border: 1px solid rgba(0, 0, 0, 0.8); */
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
 }
