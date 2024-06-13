@@ -81,13 +81,11 @@ const BarChartCopy = (props) => {
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
       let Tcategories = [...categories];
-      let temp = Object.keys(data);
-      let dataT = data[temp[0]];
-      if (temp[0] !== Tcategories[Tcategories.length - 1]) {
-        Tcategories.push(temp[0]);
+      if (data.timeRange !== Tcategories[Tcategories.length - 1]) {
+        Tcategories.push(data.timeRange);
         setCategories(Tcategories);
       }
-      let intit = parseInt(dataT[0].total_count);
+      let intit = parseInt(data.totalCount);
       setLastBarValue(intit);
     });
 
