@@ -4,6 +4,7 @@ import BasicTable from "../Table/Table";
 import BasicAction from "../Card/BasicAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
+import ShiftHeader from "./ShiftHeader";
 
 const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
   return (
@@ -11,42 +12,10 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
       <Grid container spacing={1}>
         <Grid item xs={6} md={10}>
           <Card sx={{ minWidth: 275 }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                pl: 1,
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography
-                sx={{ p: 1 }}
-                style={{
-                  textAlign: "left",
-                  fontSize: "15px",
-                }}
-              >
-                <b>Date:</b> {formatDate(new Date())}
-              </Typography>{" "}
-              <Typography
-                style={{
-                  fontSize: "15px",
-                }}
-              >
-                <b>Time:</b> 09:00 AM - 05:30PM
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row" }}>
-                <Typography
-                  sx={{ p: 1 }}
-                  style={{
-                    fontSize: "15px",
-                  }}
-                >
-                  <b> OT:</b> 07:30PM
-                </Typography>
-              </Box>
-            </Box>{" "}
+            <ShiftHeader
+              date={formatDate(new Date())}
+              time={"09:00 AM - 05:30PM"}
+            />
             <BarChartCopy
               id={"single"}
               animations={{
