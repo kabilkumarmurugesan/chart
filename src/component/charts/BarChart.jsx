@@ -13,7 +13,7 @@ import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
 import { Card, useTheme } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react";
-import "../../asset/BarChartCopy.css";
+import "../../asset/css/BarChartCopy.css";
 
 ChartJS.register(
   CategoryScale,

@@ -2,11 +2,6 @@
 .App {
   text-align: center;
 }
-hr {
-  border-color: rgba(0, 0, 0, 0.12);
-  margin-block-start: 0.3em;
-  margin-block-end: 0.3em;
-}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -18,7 +13,7 @@ hr {
   color: white;
 }
 header {
-  background-color: #9e7c0c !important;
+  background-color: #c29500 !important;
   color: #e4e0e0 !important;
 }
 .App-link {

@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
-import "../../asset/BarChartCopy.css";
+import "../../asset/css/BarChartCopy.css";
 import { Card, useTheme } from "@mui/material";
 
 ChartJS.register(
