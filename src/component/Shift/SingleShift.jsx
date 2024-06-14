@@ -6,7 +6,7 @@ import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
 
-const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
+const SingleShift = ({ formatDate, categories, ShiftCardDetailList }) => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
@@ -17,6 +17,7 @@ const SingleShift = ({ formatDate, ShiftCardDetailList }) => {
               time={"09:00 AM - 05:30PM"}
             />
             <BarChartCopy
+              categories={categories}
               id={"single"}
               animations={{
                 tension: {

@@ -26,25 +26,16 @@ ChartJS.register(
   annotationPlugin
 );
 
-const BarChartCopy = (props) => {
+const BarChartCopy = ({ categories, animations, id }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [isBlinking, setIsBlinking] = useState(true);
   const [lastBarValue, setLastBarValue] = useState(20); // Initial value for the last bar of PRODUCT A
-  const [categories, setCategories] = useState([
-    "09-10",
-    "10-11",
-    "11-12",
-    "12-01",
-    "01-02",
-    "02-03",
-    "03-04",
-    "04-05",
-    "05-06",
-  ]);
+  const [categoriesList, setCategories] = useState(categories);
   const [Tseries, setTSeries] = useState([
     75, 80, 90, 95, 25, 95, 105, 65, 95, 95,
   ]);
+  const [targetList, setTargetList] = useState(90);
   const [emtSeries, setEmtSeries] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 5]);
   const [series, setSeries] = useState([...Tseries, lastBarValue]);
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
@@ -56,23 +47,33 @@ const BarChartCopy = (props) => {
     getData("L1");
   }, []);
 
+  useEffect(() => {
+    setCategories(categories);
+  }, [categories]);
+
   const getData = async (line) => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/shift?line=${line}`
+        `http://localhost:8001/api/v1/general/shift2?line=${line}&duration=6hrs`
       );
       const result = await response.json();
       let temp = [];
       let emt = [];
-      let categories = [];
-      result.data.map((item) => {
+      let terget = [];
+      result.data.updatedData.map((item) => {
         temp.push(item.y);
+        item.target && terget.push(parseInt(item.target));
         emt.push(0);
-        categories.push(item.x);
       });
+      const sum = terget.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+      const average = sum / terget.length;
+      setTargetList(average);
+
       setTSeries(temp);
       setEmtSeries(emt);
-      setCategories(categories);
     } catch (error) {
       console.error(`Download error: ${error.message}`);
     }
@@ -80,7 +81,7 @@ const BarChartCopy = (props) => {
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
-      let Tcategories = [...categories];
+      let Tcategories = [...categoriesList];
       if (data.timeRange !== Tcategories[Tcategories.length - 1]) {
         Tcategories.push(data.timeRange);
         setCategories(Tcategories);
@@ -96,17 +97,17 @@ const BarChartCopy = (props) => {
     return () => {
       clearInterval(blinkInterval);
     };
-  }, [categories]);
+  }, [categoriesList]);
 
   useEffect(() => {
-    let Tcategories = [...categories];
+    let Tcategories = [...categoriesList];
     let emt = emtSeries;
     emt[Tcategories.length - 1] = 5;
     setEmtSeries(emt);
     let tempSeries = [...series];
     tempSeries[Tcategories.length - 1] = lastBarValue;
     setSeries(tempSeries);
-  }, [categories, lastBarValue]);
+  }, [categoriesList, lastBarValue]);
 
   const handleButtonClick = (index) => {
     getUpdateData();
@@ -151,16 +152,16 @@ const BarChartCopy = (props) => {
   };
 
   const getColor = (value, index) => {
-    if (index < 8) {
-      if (value < 30) return primary.incomplete;
-      if (value < 80) return primary.pending;
+    if (index < series.lenght - 1) {
+      if (value < targetList / 3) return primary.incomplete;
+      if (value < targetList / 2) return primary.pending;
       return primary.complete;
     } else {
       return primary.complete;
     }
   };
   const data = {
-    labels: categories,
+    labels: categoriesList,
     datasets: [
       {
         label: "PRODUCT A",
@@ -175,13 +176,13 @@ const BarChartCopy = (props) => {
         data: emtSeries,
         backgroundColor: (context) => {
           const index = context.dataIndex;
-          return index === categories.length - 1 && isBlinking
+          return index === categoriesList.length - 1 && isBlinking
             ? "#fff"
             : primary.complete;
         },
         borderColor: (context) => {
           const index = context.dataIndex;
-          return index === categories.length - 1 && isBlinking
+          return index === categoriesList.length - 1 && isBlinking
             ? "#fff"
             : primary.complete;
         },
@@ -208,7 +209,7 @@ const BarChartCopy = (props) => {
         beginAtZero: true,
       },
     },
-    animations: props.animations,
+    animations: animations,
     plugins: {
       legend: {
         display: false, // Disable legend
@@ -217,8 +218,8 @@ const BarChartCopy = (props) => {
         annotations: {
           line1: {
             type: "line",
-            yMin: 95,
-            yMax: 95,
+            yMin: targetList,
+            yMax: targetList,
             xMin: -1, // Start from the beginning of the chart
             xMax: 8, // End at the index of "10-11"
             borderColor: "#241773",
@@ -242,11 +243,11 @@ const BarChartCopy = (props) => {
   return (
     <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
       <div
-        id={props.id === "single" ? "single" : "chart"}
+        id={id === "single" ? "single" : "chart"}
         style={{
           position: "relative",
           width: "100%",
-          height: props.id === "single" ? "50vh" : "45vh",
+          height: id === "single" ? "50vh" : "45vh",
         }}
       >
         <Bar

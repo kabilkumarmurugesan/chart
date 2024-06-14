@@ -26,10 +26,9 @@ ChartJS.register(
 );
 
 const BarChart = ({ categories, animations }) => {
-  console.log('categories',categories)
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
-  const [targetList, setTargetList] = useState([90]);
+  const [targetList, setTargetList] = useState(90);
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -54,11 +53,18 @@ const BarChart = ({ categories, animations }) => {
       );
       const result = await response.json();
       let temp = [];
-      result.data.map((item) => {
+      let terget = [];
+      result.data.data.map((item) => {
         temp.push(item.y);
+        item.target && terget.push(parseInt(item.target));
       });
-      let optionline = options.plugins.annotation;
-      console.log("optionline",optionline);
+
+      const sum = terget.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+      const average = sum / terget.length;
+      setTargetList(average);
       setSeries(temp);
     } catch (error) {
       console.error(`Download error: ${error.message}`);
@@ -80,8 +86,8 @@ const BarChart = ({ categories, animations }) => {
   };
 
   const getColor = (value) => {
-    if (value < 30) return primary.incomplete;
-    if (value < 80) return primary.pending;
+    if (value < targetList / 3) return primary.incomplete;
+    if (value < targetList / 2) return primary.pending;
     return primary.complete;
   };
 
@@ -109,8 +115,8 @@ const BarChart = ({ categories, animations }) => {
         annotations: {
           line1: {
             type: "line",
-            yMin: 95,
-            yMax: 95,
+            yMin: targetList,
+            yMax: targetList,
             xMin: -1, // Start from the beginning of the chart
             xMax: 8, // End at the index of "10-11"
             borderColor: "#241773",

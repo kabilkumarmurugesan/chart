@@ -122,7 +122,7 @@ const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
             />
           ) : (
             <SingleShift
-              // categories={categories}
+              categories={categories}
               formatDate={formatDate}
               ShiftCardDetailList={ShiftCardDetailList}
             />
