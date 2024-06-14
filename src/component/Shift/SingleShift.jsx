@@ -5,6 +5,7 @@ import BasicAction from "../Card/BasicAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
+import { QRCodeCanvas } from "qrcode.react";
 
 const SingleShift = ({ formatDate, categories, ShiftCardDetailList }) => {
   return (
@@ -191,6 +192,16 @@ const SingleShift = ({ formatDate, categories, ShiftCardDetailList }) => {
         </Grid>
         <Grid item xs={6} md={10}>
           <BasicAction />
+        </Grid>
+        <Grid item xs={4} md={2}>
+          <Card>
+            <QRCodeCanvas
+              value={
+                "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+              }
+              size={150}
+            />
+          </Card>
         </Grid>
       </Grid>
     </Box>
