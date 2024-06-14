@@ -79,14 +79,14 @@ export default function AppHeader({
         fontFamily: "sans-serif",
         textAlign: "center",
         fontWeight: "bold",
-        background: "#9e7c0c",
+        background: "#04affb",
         color: "#fff",
       }}
       // sx={{ flexGrow: 1 }}
     >
       <AppBar position="static" color="default">
         <Toolbar sx={{ height: 65, padding: "0px 10px 0px 0px" }}>
-          <Box style={{ width: 150, height: 65 }}>
+          <Box style={{ width: 180, height: 65 }}>
             <img
               src={logo}
               alt="Logo"
@@ -99,11 +99,12 @@ export default function AppHeader({
             sx={{ flexGrow: 1 }}
             style={{
               fontFamily: "sans-serif",
-              textAlign: "center",
+              textAlign: "left",
               fontWeight: "bold",
+              paddingLeft: "10px",
             }}
           >
-            LENOVO SMART MPG PRODUCTIVITY DASHBOARD
+            SMART MFG PRODUCTIVITY DASHBOARD
           </Typography>
           <Box
             sx={{
