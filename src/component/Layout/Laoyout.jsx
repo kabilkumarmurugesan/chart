@@ -7,6 +7,11 @@ function Laoyout() {
   const [refreshRate, setRefreshRate] = useState(15000);
   const [ShowShift, setShowShift] = useState("All");
   const [ShowShiftDate, setShowShiftDate] = useState("Yesterday");
+  const [shiftHours, setShiftHours] = useState(true);
+
+  const handleOnShift = (e) => {
+    setShiftHours(e.target.checked);
+  };
 
   const handleRefresh = (e) => {
     let temp = e.currentTarget.innerText === "30 sec" ? 30000 : 15000;
@@ -29,12 +34,17 @@ function Laoyout() {
         handleShiftUpdate={handleShiftUpdate}
         handleRefresh={handleRefresh}
         handleShiftDateUpdate={handleShiftDateUpdate}
+        handleOnShift={handleOnShift}
         refreshRate={refreshRate}
         ShowShift={ShowShift}
         ShowShiftDate={ShowShiftDate}
+        shiftHours={shiftHours}
       />
       <Box>
-        <AppContainer ShowShift={ShowShift} refreshRate={refreshRate} />
+        <AppContainer 
+        shiftHours={shiftHours}
+        ShowShift={ShowShift} 
+        refreshRate={refreshRate} />
       </Box>
     </>
   );

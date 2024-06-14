@@ -25,20 +25,11 @@ ChartJS.register(
   annotationPlugin
 );
 
-const BarChart = (props) => {
+const BarChart = ({ categories, animations }) => {
+  console.log('categories',categories)
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
-  const [categories, setCategories] = useState([
-    "09-10",
-    "10-11",
-    "11-12",
-    "12-01",
-    "01-02",
-    "02-03",
-    "03-04",
-    "04-05",
-    "05-06",
-  ]);
+  const [targetList, setTargetList] = useState([90]);
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -59,17 +50,16 @@ const BarChart = (props) => {
   const getData = async (line) => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/shiftdata?line=${line}`
+        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&duration=9hrs`
       );
       const result = await response.json();
       let temp = [];
-      let categories = [];
       result.data.map((item) => {
         temp.push(item.y);
-        categories.push(item.x);
       });
+      let optionline = options.plugins.annotation;
+      console.log("optionline",optionline);
       setSeries(temp);
-      setCategories(categories);
     } catch (error) {
       console.error(`Download error: ${error.message}`);
     }
@@ -139,7 +129,7 @@ const BarChart = (props) => {
         },
       },
     },
-    animations: props.animations,
+    animations: animations,
     maintainAspectRatio: false,
     scales: {
       x: {

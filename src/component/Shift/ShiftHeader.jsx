@@ -1,8 +1,5 @@
 import React from "react";
-import { Box, Card, Grid, Typography } from "@mui/material";
-import BasicTable from "../Table/Table";
-import BarChart from "../charts/BarChart";
-import BarChartCopy from "../charts/BarChartCopy";
+import { Box, Typography } from "@mui/material";
 
 const ShiftHeader = ({ date, time }) => {
   return (
@@ -29,7 +26,8 @@ const ShiftHeader = ({ date, time }) => {
           fontSize: "15px",
         }}
       >
-        <b>Time:</b>{time}
+        <b>Time:</b>
+        {time}
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Typography

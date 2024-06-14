@@ -63,17 +63,14 @@ export default function AppHeader({
   handleRefresh,
   handleShiftDateUpdate,
   handleShiftUpdate,
+  handleOnShift,
   refreshRate,
   ShowShift,
   ShowShiftDate,
+  shiftHours,
 }) {
   const theme = useTheme();
   const { toggleColorMode } = useContext(MUIWrapperContext);
-  const [shift, setShift] = useState(true);
-
-  const handleOnShift = (e) => {
-    setShift(e.target.checked);
-  };
 
   return (
     <Box
@@ -120,7 +117,7 @@ export default function AppHeader({
               <Typography>6Hrs</Typography>
               <AntSwitch
                 onChange={(e) => handleOnShift(e)}
-                checked={shift}
+                checked={shiftHours}
                 inputProps={{ "aria-label": "ant design" }}
               />
               <Typography>9Hrs</Typography>
