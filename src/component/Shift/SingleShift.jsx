@@ -7,7 +7,13 @@ import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
 
-const SingleShift = ({ formatDate, categories, ShiftCardDetailList }) => {
+const SingleShift = ({
+  formatDate,
+  categories,
+  secoundResponse,
+  ShiftCardDetailList,
+  shiftHours,
+}) => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
@@ -18,6 +24,8 @@ const SingleShift = ({ formatDate, categories, ShiftCardDetailList }) => {
               time={"09:00 AM - 05:30PM"}
             />
             <BarChartCopy
+              shiftHours
+              response={secoundResponse}
               categories={categories}
               id={"single"}
               animations={{
@@ -177,7 +185,9 @@ const SingleShift = ({ formatDate, categories, ShiftCardDetailList }) => {
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <BasicTable />
+          {secoundResponse !== undefined && (
+            <BasicTable response={secoundResponse.updatedData} />
+          )}
         </Grid>{" "}
         <Grid item xs={4} md={2}>
           <Card>

@@ -25,7 +25,7 @@ ChartJS.register(
   annotationPlugin
 );
 
-const BarChart = ({ categories, animations }) => {
+const BarChart = ({ categories, animations, response }) => {
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
   const [targetList, setTargetList] = useState(90);
@@ -43,33 +43,22 @@ const BarChart = ({ categories, animations }) => {
   const tooltipRef = useRef(null);
 
   useEffect(() => {
-    getData("L1");
-  }, []);
-
-  const getData = async (line) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&duration=9hrs`
-      );
-      const result = await response.json();
-      let temp = [];
-      let terget = [];
-      result.data.data.map((item) => {
+    let temp = [];
+    let terget = [];
+    if (response) {
+      response.map((item) => {
         temp.push(item.y);
         item.target && terget.push(parseInt(item.target));
       });
-
-      const sum = terget.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-        0
-      );
-      const average = sum / terget.length;
-      setTargetList(average);
-      setSeries(temp);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
     }
-  };
+    const sum = terget.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const average = sum / terget.length;
+    setTargetList(average);
+    setSeries(temp);
+  }, [response]);
 
   const showTooltip = (event, content) => {
     const rect = event.chart.canvas.getBoundingClientRect();

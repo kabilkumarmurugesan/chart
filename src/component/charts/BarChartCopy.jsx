@@ -26,58 +26,46 @@ ChartJS.register(
   annotationPlugin
 );
 
-const BarChartCopy = ({ categories, animations, id }) => {
+const BarChartCopy = ({ categories, response, animations, id, shiftHours }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [isBlinking, setIsBlinking] = useState(true);
-  const [lastBarValue, setLastBarValue] = useState(20); // Initial value for the last bar of PRODUCT A
+  const [lastBarValue, setLastBarValue] = useState(10); // Initial value for the last bar of PRODUCT A
   const [categoriesList, setCategories] = useState(categories);
-  const [Tseries, setTSeries] = useState([
-    75, 80, 90, 95, 25, 95, 105, 65, 95, 95,
-  ]);
   const [targetList, setTargetList] = useState(90);
-  const [emtSeries, setEmtSeries] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 5]);
-  const [series, setSeries] = useState([...Tseries, lastBarValue]);
+  const [emtSeries, setEmtSeries] = useState(
+    shiftHours ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 5] : [0, 0, 0, 0, 0, 5]
+  );
+  const [series, setSeries] = useState([]);
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const tooltipRef = useRef(null);
-  useEffect(() => {
-    getData("L1");
-  }, []);
 
   useEffect(() => {
     setCategories(categories);
   }, [categories]);
 
-  const getData = async (line) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/shift2?line=${line}&duration=6hrs`
-      );
-      const result = await response.json();
-      let temp = [];
-      let emt = [];
-      let terget = [];
-      result.data.updatedData.map((item) => {
+  useEffect(() => {
+    let temp = [];
+    let emt = [];
+    let terget = [];
+    response &&
+      response.updatedData.map((item) => {
         temp.push(item.y);
         item.target && terget.push(parseInt(item.target));
         emt.push(0);
       });
-      const sum = terget.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-        0
-      );
-      const average = sum / terget.length;
-      setTargetList(average);
-
-      setTSeries(temp);
-      setEmtSeries(emt);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
-    }
-  };
+    const sum = terget.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const average = sum / terget.length;
+    setTargetList(average);
+    setSeries(temp);
+    setEmtSeries(emt);
+  }, [response, shiftHours]);
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
@@ -107,7 +95,7 @@ const BarChartCopy = ({ categories, animations, id }) => {
     let tempSeries = [...series];
     tempSeries[Tcategories.length - 1] = lastBarValue;
     setSeries(tempSeries);
-  }, [categoriesList, lastBarValue]);
+  }, [categoriesList, shiftHours, lastBarValue]);
 
   const handleButtonClick = (index) => {
     getUpdateData();
@@ -160,6 +148,9 @@ const BarChartCopy = ({ categories, animations, id }) => {
       return primary.complete;
     }
   };
+
+  console.log("series", series);
+
   const data = {
     labels: categoriesList,
     datasets: [
