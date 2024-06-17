@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Box, useTheme } from "@mui/material";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
-import FullShift from "../Shift/FullShift";
-import SingleShift from "../Shift/SingleShift";
+import React, { useEffect, useState } from 'react';
+import { Box, useTheme } from '@mui/material';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import FullShift from '../Shift/FullShift';
+import SingleShift from '../Shift/SingleShift';
 
 const ShiftCardDetailList = [
-  { title: "MODEL", value: 155 },
-  { title: "MOTHLY ORDER", value: 135 },
-  { title: "P.M TARGET", value: 135 },
-  { title: "P.M ACTUAL", value: 135 },
+  { title: 'MODEL', value: 155 },
+  { title: 'MOTHLY ORDER', value: 135 },
+  { title: 'P.M TARGET', value: 135 },
+  { title: 'P.M ACTUAL', value: 135 },
 ];
 
 const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
@@ -18,21 +18,21 @@ const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
   const [firstResponse, setFirstResponse] = useState();
   const [secoundResponse, setSecoundResponse] = useState();
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
-  const yesterdate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
+  const yesterdate = Dates.toLocaleDateString('en-US'); // MM/DD/YYYY in US English
   const [categories, setCategories] = useState(
     shiftHours
       ? [
-          "09-10",
-          "10-11",
-          "11-12",
-          "12-01",
-          "01-02",
-          "02-03",
-          "03-04",
-          "04-05",
-          "05-06",
+          '09-10',
+          '10-11',
+          '11-12',
+          '12-01',
+          '01-02',
+          '02-03',
+          '03-04',
+          '04-05',
+          '05-06',
         ]
-      : ["09-10", "10-11", "11-12", "12-01", "01-02", "02-03"]
+      : ['09-10', '10-11', '11-12', '12-01', '01-02', '02-03'],
   );
 
   useEffect(() => {
@@ -45,23 +45,23 @@ const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
   useEffect(() => {
     shiftHours
       ? setCategories((pre) => [
-          "09-10",
-          "10-11",
-          "11-12",
-          "12-01",
-          "01-02",
-          "02-03",
-          "03-04",
-          "04-05",
-          "05-06",
+          '09-10',
+          '10-11',
+          '11-12',
+          '12-01',
+          '01-02',
+          '02-03',
+          '03-04',
+          '04-05',
+          '05-06',
         ])
       : setCategories((pre) => [
-          "09-10",
-          "10-11",
-          "11-12",
-          "12-01",
-          "01-02",
-          "02-03",
+          '09-10',
+          '10-11',
+          '11-12',
+          '12-01',
+          '01-02',
+          '02-03',
         ]);
   }, [shiftHours]);
 
@@ -75,15 +75,15 @@ const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
   };
 
   useEffect(() => {
-    getFirstData("L1");
-    getSecoundData("L1");
+    getFirstData('L1');
+    getSecoundData('L1');
   }, []);
 
   const getFirstData = async (line) => {
     let temp = shiftHours ? `&duration=9hrs` : `&duration=6hrs`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&${temp}`
+        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&${temp}`,
       );
       const result = await response.json();
       setFirstResponse(result.data.data);
@@ -95,7 +95,7 @@ const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
   const getSecoundData = async (line) => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/shift2?line=${line}&duration=6hrs&shift=1st`
+        `http://localhost:8001/api/v1/general/shift2?line=${line}&duration=6hrs&shift=1st`,
       );
       const result = await response.json();
       setSecoundResponse(result.data);
@@ -114,9 +114,9 @@ const AppContainer = ({ ShowShift, refreshRate, shiftHours }) => {
       >
         <Box
           className="zoom-fade-container"
-          sx={{ background: primary.main, fontWeight: "bold", height: "100%" }}
+          sx={{ background: primary.main, fontWeight: 'bold', height: '100%' }}
         >
-          {currentSlide === 0 && ShowShift === "All" ? (
+          {currentSlide === 0 && ShowShift === 'All' ? (
             <FullShift
               firstResponse={firstResponse}
               secoundResponse={secoundResponse}
