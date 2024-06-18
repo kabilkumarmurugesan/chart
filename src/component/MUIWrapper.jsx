@@ -1,7 +1,7 @@
 // MUIWrapper.tsx
 
-import { createTheme, ThemeProvider, PaletteMode } from '@mui/material';
-import { createContext, useMemo, useState, useEffect } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { createContext, useMemo, useState } from 'react';
 
 export const MUIWrapperContext = createContext({
   toggleColorMode: () => {},
@@ -19,8 +19,7 @@ export default function MUIWrapper({ children }) {
     main: 'rgb(255, 255, 255)',
   });
   // #111827bf
-  const [locale, setLocale] = useState([0]);
-  const muiWrapperUtils = useMemo(
+   const muiWrapperUtils = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -50,10 +49,7 @@ export default function MUIWrapper({ children }) {
     [mode],
   );
 
-  useEffect(() => {
-    document.dir = locale.direction;
-  }, [locale.direction]);
-
+ 
   const theme = useMemo(
     () =>
       createTheme(
@@ -64,9 +60,8 @@ export default function MUIWrapper({ children }) {
             secondary,
           },
         },
-        locale.muiCore,
-      ),
-    [mode, locale],
+       ),
+    [mode],
   );
 
   return (

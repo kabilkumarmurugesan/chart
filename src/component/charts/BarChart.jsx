@@ -12,7 +12,6 @@ import {
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
 import { Card, useTheme } from "@mui/material";
-import { QRCodeCanvas } from "qrcode.react";
 import "../../asset/css/BarChartCopy.css";
 
 ChartJS.register(
@@ -25,15 +24,17 @@ ChartJS.register(
   annotationPlugin
 );
 
-const BarChart = ({ categories, animations, response }) => {
+const BarChart = ({
+  categories,
+  animations,
+  visibleQRCodeIndex,
+  setVisibleQRCodeIndex,
+  handleSlidechage,
+  response,
+}) => {
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
   const [targetList, setTargetList] = useState(90);
-  const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
-  const handleButtonClick = (index) => {
-    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
-
   const [series, setSeries] = useState([
     75, 80, 90, 95, 25, 95, 95, 65, 95, 95,
   ]);
@@ -72,6 +73,11 @@ const BarChart = ({ categories, animations, response }) => {
 
   const hideTooltip = () => {
     setTooltipVisible(false);
+  };
+
+  const handleButtonClick = (index) => {
+    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+    handleSlidechage();
   };
 
   const getColor = (value) => {
@@ -165,20 +171,28 @@ const BarChart = ({ categories, animations, response }) => {
         >
           {data.labels.map((label, index) => (
             <div key={index} style={{ padding: "10px" }}>
-              {visibleQRCodeIndex === index ? (
+              {/* {visibleQRCodeIndex === index ? (
                 <QRCodeCanvas
                   value={
                     "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
                   }
                   size={50}
                 />
-              ) : (
-                <button
-                  className="btn-one"
-                  style={{ width: "10px", height: "5px" }}
-                  onClick={() => handleButtonClick(index)}
-                ></button>
-              )}
+              ) : ( */}
+
+              <button
+                className="btn-one"
+                style={{
+                  background:
+                    visibleQRCodeIndex === index + 3
+                      ? "#4d5a81"
+                      : "rgb(220, 223, 224)",
+                  width: "10px",
+                  height: "5px",
+                }}
+                onClick={() => handleButtonClick(index + 3)}
+              ></button>
+              {/* )} */}
             </div>
           ))}
         </div>

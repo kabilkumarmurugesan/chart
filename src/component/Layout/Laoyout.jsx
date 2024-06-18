@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 function Laoyout() {
   const [refreshRate, setRefreshRate] = useState(15000);
   const [ShowShift, setShowShift] = useState("All");
-  const [ShowShiftDate, setShowShiftDate] = useState("Yesterday");
+  const [ShowShiftDate, setShowShiftDate] = useState("Today");
   const [shiftHours, setShiftHours] = useState(true);
 
   const handleOnShift = (e) => {
@@ -43,6 +43,7 @@ function Laoyout() {
       <Box>
         <AppContainer 
         shiftHours={shiftHours}
+        ShowShiftDate={ShowShiftDate}
         ShowShift={ShowShift} 
         refreshRate={refreshRate} />
       </Box>

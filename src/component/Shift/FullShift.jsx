@@ -12,27 +12,41 @@ const FullShift = ({
   firstResponse,
   categories,
   shiftHours,
+  lastBarValue,
+  handleSlidechage,
+  visibleQRCodeIndex,
+  setVisibleQRCodeIndex,
 }) => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={yesterdate} time={"09:00 PM - 05:30AM"} />
-            <BarChart categories={categories} response={firstResponse} />
+            <ShiftHeader date={yesterdate} time={"09:00 PM - 05:30 AM"} />
+            <BarChart
+              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+              handleSlidechage={handleSlidechage}
+              visibleQRCodeIndex={visibleQRCodeIndex}
+              categories={categories}
+              response={firstResponse}
+            />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader
               date={formatDate(new Date())}
-              time={"09:00 AM - 05:30PM"}
+              time={"09:00 AM - 05:30 PM"}
             />
             <BarChartCopy
+              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+              handleSlidechage={handleSlidechage}
+              lastBarValue={lastBarValue}
               animations={false}
               response={secoundResponse}
               categories={categories}
-              shiftHours
+              visibleQRCodeIndex={visibleQRCodeIndex}
+              shiftHours={shiftHours}
             />
           </Card>
         </Grid>

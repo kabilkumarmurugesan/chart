@@ -6,6 +6,7 @@ import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
+import emoj from "../../asset/gif/smiley-emoji.jpeg";
 
 const SingleShift = ({
   formatDate,
@@ -13,6 +14,10 @@ const SingleShift = ({
   secoundResponse,
   ShiftCardDetailList,
   shiftHours,
+  handleSlidechage,
+  lastBarValue,
+  visibleQRCodeIndex,
+  setVisibleQRCodeIndex,
 }) => {
   return (
     <Box sx={{ p: 2 }}>
@@ -24,7 +29,11 @@ const SingleShift = ({
               time={"09:00 AM - 05:30PM"}
             />
             <BarChartCopy
+              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+              visibleQRCodeIndex={visibleQRCodeIndex}
+              handleSlidechage={handleSlidechage}
               shiftHours
+              lastBarValue={lastBarValue}
               response={secoundResponse}
               categories={categories}
               id={"single"}
@@ -205,12 +214,16 @@ const SingleShift = ({
         </Grid>
         <Grid item xs={4} md={2}>
           <Card>
-            <QRCodeCanvas
-              value={
-                "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
-              }
-              size={150}
-            />
+            {visibleQRCodeIndex === null ? (
+              <img alt='emoj' src={emoj} />
+            ) : (
+              <QRCodeCanvas
+                value={
+                  "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+                }
+                size={150}
+              />
+            )}
           </Card>
         </Grid>
       </Grid>
