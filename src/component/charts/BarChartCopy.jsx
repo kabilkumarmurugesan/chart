@@ -39,7 +39,6 @@ const BarChartCopy = ({
   const { primary } = theme.palette;
   const [isBlinking, setIsBlinking] = useState(true);
   const [blinkingIndex, setBlinkingIndex] = useState(0);
-
   const [categoriesList, setCategories] = useState(categories);
   const [targetList, setTargetList] = useState(90);
   const [emtSeries, setEmtSeries] = useState([]);
@@ -70,8 +69,14 @@ const BarChartCopy = ({
     const average = sum / terget.length;
     let valuran = lastBarValue.timeRange;
 
-    let indeOdf = categoriesList.indexOf(valuran === '0 - 1' ? '12 - 1':valuran);
-    indeOdf > 0 && setBlinkingIndex(indeOdf)
+    let indeOdf = categoriesList.indexOf(
+      valuran === "0 - 1"
+        ? "12 - 1"
+        : valuran === "11 - 0"
+        ? "11 - 12"
+        : valuran
+    );
+    indeOdf > 0 && setBlinkingIndex(indeOdf);
     if (valuran) {
       emt[indeOdf] = 5;
       temp[indeOdf] = lastBarValue.totalCount;
@@ -131,11 +136,11 @@ const BarChartCopy = ({
   };
 
   const getColor = (value, index) => {
-    if (index < series.lenght - 1) {
-      if (value < targetList / 3) return primary.incomplete;
-      if (value < targetList / 2) return primary.pending;
+    if (blinkingIndex === index) {
       return primary.complete;
     } else {
+      if (value < targetList / 3) return primary.incomplete;
+      if (value < targetList / 2) return primary.pending;
       return primary.complete;
     }
   };
@@ -203,7 +208,7 @@ const BarChartCopy = ({
             xMin: -1, // Start from the beginning of the chart
             xMax: 8, // End at the index of "10-11"
             borderColor: "#241773",
-            borderWidth: 3,
+            borderWidth: 4,
             label: {
               content: "Target: 85", // This is where you specify the label text
               enabled: true,
@@ -221,13 +226,16 @@ const BarChartCopy = ({
   };
 
   return (
-    <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
+    <Card
+      className="mb-4"
+      style={{ position: "relative", padding: "10px 20px" }}
+    >
       <div
         id={id === "single" ? "single" : "chart"}
         style={{
           position: "relative",
           width: "100%",
-          height: id === "single" ? "50vh" : "45vh",
+          height: id === "single" ? "0vh" : "45vh",
         }}
       >
         <Bar
@@ -245,7 +253,7 @@ const BarChartCopy = ({
           }}
         >
           {data.labels.map((label, index) => (
-            <div key={index} style={{ padding: "10px" }}>
+            <div key={index} style={{ padding: "1px" }}>
               {/* {visibleQRCodeIndex === index ? (
                 <QRCodeCanvas
                   value={
@@ -258,7 +266,7 @@ const BarChartCopy = ({
                 className="btn-one"
                 style={{
                   background:
-                    visibleQRCodeIndex === (index + 5)
+                    visibleQRCodeIndex === index + 5
                       ? "#4d5a81"
                       : "rgb(220, 223, 224)",
                   width: "10px",

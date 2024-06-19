@@ -87,7 +87,7 @@ const AppContainer = ({
       : setCategories((pre) =>
           shiftType === "1st"
             ? ["09 - 10", "10 - 11", "11 - 12", "12 - 1", "1 - 2", "2 - 3"]
-            : ["3 - 4", "4 - 5", "5 - 6"]
+            : ["3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 8", "8 - 9"]
         );
     shiftHours && setShiftType("1st");
   }, [shiftHours, shiftType]);
@@ -135,22 +135,24 @@ const AppContainer = ({
         `http://localhost:8001/api/v1/general/shift2?line=${line}&${temp}`
       );
       const result = await response.json();
-     let dome = [];
+      let dome = [];
       let updatedData = result.data.updatedData;
       categories.map((item, i) => {
-         dome.push({
-          id: updatedData[i] === undefined ? '-' : updatedData[i].id,
-          x: updatedData[i] === undefined ? '-' : updatedData[i].x,
-          y: updatedData[i] === undefined ? '-' : updatedData[i].y,
-          z: updatedData[i] === undefined ? '-' : updatedData[i].z,
-          product_id: updatedData[i] === undefined ? '-' : updatedData[i].product_id,
-          target: updatedData[i] === undefined ? '-' : updatedData[i].target,
-          comments: updatedData[i] === undefined ? '-' : updatedData[i].comments,
-          op_date: updatedData[i] === undefined ? '-' : updatedData[i].op_date,
-          line: updatedData[i] === undefined ? '-' : updatedData[i].line,
+        dome.push({
+          id: updatedData[i] === undefined ? "-" : updatedData[i].id,
+          x: updatedData[i] === undefined ? "-" : updatedData[i].x,
+          y: updatedData[i] === undefined ? "-" : updatedData[i].y,
+          z: updatedData[i] === undefined ? "-" : updatedData[i].z,
+          product_id:
+            updatedData[i] === undefined ? "-" : updatedData[i].product_id,
+          target: updatedData[i] === undefined ? "-" : updatedData[i].target,
+          comments:
+            updatedData[i] === undefined ? "-" : updatedData[i].comments,
+          op_date: updatedData[i] === undefined ? "-" : updatedData[i].op_date,
+          line: updatedData[i] === undefined ? "-" : updatedData[i].line,
         });
       });
-      console.log('temp',dome)
+      console.log("temp", dome);
       let temps = {
         updatedData: dome,
       };
@@ -206,7 +208,7 @@ const AppContainer = ({
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    alignItems: "center",
+                    // alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
@@ -224,18 +226,22 @@ const AppContainer = ({
                       formatDate={formatDate}
                     />
                   </Box>
-                  <ArrowForwardIosIcon onClick={handleSlidechage} />
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <ArrowForwardIosIcon onClick={handleSlidechage} />
+                  </Box>
                 </Box>
               ) : (
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    alignItems: "center",
+                    // alignItems: "center",
                   }}
                 >
                   {ShowShift === "All" && (
-                    <ArrowBackIosIcon onClick={handleSlidechage} />
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <ArrowBackIosIcon onClick={handleSlidechage} />
+                    </Box>
                   )}
                   <SingleShift
                     shiftHours

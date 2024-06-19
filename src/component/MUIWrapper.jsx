@@ -25,7 +25,7 @@ export default function MUIWrapper({ children }) {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
         if (mode !== 'dark') {
           setPrimary((prev) => ({
-            main: '#111827bf',
+            main: '#000000e0',
             incomplete: '#ff3199',
             complete: '#3D860B',
             pending: '#ffec31',

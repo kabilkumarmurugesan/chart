@@ -78,7 +78,7 @@ function TableCellHeader(props) {
         fontWeight: "bold",
         fontSize: "15px",
         color: "#fff",
-        width: "10px",
+        width: "50px",
         background: "#4d5a81",
       }}
     >

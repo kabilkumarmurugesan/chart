@@ -68,7 +68,7 @@
 
 .td {
   border: "1px solid rgba(224, 224, 224, 1)";
-  padding: 12px 14px;
+  padding: 8px 14px;
 }
 
 .qr-code-flow {
@@ -175,6 +175,9 @@ div#single canvas {
   .qr-code-item {
     width: 30%;
   }
+  #single {
+    height: 50vh !important;
+    }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
@@ -188,8 +191,54 @@ div#single canvas {
   .qr-code-item {
     width: 20%;
   }
-}
 
+#single {
+  height: 50vh !important;
+  }}
+
+  @media  (min-width: 1800px) {
+    .qr-code-container {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+    }
+  
+    .qr-code-item {
+      width: 20%;
+    }
+  
+  #single {
+    height: 44vh !important;
+    }}
+  @media (max-width: 2000px) {
+    .qr-code-container {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+    }
+  
+    .qr-code-item {
+      width: 20%;
+    }
+  
+  #single {
+    height: 45vh !important;
+    }}
+
+  @media only screen and (min-width: 1950px) {
+    .qr-code-container {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+    }
+  
+    .qr-code-item {
+      width: 20%;
+    }
+  
+  #single {
+    height: 44vh !important;
+    }}
 /* Additional styles */
 .custom-tooltip {
   position: absolute;

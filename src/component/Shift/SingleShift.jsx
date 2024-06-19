@@ -215,7 +215,7 @@ const SingleShift = ({
         <Grid item xs={4} md={2}>
           <Card>
             {visibleQRCodeIndex === null ? (
-              <img alt='emoj' src={emoj} />
+              <img style={{ width: '60%' }} alt='emoj' src={emoj} />
             ) : (
               <QRCodeCanvas
                 value={
