@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Card, Grid, Typography } from "@mui/material";
 import BasicTable from "../Table/Table";
-import BasicAction from "../Card/BasicAction";
+import DownTimeAction from "../Card/DownTimeAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
@@ -209,8 +209,11 @@ const SingleShift = ({
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={6} md={10}>
-          <BasicAction />
+        <Grid item xs={6} md={5}>
+          <DownTimeAction />
+        </Grid>
+        <Grid item xs={6} md={5}>
+          <DownTimeAction />
         </Grid>
         <Grid item xs={4} md={2}>
           <Card>

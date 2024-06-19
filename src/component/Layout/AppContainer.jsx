@@ -27,7 +27,7 @@ const AppContainer = ({
   const [firstResponse, setFirstResponse] = useState();
   const [secoundResponse, setSecoundResponse] = useState();
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
-  const yesterdate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
+  const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
   const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [categories, setCategories] = useState(
@@ -47,10 +47,15 @@ const AppContainer = ({
   );
 
   useEffect(() => {
+    let date = "";
     if (ShowShiftDate === "Today") {
       getFirstData("L1");
       getSecoundData("L1");
+      date = formatDate(new Date());
+    } else {
+      date = yesterdayDate;
     }
+    setTodayDate(date);
   }, [shiftHours, ShowShiftDate, shiftType]);
 
   useEffect(() => {
@@ -152,7 +157,7 @@ const AppContainer = ({
           line: updatedData[i] === undefined ? "-" : updatedData[i].line,
         });
       });
-      console.log("temp", dome);
+      // console.log("temp", dome);
       let temps = {
         updatedData: dome,
       };
@@ -185,6 +190,8 @@ const AppContainer = ({
     }
   };
 
+  const [todayDate, setTodayDate] = useState(formatDate(new Date()));
+
   return (
     <>
       {shiftHours && ShowShiftDate === "Today" ? (
@@ -208,7 +215,6 @@ const AppContainer = ({
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    // alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
@@ -220,11 +226,11 @@ const AppContainer = ({
                       setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                       secoundResponse={secoundResponse}
                       categories={categories}
-                      yesterdate={yesterdate}
+                      yesterdayDate={yesterdayDate}
+                      todayDate={todayDate}
                       lastBarValue={lastBarValue}
                       shiftHours={shiftHours}
-                      formatDate={formatDate}
-                    />
+                     />
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <ArrowForwardIosIcon onClick={handleSlidechage} />
@@ -281,10 +287,10 @@ const AppContainer = ({
                   firstResponse={firstResponse}
                   secoundResponse={secoundResponse}
                   categories={categories}
-                  yesterdate={yesterdate}
+                  yesterdayDate={yesterdayDate}
+                  todayDate={todayDate}
                   lastBarValue={lastBarValue}
                   shiftHours={shiftHours}
-                  formatDate={formatDate}
                 />
               ) : (
                 <FullShift
@@ -292,10 +298,10 @@ const AppContainer = ({
                   firstResponse={firstResponse}
                   secoundResponse={secoundResponse}
                   categories={categories}
-                  yesterdate={yesterdate}
+                  yesterdayDate={yesterdayDate}
+                  todayDate={todayDate}
                   lastBarValue={lastBarValue}
                   shiftHours={shiftHours}
-                  formatDate={formatDate}
                 />
               )}
             </Box>

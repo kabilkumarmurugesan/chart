@@ -6,8 +6,7 @@ import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
 
 const FullShift = ({
-  yesterdate,
-  formatDate,
+  yesterdayDate,
   secoundResponse,
   firstResponse,
   categories,
@@ -16,13 +15,14 @@ const FullShift = ({
   handleSlidechage,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
+  todayDate,
 }) => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={yesterdate} time={"09:00 PM - 05:30 AM"} />
+            <ShiftHeader date={yesterdayDate} time={"09:00 PM - 05:30 AM"} />
             <BarChart
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
@@ -34,10 +34,7 @@ const FullShift = ({
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader
-              date={formatDate(new Date())}
-              time={"09:00 AM - 05:30 PM"}
-            />
+            <ShiftHeader date={todayDate} time={"09:00 AM - 05:30 PM"} />
             <BarChartCopy
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
