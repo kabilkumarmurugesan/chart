@@ -26,6 +26,7 @@ const FullShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader date={yesterdayDate} time={'09:00 PM - 05:30 AM'} />
             <BarChart
+              height={'36vh'}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
               visibleQRCodeIndex={visibleQRCodeIndex}
@@ -38,6 +39,7 @@ const FullShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader date={todayDate} time={'09:00 AM - 05:30 PM'} />
             <BarChartCopy
+              height={'40vh'}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
               lastBarValue={lastBarValue}

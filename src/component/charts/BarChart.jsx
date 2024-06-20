@@ -31,13 +31,13 @@ const BarChart = ({
   setVisibleQRCodeIndex,
   handleSlidechage,
   response,
+  height,
 }) => {
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
   const [targetList, setTargetList] = useState(90);
-  const [series, setSeries] = useState([
-    75, 80, 90, 95, 25, 95, 95, 65, 95, 95,
-  ]);
+  const [series, setSeries] = useState([]);
+  const [seriesLable, setSeriesLable] = useState();
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -45,10 +45,12 @@ const BarChart = ({
 
   useEffect(() => {
     let temp = [];
+    let seriesLables = {};
     let terget = [];
     if (response) {
       response.map((item) => {
         temp.push(item.y);
+        seriesLables[item.x] = item.product_id;
         item.target && terget.push(parseInt(item.target));
       });
     }
@@ -59,6 +61,7 @@ const BarChart = ({
     const average = sum / terget.length;
     !isNaN(average) && setTargetList(average);
     setSeries(temp);
+    setSeriesLable(seriesLables);
   }, [response]);
 
   const showTooltip = (event, content) => {
@@ -103,6 +106,23 @@ const BarChart = ({
   const options = {
     responsive: true,
     plugins: {
+      tooltip: {
+        enabled: true, // Enable tooltips
+        mode: 'nearest', // Show tooltip for the nearest item
+        intersect: true, // Ensure tooltip shows only for the intersected item
+        callbacks: {
+          label: function (tooltipItem) {
+            // Customize the tooltip label
+            let label = seriesLable[tooltipItem.label];
+            if (label) {
+              label += ': ';
+            }
+            label += tooltipItem.raw;
+            return label;
+          },
+        },
+        displayColors: false, // Disable the color box in tooltips
+      },
       legend: {
         display: false, // Disable legend
       },
@@ -113,18 +133,18 @@ const BarChart = ({
             yMin: targetList,
             yMax: targetList,
             xMin: -1, // Start from the beginning of the chart
-            xMax: 8, // End at the index of "10-11"
+            xMax: categories.length - 1, // End at the last index of the chart
             borderColor: '#241773',
             borderWidth: 4,
             label: {
-              content: 'Target: 85', // This is where you specify the label text
+              content: `Target: ${Math.round(targetList)}`, // Specify the label text
               enabled: true,
               position: 'start', // Change to 'start' or 'center'
               backgroundColor: '#241773',
               yAdjust: -15,
               xAdjust: -5,
             },
-            onEnter: (e) => showTooltip(e, 'Target: 85'),
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
             onLeave: hideTooltip,
           },
         },
@@ -153,7 +173,7 @@ const BarChart = ({
     <Card className="mb-4" style={{ position: 'relative', padding: '20px' }}>
       <div
         id="charts"
-        style={{ position: 'relative', width: '100%', height: '42vh' }}
+        style={{ position: 'relative', width: '100%', height: height }}
       >
         <Bar
           data={data}
@@ -171,15 +191,6 @@ const BarChart = ({
         >
           {data.labels.map((label, index) => (
             <div key={index} style={{ padding: '10px' }}>
-              {/* {visibleQRCodeIndex === index ? (
-                <QRCodeCanvas
-                  value={
-                    "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
-                  }
-                  size={50}
-                />
-              ) : ( */}
-
               <button
                 className="btn-one"
                 style={{
@@ -192,7 +203,6 @@ const BarChart = ({
                 }}
                 onClick={() => handleButtonClick(index + 3)}
               ></button>
-              {/* )} */}
             </div>
           ))}
         </div>
