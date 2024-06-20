@@ -31,6 +31,7 @@ const AppContainer = ({
   const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
   const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
+  const [downTimeAction, setDownTimeAction] = useState([]);
   const [categories, setCategories] = useState(
     shiftHours
       ? [
@@ -210,6 +211,22 @@ const AppContainer = ({
 
   const [todayDate, setTodayDate] = useState(formatDate(new Date()));
 
+  useEffect(() => {
+    getDownTimeData();
+  }, []);
+
+  const getDownTimeData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`
+      );
+      const result = await response.json();
+      setDownTimeAction(result.data);
+    } catch (error) {
+      console.error(`Download error: ${error.message}`);
+    }
+  };
+
   return (
     <>
       {shiftHours && ShowShiftDate === "Today" ? (
@@ -248,6 +265,7 @@ const AppContainer = ({
                       todayDate={todayDate}
                       lastBarValue={lastBarValue}
                       shiftHours={shiftHours}
+                      downTimeAction={downTimeAction}
                     />
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -277,6 +295,7 @@ const AppContainer = ({
                     secoundResponse={secoundResponse}
                     categories={categories}
                     formatDate={formatDate}
+                    downTimeAction={downTimeAction}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
                 </Box>
@@ -310,6 +329,7 @@ const AppContainer = ({
                   todayDate={todayDate}
                   lastBarValue={lastBarValue}
                   shiftHours={shiftHours}
+                  downTimeAction={downTimeAction}
                 />
               ) : (
                 <FullShift
@@ -321,6 +341,7 @@ const AppContainer = ({
                   todayDate={todayDate}
                   lastBarValue={lastBarValue}
                   shiftHours={shiftHours}
+                  downTimeAction={downTimeAction}
                 />
               )}
             </Box>

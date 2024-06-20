@@ -4,6 +4,7 @@ import BasicTable from "../Table/Table";
 import BarChart from "../charts/BarChart";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
+import DownTimeAction from "../Card/DownTimeAction";
 
 const FullShift = ({
   yesterdayDate,
@@ -16,6 +17,7 @@ const FullShift = ({
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   todayDate,
+  downTimeAction,
 }) => {
   return (
     <Box sx={{ p: 2 }}>
@@ -59,6 +61,14 @@ const FullShift = ({
             <BasicTable response={secoundResponse.updatedData} />
           )}
         </Grid>
+      </Grid>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid item xs={6} md={6}>
+          <DownTimeAction data={downTimeAction} />
+        </Grid>
+        <Grid item xs={6} md={6}>
+          <DownTimeAction data={downTimeAction} />
+        </Grid>{" "}
       </Grid>
     </Box>
   );

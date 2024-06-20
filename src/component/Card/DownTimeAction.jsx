@@ -29,7 +29,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function DownTimeAction({ data, isDownTime }) {
+export default function DownTimeAction({ data }) {
   return (
     <>
       <Grid container spacing={1}>

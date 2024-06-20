@@ -19,25 +19,8 @@ const SingleShift = ({
   lastBarValue,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
+  downTimeAction,
 }) => {
-  const [downTimeAction, setDownTimeAction] = useState([]);
-
-  useEffect(() => {
-    getDownTimeData();
-  }, []);
-
-  const getDownTimeData = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`
-      );
-      const result = await response.json();
-      setDownTimeAction(result.data);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
-    }
-  };
-
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
@@ -229,7 +212,7 @@ const SingleShift = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <DownTimeAction data={downTimeAction} isDownTime={isDownTime} />
+          <DownTimeAction data={downTimeAction} />
         </Grid>
         <Grid item xs={4} md={2}>
           <Card>
