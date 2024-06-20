@@ -8,9 +8,14 @@ function Laoyout() {
   const [ShowShift, setShowShift] = useState("All");
   const [ShowShiftDate, setShowShiftDate] = useState("Today");
   const [shiftHours, setShiftHours] = useState(true);
+  const [isDownTime, setIsDownTime] = useState(true);
 
   const handleOnShift = (e) => {
-    setShiftHours(e.target.checked);
+    setShiftHours((pre) => e.target.checked);
+  };
+
+  const handleOnDownTime = (e) => {
+    setIsDownTime(e.target.checked);
   };
 
   const handleRefresh = (e) => {
@@ -35,17 +40,21 @@ function Laoyout() {
         handleRefresh={handleRefresh}
         handleShiftDateUpdate={handleShiftDateUpdate}
         handleOnShift={handleOnShift}
+        isDownTime={isDownTime}
+        handleOnDownTime={handleOnDownTime}
         refreshRate={refreshRate}
         ShowShift={ShowShift}
         ShowShiftDate={ShowShiftDate}
         shiftHours={shiftHours}
       />
       <Box>
-        <AppContainer 
-        shiftHours={shiftHours}
-        ShowShiftDate={ShowShiftDate}
-        ShowShift={ShowShift} 
-        refreshRate={refreshRate} />
+        <AppContainer
+          shiftHours={shiftHours}
+          isDownTime={isDownTime}
+          ShowShiftDate={ShowShiftDate}
+          ShowShift={ShowShift}
+          refreshRate={refreshRate}
+        />
       </Box>
     </>
   );

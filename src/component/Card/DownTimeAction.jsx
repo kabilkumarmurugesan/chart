@@ -1,5 +1,6 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
+import { Grid } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -28,40 +29,43 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(time, downtime, details) {
-  return { time, downtime, details };
-}
-
-const rows = [
-  createData("3:00 - 4:00 PM", "15 min", "Power cut"),
-  createData("4:00 - 5:00 PM", "25 min", "Power cut"),
-];
-
-export default function DownTimeAction() {
+export default function DownTimeAction({ data, isDownTime }) {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Time</StyledTableCell>
-            <StyledTableCell align="right">Down Time</StyledTableCell>
-            <StyledTableCell align="right">
-              Down Time Details&nbsp;(g)
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.time}>
-              <StyledTableCell component="th" scope="row">
-                {row.time}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.downtime}</StyledTableCell>
-              <StyledTableCell align="right">{row.details}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <Grid container spacing={1}>
+        <Grid item xs={6} md={12}>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Time</StyledTableCell>
+                  <StyledTableCell align="left">Down Time</StyledTableCell>
+                  <StyledTableCell align="right">
+                    Down Time Details
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.length > 0
+                  ? data.map((row, index) => (
+                      <StyledTableRow key={row.time}>
+                        <StyledTableCell component="th" scope="row">
+                          {row.interval}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.downTime}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {row.message}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))
+                  : null}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
+    </>
   );
 }

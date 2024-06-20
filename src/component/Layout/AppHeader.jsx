@@ -64,13 +64,16 @@ export default function AppHeader({
   handleShiftDateUpdate,
   handleShiftUpdate,
   handleOnShift,
+  handleOnDownTime,
   refreshRate,
   ShowShift,
   ShowShiftDate,
   shiftHours,
+  isDownTime,
 }) {
   const theme = useTheme();
   const { toggleColorMode } = useContext(MUIWrapperContext);
+  const [showMenu, setShowMenu] = useState(true);
 
   return (
     <Box
@@ -84,7 +87,12 @@ export default function AppHeader({
       }}
       // sx={{ flexGrow: 1 }}
     >
-      <AppBar position="static" color="default">
+      <AppBar
+        position="static"
+        color="default"
+        onMouseEnter={() => setShowMenu(false)}
+        onMouseLeave={() => setShowMenu(true)}
+      >
         <Toolbar sx={{ height: 65, padding: "0px 10px 0px 0px" }}>
           <Box style={{ width: 180, height: 65 }}>
             <img
@@ -109,7 +117,25 @@ export default function AppHeader({
           <Box
             sx={{
               pl: 1,
-              display: "flex",
+              display: showMenu ? "none" : "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Box>DownTime Report:</Box>
+              <Typography>2Hrs</Typography>
+              <AntSwitch
+                onChange={(e) => handleOnDownTime(e)}
+                checked={isDownTime}
+                inputProps={{ "aria-label": "ant design" }}
+              />
+              <Typography>Shift</Typography>
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              pl: 1,
+              display: showMenu ? "none" : "flex",
               flexDirection: "row",
             }}
           >
@@ -125,7 +151,7 @@ export default function AppHeader({
             </Stack>
           </Box>
           <Box
-            sx={{ p: 1, cursor: "pointer" }}
+            sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}
             onClick={(e) => {
               handleShiftDateUpdate(e);
             }}
@@ -138,7 +164,7 @@ export default function AppHeader({
             </Stack>
           </Box>
           <Box
-            sx={{ p: 1, cursor: "pointer" }}
+            sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}
             onClick={(e) => {
               handleShiftUpdate(e);
             }}
@@ -151,7 +177,7 @@ export default function AppHeader({
             </Stack>
           </Box>
           <IconButton
-            sx={{ fontSize: "1rem" }}
+            sx={{ display: showMenu && "none", fontSize: "1rem" }}
             onClick={handleRefresh}
             color="inherit"
             disableTouchRipple
@@ -161,7 +187,7 @@ export default function AppHeader({
             <CachedIcon />
           </IconButton>
           <IconButton
-            sx={{ fontSize: "1rem" }}
+            sx={{ fontSize: "1rem", display: showMenu && "none" }}
             onClick={toggleColorMode}
             color="inherit"
             disableTouchRipple

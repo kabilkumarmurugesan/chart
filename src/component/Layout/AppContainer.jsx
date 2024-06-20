@@ -19,6 +19,7 @@ const AppContainer = ({
   ShowShiftDate,
   refreshRate,
   shiftHours,
+  isDownTime,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -77,24 +78,29 @@ const AppContainer = ({
   }, [refreshRate, shiftHours]);
 
   useEffect(() => {
-    shiftHours
-      ? setCategories((pre) => [
-          "09 - 10",
-          "10 - 11",
-          "11 - 12",
-          "12 - 1",
-          "1 - 2",
-          "2 - 3",
-          "3 - 4",
-          "4 - 5",
-          "5 - 6",
-        ])
-      : setCategories((pre) =>
+    shiftHours && setShiftType((pre) => "1st");
+    setCategories((prevCategories) => {
+      let categoriesList = [
+        "09 - 10",
+        "10 - 11",
+        "11 - 12",
+        "12 - 1",
+        "1 - 2",
+        "2 - 3",
+        "3 - 4",
+        "4 - 5",
+        "5 - 6",
+      ];
+
+      if (!shiftHours) {
+        categoriesList =
           shiftType === "1st"
             ? ["09 - 10", "10 - 11", "11 - 12", "12 - 1", "1 - 2", "2 - 3"]
-            : ["3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 8", "8 - 9"]
-        );
-    shiftHours && setShiftType("1st");
+            : ["3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 8", "8 - 9"];
+      }
+
+      return categoriesList;
+    });
   }, [shiftHours, shiftType]);
 
   const formatDate = (date) => {
@@ -114,7 +120,7 @@ const AppContainer = ({
       socket.close();
       getPreviousData("L1");
     }
-  }, [ShowShiftDate]);
+  }, [ShowShiftDate, shiftHours]);
 
   const getFirstData = async (line) => {
     let temp = shiftHours
@@ -142,7 +148,20 @@ const AppContainer = ({
       const result = await response.json();
       let dome = [];
       let updatedData = result.data.updatedData;
-      categories.map((item, i) => {
+      let categoriesList = shiftHours
+        ? [
+            "09 - 10",
+            "10 - 11",
+            "11 - 12",
+            "12 - 1",
+            "1 - 2",
+            "2 - 3",
+            "3 - 4",
+            "4 - 5",
+            "5 - 6",
+          ]
+        : categories;
+      categoriesList.map((item, i) => {
         dome.push({
           id: updatedData[i] === undefined ? "-" : updatedData[i].id,
           x: updatedData[i] === undefined ? "-" : updatedData[i].x,
@@ -157,7 +176,6 @@ const AppContainer = ({
           line: updatedData[i] === undefined ? "-" : updatedData[i].line,
         });
       });
-      // console.log("temp", dome);
       let temps = {
         updatedData: dome,
       };
@@ -207,7 +225,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: "100%",
+                height: currentSlide !== 0 ? "100%" : "90vh",
               }}
             >
               {currentSlide === 0 && ShowShift === "All" ? (
@@ -230,7 +248,7 @@ const AppContainer = ({
                       todayDate={todayDate}
                       lastBarValue={lastBarValue}
                       shiftHours={shiftHours}
-                     />
+                    />
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <ArrowForwardIosIcon onClick={handleSlidechage} />
@@ -250,7 +268,8 @@ const AppContainer = ({
                     </Box>
                   )}
                   <SingleShift
-                    shiftHours
+                    shiftHours={shiftHours}
+                    isDownTime={isDownTime}
                     handleSlidechage={handleSlidechage}
                     lastBarValue={lastBarValue}
                     visibleQRCodeIndex={visibleQRCodeIndex}
@@ -278,7 +297,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: "100%",
+                height: currentSlide !== 0 ? "100%" : "90vh",
               }}
             >
               {currentSlide === 0 ? (

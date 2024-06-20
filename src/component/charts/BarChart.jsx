@@ -57,7 +57,7 @@ const BarChart = ({
       0
     );
     const average = sum / terget.length;
-    setTargetList(average);
+    !isNaN(average) && setTargetList(average);
     setSeries(temp);
   }, [response]);
 

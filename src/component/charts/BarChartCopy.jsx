@@ -32,6 +32,7 @@ const BarChartCopy = ({
   animations,
   id,
   shiftHours,
+  ShowShift,
   setVisibleQRCodeIndex,
   visibleQRCodeIndex,
 }) => {
@@ -69,13 +70,7 @@ const BarChartCopy = ({
     const average = sum / terget.length;
     let valuran = lastBarValue.timeRange;
 
-    let indeOdf = categoriesList.indexOf(
-      valuran === "0 - 1"
-        ? "12 - 1"
-        : valuran === "11 - 0"
-        ? "11 - 12"
-        : valuran
-    );
+    let indeOdf = categoriesList.indexOf(valuran);
     indeOdf > 0 && setBlinkingIndex(indeOdf);
     if (valuran) {
       emt[indeOdf] = 5;
@@ -90,7 +85,7 @@ const BarChartCopy = ({
     return () => {
       clearInterval(blinkInterval);
     };
-  }, [response, lastBarValue, shiftHours]);
+  }, [response, lastBarValue, ShowShift, shiftHours]);
 
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -249,19 +244,10 @@ const BarChartCopy = ({
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            // paddingTop: "15px",
           }}
         >
           {data.labels.map((label, index) => (
             <div key={index} style={{ padding: "1px" }}>
-              {/* {visibleQRCodeIndex === index ? (
-                <QRCodeCanvas
-                  value={
-                    "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
-                  }
-                  size={50}
-                />
-              ) : ( */}
               <button
                 className="btn-one"
                 style={{
@@ -274,7 +260,6 @@ const BarChartCopy = ({
                 }}
                 onClick={() => handleButtonClick(index + 5)}
               ></button>
-              {/* )} */}
             </div>
           ))}
         </div>

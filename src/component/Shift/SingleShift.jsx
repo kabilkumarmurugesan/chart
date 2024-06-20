@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Card, Grid, Typography } from "@mui/material";
 import BasicTable from "../Table/Table";
 import DownTimeAction from "../Card/DownTimeAction";
@@ -6,7 +6,7 @@ import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
-import emoj from "../../asset/gif/smiley-emoji.jpeg";
+import emoj from "../../asset/gif/emoj.png";
 
 const SingleShift = ({
   formatDate,
@@ -14,11 +14,30 @@ const SingleShift = ({
   secoundResponse,
   ShiftCardDetailList,
   shiftHours,
+  isDownTime,
   handleSlidechage,
   lastBarValue,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
 }) => {
+  const [downTimeAction, setDownTimeAction] = useState([]);
+
+  useEffect(() => {
+    getDownTimeData();
+  }, []);
+
+  const getDownTimeData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`
+      );
+      const result = await response.json();
+      setDownTimeAction(result.data);
+    } catch (error) {
+      console.error(`Download error: ${error.message}`);
+    }
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
@@ -209,16 +228,13 @@ const SingleShift = ({
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={6} md={5}>
-          <DownTimeAction />
-        </Grid>
-        <Grid item xs={6} md={5}>
-          <DownTimeAction />
+        <Grid item xs={6} md={10}>
+          <DownTimeAction data={downTimeAction} isDownTime={isDownTime} />
         </Grid>
         <Grid item xs={4} md={2}>
           <Card>
             {visibleQRCodeIndex === null ? (
-              <img style={{ width: '60%' }} alt='emoj' src={emoj} />
+              <img style={{ width: "54%" }} alt="emoj" src={emoj} />
             ) : (
               <QRCodeCanvas
                 value={
