@@ -1,7 +1,5 @@
-// MUIWrapper.tsx
-
+import React, { createContext, useMemo, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { createContext, useMemo, useState } from 'react';
 
 export const MUIWrapperContext = createContext({
   toggleColorMode: () => {},
@@ -9,44 +7,31 @@ export const MUIWrapperContext = createContext({
 
 export default function MUIWrapper({ children }) {
   const [mode, setMode] = useState('light');
-  const [primary, setPrimary] = useState({
+  const primaryLight = {
     main: '#fcfcfe',
     pending: '#ffec31',
     complete: '#3D860B',
     incomplete: '#e1140a',
-  });
-  const [secondary, setSecondary] = useState({
-    main: 'rgb(255, 255, 255)',
-  });
+  };
+  const primaryDark = {
+    main: '#121212',
+    pending: '#ffec31',
+    complete: '#3D860B',
+    incomplete: '#ff3199',
+  };
 
-  const muiWrapperUtils = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-        if (mode !== 'dark') {
-          setPrimary((prev) => ({
-            main: '#000000e0',
-            incomplete: '#ff3199',
-            complete: '#3D860B',
-            pending: '#ffec31',
-          }));
-          setSecondary((prev) => ({
-            main: '#1f2937',
-          }));
-        } else {
-          setPrimary((prev) => ({
-            main: '#fcfcfe',
-            complete: '#3D860B',
-            incomplete: '#e1140a',
-            pending: '#ffec31',
-          }));
-          setSecondary((prev) => ({
-            main: 'rgb(255, 255, 255)',
-          }));
-        }
-      },
-    }),
-    [mode],
+  const secondaryLight = {
+    main: '#ffffff',
+  };
+  const secondaryDark = {
+    main: '#272727',
+  };
+
+  const toggleColorMode = useMemo(
+    () => () => {
+      setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+    },
+    [],
   );
 
   const theme = useMemo(
@@ -54,19 +39,15 @@ export default function MUIWrapper({ children }) {
       createTheme({
         palette: {
           mode,
-          primary,
-          secondary,
+          primary: mode === 'light' ? primaryLight : primaryDark,
+          secondary: mode === 'light' ? secondaryLight : secondaryDark,
         },
       }),
     [mode],
   );
 
   return (
-    <MUIWrapperContext.Provider
-      value={{
-        toggleColorMode: muiWrapperUtils.toggleColorMode,
-      }}
-    >
+    <MUIWrapperContext.Provider value={{ toggleColorMode }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </MUIWrapperContext.Provider>
   );
