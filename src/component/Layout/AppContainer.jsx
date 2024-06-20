@@ -35,17 +35,17 @@ const AppContainer = ({
   const [categories, setCategories] = useState(
     shiftHours
       ? [
-          '9 - 10',
+          '09 - 10',
           '10 - 11',
           '11 - 12',
-          '12 - 1',
-          '1 - 2',
-          '2 - 3',
-          '3 - 4',
-          '4 - 5',
-          '5 - 6',
+          '12 - 01',
+          '01 - 02',
+          '02 - 03',
+          '03 - 04',
+          '04 - 05',
+          '05 - 06',
         ]
-      : ['9 - 10', '10 - 11', '11 - 12', '12 - 1', '1 - 2', '2 - 3'],
+      : ['09 - 10', '10 - 11', '11 - 12', '12 - 01', '01 - 02', '02 - 03'],
   );
 
   useEffect(() => {
@@ -79,30 +79,82 @@ const AppContainer = ({
   }, [refreshRate, shiftHours]);
 
   useEffect(() => {
-    shiftHours && setShiftType((pre) => '1st');
-    setCategories((prevCategories) => {
-      let categoriesList = [
-        '09 - 10',
-        '10 - 11',
-        '11 - 12',
-        '12 - 1',
-        '1 - 2',
-        '2 - 3',
-        '3 - 4',
-        '4 - 5',
-        '5 - 6',
-      ];
+    if (shiftHours) {
+      setShiftType('1st');
+    }
+    if (ShowShift === 'All') {
+      setCategories(() => {
+        let categoriesList = [
+          '09 - 10',
+          '10 - 11',
+          '11 - 12',
+          '12 - 01',
+          '01 - 02',
+          '02 - 03',
+          '03 - 04',
+          '04 - 05',
+          '05 - 06',
+        ];
 
-      if (!shiftHours) {
-        categoriesList =
-          shiftType === '1st'
-            ? ['09 - 10', '10 - 11', '11 - 12', '12 - 1', '1 - 2', '2 - 3']
-            : ['3 - 4', '4 - 5', '5 - 6', '6 - 7', '7 - 8', '8 - 9'];
-      }
+        if (!shiftHours) {
+          if (shiftType === '1st') {
+            categoriesList = [
+              '09 - 10',
+              '10 - 11',
+              '11 - 12',
+              '12 - 01',
+              '01 - 02',
+              '02 - 03',
+            ];
+          } else {
+            categoriesList = [
+              '03 - 04',
+              '04 - 05',
+              '05 - 06',
+              '06 - 07',
+              '07 - 08',
+              '08 - 09',
+            ];
+          }
+        }
 
-      return categoriesList;
-    });
-  }, [shiftHours, ShowShiftDate, shiftType]);
+        return categoriesList;
+      });
+    } else {
+      setCategories(() => {
+        let categoriesList = [
+          '09 - 10',
+          '10 - 11',
+          '11 - 12',
+          '12 - 01',
+          '01 - 02',
+          '02 - 03',
+          '03 - 04',
+          '04 - 05',
+          '05 - 06',
+          '06 - 07',
+          '07 - 08',
+          '08 - 09',
+        ];
+
+        if (!shiftHours) {
+          categoriesList = [
+            '09 - 10',
+            '10 - 11',
+            '11 - 12',
+            '12 - 01',
+            '01 - 02',
+            '02 - 03',
+            '03 - 04',
+            '04 - 05',
+            '05 - 06',
+          ];
+        }
+
+        return categoriesList;
+      });
+    }
+  }, [shiftHours, ShowShift, shiftType]);
 
   const formatDate = (date) => {
     const day = String(date.getDate());
@@ -154,12 +206,12 @@ const AppContainer = ({
             '09 - 10',
             '10 - 11',
             '11 - 12',
-            '12 - 1',
-            '1 - 2',
-            '2 - 3',
-            '3 - 4',
-            '4 - 5',
-            '5 - 6',
+            '12 - 01',
+            '01 - 02',
+            '02 - 03',
+            '03 - 04',
+            '04 - 05',
+            '05 - 06',
           ]
         : categories;
       categoriesList.map((item, i) => {
@@ -242,6 +294,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: 'bold',
+                // height: '100%',
                 height: currentSlide !== 0 ? '100%' : '90vh',
               }}
             >
