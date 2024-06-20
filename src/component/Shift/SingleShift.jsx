@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Box, Card, Grid, Typography } from "@mui/material";
-import BasicTable from "../Table/Table";
-import DownTimeAction from "../Card/DownTimeAction";
-import BarChartCopy from "../charts/BarChartCopy";
-import ShiftCardDetails from "../Card/ShiftCardDetails";
-import ShiftHeader from "./ShiftHeader";
-import { QRCodeCanvas } from "qrcode.react";
-import emoj from "../../asset/gif/emoj.png";
+import React from 'react';
+import { Box, Card, Grid, Typography } from '@mui/material';
+import BasicTable from '../Table/Table';
+import DownTimeAction from '../Card/DownTimeAction';
+import BarChartCopy from '../charts/BarChartCopy';
+import ShiftCardDetails from '../Card/ShiftCardDetails';
+import ShiftHeader from './ShiftHeader';
+import { QRCodeCanvas } from 'qrcode.react';
+import emoj from '../../asset/gif/emoj.png';
 
 const SingleShift = ({
   formatDate,
@@ -28,7 +28,7 @@ const SingleShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader
               date={formatDate(new Date())}
-              time={"09:00 AM - 05:30PM"}
+              time={'09:00 AM - 05:30PM'}
             />
             <BarChartCopy
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -38,11 +38,11 @@ const SingleShift = ({
               lastBarValue={lastBarValue}
               response={secoundResponse}
               categories={categories}
-              id={"single"}
+              id={'single'}
               animations={{
                 tension: {
                   duration: 1000,
-                  easing: "linear",
+                  easing: 'linear',
                   from: 1,
                   to: 0,
                 },
@@ -56,32 +56,32 @@ const SingleShift = ({
               <Box
                 className="grid-item"
                 style={{
-                  background: "#241773",
-                  color: "#fff",
-                  borderBottom: "2px solid #fff",
+                  background: '#241773',
+                  color: '#fff',
+                  borderBottom: '2px solid #fff',
                 }}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     // height: "100px", // Match this height to the other Boxes
                   }}
                 >
                   <Box>
                     <Typography
                       style={{
-                        fontSize: "15px",
+                        fontSize: '15px',
                       }}
                     >
                       SHIFT TARGET <br />
                       <b
                         style={{
-                          fontSize: "30px",
+                          fontSize: '30px',
                         }}
                       >
-                        {" "}
+                        {' '}
                         115
                       </b>
                     </Typography>
@@ -91,32 +91,32 @@ const SingleShift = ({
               <Box
                 className="grid-item"
                 style={{
-                  borderBottom: "2px solid #fff",
-                  background: "#3d860b",
-                  color: "#fff",
+                  borderBottom: '2px solid #fff',
+                  background: '#3d860b',
+                  color: '#fff',
                 }}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     // height: "80px", // Set a fixed height or a percentage value
                   }}
                 >
                   <Box>
                     <Typography
                       style={{
-                        fontSize: "15px",
+                        fontSize: '15px',
                       }}
                     >
                       SHIFT ACTUAL<br></br>
                       <b
                         style={{
-                          fontSize: "30px",
+                          fontSize: '30px',
                         }}
                       >
-                        {" "}
+                        {' '}
                         150
                       </b>
                     </Typography>
@@ -126,33 +126,33 @@ const SingleShift = ({
               <Box
                 className="grid-item"
                 style={{
-                  background: "#483456",
-                  borderBottom: "2px solid #fff",
-                  color: "#fff",
+                  background: '#483456',
+                  borderBottom: '2px solid #fff',
+                  color: '#fff',
                 }}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     // height: "80/px", // Match this height to the other Boxes
                   }}
                 >
                   <Box>
                     <Typography
                       style={{
-                        fontSize: "15px",
+                        fontSize: '15px',
                       }}
                     >
                       SHIFT UPH
                       <br />
                       <b
                         style={{
-                          fontSize: "30px",
+                          fontSize: '30px',
                         }}
                       >
-                        {" "}
+                        {' '}
                         125
                       </b>
                     </Typography>
@@ -162,28 +162,28 @@ const SingleShift = ({
               <Box
                 className="grid-item"
                 style={{
-                  background: "#e1140a",
-                  color: "#fff",
+                  background: '#e1140a',
+                  color: '#fff',
                 }}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     // height: "25px", // Match this height to the other Boxes
                   }}
                 >
                   <Box>
                     <Typography
                       style={{
-                        fontSize: "15px",
+                        fontSize: '15px',
                       }}
                     >
                       DOWN TIME <br />
                       <b
                         style={{
-                          fontSize: "30px",
+                          fontSize: '30px',
                         }}
                       >
                         145
@@ -199,7 +199,7 @@ const SingleShift = ({
           {secoundResponse !== undefined && (
             <BasicTable response={secoundResponse.updatedData} />
           )}
-        </Grid>{" "}
+        </Grid>{' '}
         <Grid item xs={4} md={2}>
           <Card>
             <Grid container spacing={1}>
@@ -215,18 +215,18 @@ const SingleShift = ({
           <DownTimeAction data={downTimeAction} />
         </Grid>
         <Grid item xs={4} md={2}>
-          <Card>
-            {visibleQRCodeIndex === null ? (
-              <img style={{ width: "54%" }} alt="emoj" src={emoj} />
-            ) : (
+          {visibleQRCodeIndex === null ? (
+            <img style={{ width: '54%' }} alt="emoj" src={emoj} />
+          ) : (
+            <Card>
               <QRCodeCanvas
                 value={
-                  "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+                  'MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5'
                 }
                 size={150}
               />
-            )}
-          </Card>
+            </Card>
+          )}
         </Grid>
       </Grid>
     </Box>

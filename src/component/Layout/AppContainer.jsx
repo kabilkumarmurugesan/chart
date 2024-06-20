@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Box, useTheme } from "@mui/material";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
-import FullShift from "../Shift/FullShift";
-import SingleShift from "../Shift/SingleShift";
-import { socket } from "../socket";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import React, { useEffect, useState } from 'react';
+import { Box, useTheme } from '@mui/material';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import FullShift from '../Shift/FullShift';
+import SingleShift from '../Shift/SingleShift';
+import { socket } from '../socket';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const ShiftCardDetailList = [
-  { title: "MODEL", value: 155 },
-  { title: "MOTHLY ORDER", value: 135 },
-  { title: "P.M TARGET", value: 135 },
-  { title: "P.M ACTUAL", value: 135 },
+  { title: 'MODEL', value: 155 },
+  { title: 'MOTHLY ORDER', value: 135 },
+  { title: 'P.M TARGET', value: 135 },
+  { title: 'P.M ACTUAL', value: 135 },
 ];
 
 const AppContainer = ({
@@ -28,31 +28,31 @@ const AppContainer = ({
   const [firstResponse, setFirstResponse] = useState();
   const [secoundResponse, setSecoundResponse] = useState();
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
-  const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
-  const [shiftType, setShiftType] = useState("1st");
+  const yesterdayDate = Dates.toLocaleDateString('en-US'); // MM/DD/YYYY in US English
+  const [shiftType, setShiftType] = useState('1st');
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [downTimeAction, setDownTimeAction] = useState([]);
   const [categories, setCategories] = useState(
     shiftHours
       ? [
-          "9 - 10",
-          "10 - 11",
-          "11 - 12",
-          "12 - 1",
-          "1 - 2",
-          "2 - 3",
-          "3 - 4",
-          "4 - 5",
-          "5 - 6",
+          '9 - 10',
+          '10 - 11',
+          '11 - 12',
+          '12 - 1',
+          '1 - 2',
+          '2 - 3',
+          '3 - 4',
+          '4 - 5',
+          '5 - 6',
         ]
-      : ["9 - 10", "10 - 11", "11 - 12", "12 - 1", "1 - 2", "2 - 3"]
+      : ['9 - 10', '10 - 11', '11 - 12', '12 - 1', '1 - 2', '2 - 3'],
   );
 
   useEffect(() => {
-    let date = "";
-    if (ShowShiftDate === "Today") {
-      getFirstData("L1");
-      getSecoundData("L1");
+    let date = '';
+    if (ShowShiftDate === 'Today') {
+      getFirstData('L1');
+      getSecoundData('L1');
       date = formatDate(new Date());
     } else {
       date = yesterdayDate;
@@ -69,7 +69,7 @@ const AppContainer = ({
       clearInterval(interval);
       intervalshiftHours = setInterval(() => {
         handleSlidechage();
-        setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
+        setShiftType((prevType) => (prevType === '1st' ? '2nd' : '1st'));
       }, refreshRate / 2);
     }
     return () => {
@@ -79,30 +79,30 @@ const AppContainer = ({
   }, [refreshRate, shiftHours]);
 
   useEffect(() => {
-    shiftHours && setShiftType((pre) => "1st");
+    shiftHours && setShiftType((pre) => '1st');
     setCategories((prevCategories) => {
       let categoriesList = [
-        "09 - 10",
-        "10 - 11",
-        "11 - 12",
-        "12 - 1",
-        "1 - 2",
-        "2 - 3",
-        "3 - 4",
-        "4 - 5",
-        "5 - 6",
+        '09 - 10',
+        '10 - 11',
+        '11 - 12',
+        '12 - 1',
+        '1 - 2',
+        '2 - 3',
+        '3 - 4',
+        '4 - 5',
+        '5 - 6',
       ];
 
       if (!shiftHours) {
         categoriesList =
-          shiftType === "1st"
-            ? ["09 - 10", "10 - 11", "11 - 12", "12 - 1", "1 - 2", "2 - 3"]
-            : ["3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 8", "8 - 9"];
+          shiftType === '1st'
+            ? ['09 - 10', '10 - 11', '11 - 12', '12 - 1', '1 - 2', '2 - 3']
+            : ['3 - 4', '4 - 5', '5 - 6', '6 - 7', '7 - 8', '8 - 9'];
       }
 
       return categoriesList;
     });
-  }, [shiftHours, shiftType]);
+  }, [shiftHours, ShowShiftDate, shiftType]);
 
   const formatDate = (date) => {
     const day = String(date.getDate());
@@ -112,24 +112,24 @@ const AppContainer = ({
   };
 
   useEffect(() => {
-    if (ShowShiftDate === "Today") {
-      socket.on("dataUpdate", (data) => {
+    if (ShowShiftDate === 'Today') {
+      socket.on('dataUpdate', (data) => {
         setLastBarValue(data);
       });
     } else {
       setLastBarValue({});
       socket.close();
-      getPreviousData("L1");
+      getPreviousData('L1');
     }
   }, [ShowShiftDate, shiftHours]);
 
   const getFirstData = async (line) => {
     let temp = shiftHours
-      ? `&duration=9hrs&shift=1st`
-      : `&duration=6hrs&shift=${shiftType}`;
+      ? `&duration=12hrs&shift=1st`
+      : `&duration=9hrs&shift=${shiftType}`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&${temp}`
+        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&${temp}`,
       );
       const result = await response.json();
       setFirstResponse(result.data.data);
@@ -144,37 +144,37 @@ const AppContainer = ({
       : `&duration=6hrs&shift=${shiftType}`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/shift2?line=${line}&${temp}`
+        `http://localhost:8001/api/v1/general/shift2?line=${line}&${temp}`,
       );
       const result = await response.json();
       let dome = [];
       let updatedData = result.data.updatedData;
       let categoriesList = shiftHours
         ? [
-            "09 - 10",
-            "10 - 11",
-            "11 - 12",
-            "12 - 1",
-            "1 - 2",
-            "2 - 3",
-            "3 - 4",
-            "4 - 5",
-            "5 - 6",
+            '09 - 10',
+            '10 - 11',
+            '11 - 12',
+            '12 - 1',
+            '1 - 2',
+            '2 - 3',
+            '3 - 4',
+            '4 - 5',
+            '5 - 6',
           ]
         : categories;
       categoriesList.map((item, i) => {
         dome.push({
-          id: updatedData[i] === undefined ? "-" : updatedData[i].id,
-          x: updatedData[i] === undefined ? "-" : updatedData[i].x,
-          y: updatedData[i] === undefined ? "-" : updatedData[i].y,
-          z: updatedData[i] === undefined ? "-" : updatedData[i].z,
+          id: updatedData[i] === undefined ? '-' : updatedData[i].id,
+          x: updatedData[i] === undefined ? '-' : updatedData[i].x,
+          y: updatedData[i] === undefined ? '-' : updatedData[i].y,
+          z: updatedData[i] === undefined ? '-' : updatedData[i].z,
           product_id:
-            updatedData[i] === undefined ? "-" : updatedData[i].product_id,
-          target: updatedData[i] === undefined ? "-" : updatedData[i].target,
+            updatedData[i] === undefined ? '-' : updatedData[i].product_id,
+          target: updatedData[i] === undefined ? '-' : updatedData[i].target,
           comments:
-            updatedData[i] === undefined ? "-" : updatedData[i].comments,
-          op_date: updatedData[i] === undefined ? "-" : updatedData[i].op_date,
-          line: updatedData[i] === undefined ? "-" : updatedData[i].line,
+            updatedData[i] === undefined ? '-' : updatedData[i].comments,
+          op_date: updatedData[i] === undefined ? '-' : updatedData[i].op_date,
+          line: updatedData[i] === undefined ? '-' : updatedData[i].line,
         });
       });
       let temps = {
@@ -196,7 +196,7 @@ const AppContainer = ({
       : `&duration=6hrs&shift=${shiftType}`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/displayprevioustwoshiftsdata?line=${line}&${temps}`
+        `http://localhost:8001/api/v1/general/displayprevioustwoshiftsdata?line=${line}&${temps}`,
       );
       const result = await response.json();
       setFirstResponse(result.data.shiftA);
@@ -218,7 +218,7 @@ const AppContainer = ({
   const getDownTimeData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`
+        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`,
       );
       const result = await response.json();
       setDownTimeAction(result.data);
@@ -229,7 +229,7 @@ const AppContainer = ({
 
   return (
     <>
-      {shiftHours && ShowShiftDate === "Today" ? (
+      {ShowShiftDate === 'Today' ? (
         <SwitchTransition>
           <CSSTransition
             key={currentSlide}
@@ -241,19 +241,19 @@ const AppContainer = ({
               className="zoom-fade-container"
               sx={{
                 background: primary.main,
-                fontWeight: "bold",
-                height: currentSlide !== 0 ? "100%" : "90vh",
+                fontWeight: 'bold',
+                height: currentSlide !== 0 ? '100%' : '90vh',
               }}
             >
-              {currentSlide === 0 && ShowShift === "All" ? (
+              {currentSlide === 0 && ShowShift === 'All' ? (
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
                 >
-                  <Box style={{ flex: "4" }}>
+                  <Box style={{ flex: '4' }}>
                     <FullShift
                       handleSlidechage={handleSlidechage}
                       firstResponse={firstResponse}
@@ -268,20 +268,20 @@ const AppContainer = ({
                       downTimeAction={downTimeAction}
                     />
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <ArrowForwardIosIcon onClick={handleSlidechage} />
                   </Box>
                 </Box>
               ) : (
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
+                    display: 'flex',
+                    flexDirection: 'row',
                     // alignItems: "center",
                   }}
                 >
-                  {ShowShift === "All" && (
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {ShowShift === 'All' && (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <ArrowBackIosIcon onClick={handleSlidechage} />
                     </Box>
                   )}
@@ -315,8 +315,8 @@ const AppContainer = ({
               className="zoom-fade-container"
               sx={{
                 background: primary.main,
-                fontWeight: "bold",
-                height: currentSlide !== 0 ? "100%" : "90vh",
+                fontWeight: 'bold',
+                height: currentSlide !== 0 ? '100%' : '90vh',
               }}
             >
               {currentSlide === 0 ? (

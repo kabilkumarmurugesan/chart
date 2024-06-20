@@ -1,12 +1,12 @@
-import AppContainer from "./AppContainer";
-import AppHeader from "./AppHeader";
-import { useState } from "react";
-import { Box } from "@mui/material";
+import AppContainer from './AppContainer';
+import AppHeader from './AppHeader';
+import { useState } from 'react';
+import { Box } from '@mui/material';
 
 function Laoyout() {
   const [refreshRate, setRefreshRate] = useState(15000);
-  const [ShowShift, setShowShift] = useState("All");
-  const [ShowShiftDate, setShowShiftDate] = useState("Today");
+  const [ShowShift, setShowShift] = useState('All');
+  const [ShowShiftDate, setShowShiftDate] = useState('Today');
   const [shiftHours, setShiftHours] = useState(true);
   const [isDownTime, setIsDownTime] = useState(true);
 
@@ -19,12 +19,12 @@ function Laoyout() {
   };
 
   const handleRefresh = (e) => {
-    let temp = e.currentTarget.innerText === "30 sec" ? 30000 : 15000;
+    let temp = e.currentTarget.innerText === '30 sec' ? 30000 : 15000;
     setRefreshRate(temp);
   };
 
   const handleShiftUpdate = (e) => {
-    let temp = e.currentTarget.innerText === "Shift" ? "Day" : "All";
+    let temp = e.currentTarget.innerText === 'Shift' ? 'Day' : 'All';
     setShowShift(temp);
   };
 

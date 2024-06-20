@@ -1,10 +1,10 @@
-import React from "react";
-import { Box, Card, Grid } from "@mui/material";
-import BasicTable from "../Table/Table";
-import BarChart from "../charts/BarChart";
-import BarChartCopy from "../charts/BarChartCopy";
-import ShiftHeader from "./ShiftHeader";
-import DownTimeAction from "../Card/DownTimeAction";
+import React from 'react';
+import { Box, Card, Grid } from '@mui/material';
+import BasicTable from '../Table/Table';
+import BarChart from '../charts/BarChart';
+import BarChartCopy from '../charts/BarChartCopy';
+import ShiftHeader from './ShiftHeader';
+import DownTimeAction from '../Card/DownTimeAction';
 
 const FullShift = ({
   yesterdayDate,
@@ -24,7 +24,7 @@ const FullShift = ({
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={yesterdayDate} time={"09:00 PM - 05:30 AM"} />
+            <ShiftHeader date={yesterdayDate} time={'09:00 PM - 05:30 AM'} />
             <BarChart
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
@@ -36,7 +36,7 @@ const FullShift = ({
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={todayDate} time={"09:00 AM - 05:30 PM"} />
+            <ShiftHeader date={todayDate} time={'09:00 AM - 05:30 PM'} />
             <BarChartCopy
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
@@ -68,7 +68,7 @@ const FullShift = ({
         </Grid>
         <Grid item xs={6} md={6}>
           <DownTimeAction data={downTimeAction} />
-        </Grid>{" "}
+        </Grid>{' '}
       </Grid>
     </Box>
   );

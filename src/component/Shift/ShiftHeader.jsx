@@ -1,39 +1,39 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 
 const ShiftHeader = ({ date, time }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
       }}
     >
-      {" "}
+      {' '}
       <Typography
         sx={{ p: 1 }}
         style={{
-          textAlign: "left",
-          fontSize: "15px",
+          textAlign: 'left',
+          fontSize: '15px',
         }}
       >
         <b> Date:</b> {date}
-      </Typography>{" "}
+      </Typography>{' '}
       <Typography
         style={{
-          fontSize: "15px",
+          fontSize: '15px',
         }}
       >
         <b>Time:</b>
         {time}
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
         <Typography
           sx={{ p: 1 }}
           style={{
-            fontSize: "15px",
+            fontSize: '15px',
           }}
         >
           <b> OT:</b> 07:30PM

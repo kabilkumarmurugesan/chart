@@ -18,8 +18,8 @@ export default function MUIWrapper({ children }) {
   const [secondary, setSecondary] = useState({
     main: 'rgb(255, 255, 255)',
   });
-  // #111827bf
-   const muiWrapperUtils = useMemo(
+
+  const muiWrapperUtils = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -49,18 +49,15 @@ export default function MUIWrapper({ children }) {
     [mode],
   );
 
- 
   const theme = useMemo(
     () =>
-      createTheme(
-        {
-          palette: {
-            mode,
-            primary,
-            secondary,
-          },
+      createTheme({
+        palette: {
+          mode,
+          primary,
+          secondary,
         },
-       ),
+      }),
     [mode],
   );
 
