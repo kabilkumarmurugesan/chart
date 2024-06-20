@@ -9,7 +9,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { MUIWrapperContext } from '../MUIWrapper';
-import CachedIcon from '@mui/icons-material/Cached';
+import SyncIcon from '@mui/icons-material/Sync';
+import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
@@ -62,6 +63,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function AppHeader({
   handleRefresh,
   handleShiftDateUpdate,
+  handleRefreshStatus,
   handleShiftUpdate,
   handleOnShift,
   handleOnDownTime,
@@ -69,6 +71,7 @@ export default function AppHeader({
   ShowShift,
   ShowShiftDate,
   shiftHours,
+  refreshStatus,
   isDownTime,
 }) {
   const theme = useTheme();
@@ -184,7 +187,15 @@ export default function AppHeader({
             disableRipple
           >
             <Box>{refreshRate === 15000 ? '30' : '15'} sec</Box>
-            <CachedIcon />
+          </IconButton>
+          <IconButton
+            sx={{ display: showMenu && 'none', fontSize: '1rem' }}
+            onClick={handleRefreshStatus}
+            color="inherit"
+            disableTouchRipple
+            disableRipple
+          >
+            {refreshStatus ? <SyncIcon /> : <SyncDisabledIcon />}
           </IconButton>
           <IconButton
             sx={{ fontSize: '1rem', display: showMenu && 'none' }}

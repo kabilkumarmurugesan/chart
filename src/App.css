@@ -199,6 +199,11 @@ header {
     font-size: 30px;
     text-align: center;
   }
+  .grid-items {
+    padding: 36px 20px;
+    font-size: 30px;
+    text-align: center;
+  }
 }
 
 @media (max-width: 1600px) {
@@ -209,4 +214,25 @@ header {
     font-size: 30px;
     text-align: center;
   }
+  .grid-items {
+    padding: 35px 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+}
+
+/* .table-container {
+  border: 2px solid #4d5a81;
+  border-radius: 10px;
+  overflow: hidden;
+} */
+
+.table-cell-border {
+  border: 1px solid #ddd;
+}
+
+.card-border {
+  border: 2px solid #4d5a81;
+  border-radius: 10px;
+  margin: 20px 0;
 }

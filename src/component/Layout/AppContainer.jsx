@@ -6,6 +6,7 @@ import SingleShift from '../Shift/SingleShift';
 import { socket } from '../socket';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import FullShiftOverall from '../Shift/FullShiftOverall';
 
 const ShiftCardDetailList = [
   { title: 'MODEL', value: 155 },
@@ -20,6 +21,7 @@ const AppContainer = ({
   refreshRate,
   shiftHours,
   isDownTime,
+  refreshStatus,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -62,21 +64,28 @@ const AppContainer = ({
 
   useEffect(() => {
     let intervalshiftHours = 0;
-    const interval = setInterval(() => {
-      handleSlidechage();
-    }, refreshRate);
-    if (!shiftHours) {
-      clearInterval(interval);
-      intervalshiftHours = setInterval(() => {
+    let interval = 0;
+    debugger;
+    if (refreshStatus) {
+      interval = setInterval(() => {
         handleSlidechage();
-        setShiftType((prevType) => (prevType === '1st' ? '2nd' : '1st'));
-      }, refreshRate / 2);
+      }, refreshRate);
+      if (!shiftHours) {
+        clearInterval(interval);
+        intervalshiftHours = setInterval(() => {
+          handleSlidechage();
+          setShiftType((prevType) => (prevType === '1st' ? '2nd' : '1st'));
+        }, refreshRate / 2);
+      }
+    } else {
+      clearInterval(interval);
+      clearInterval(intervalshiftHours);
     }
     return () => {
       clearInterval(interval);
       clearInterval(intervalshiftHours);
     };
-  }, [refreshRate, shiftHours]);
+  }, [refreshRate, refreshStatus, shiftHours]);
 
   useEffect(() => {
     if (shiftHours) {
@@ -281,7 +290,7 @@ const AppContainer = ({
 
   return (
     <>
-      {ShowShiftDate === 'Today' ? (
+      {ShowShiftDate === 'Today' && ShowShift === 'All' ? (
         <SwitchTransition>
           <CSSTransition
             key={currentSlide}
@@ -294,11 +303,11 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: 'bold',
-                // height: '100%',
+                // height: '100vh',
                 height: currentSlide !== 0 ? '100%' : '90vh',
               }}
             >
-              {currentSlide === 0 && ShowShift === 'All' ? (
+              {currentSlide === 0 ? (
                 <Box
                   sx={{
                     display: 'flex',
@@ -338,25 +347,25 @@ const AppContainer = ({
                       <ArrowBackIosIcon onClick={handleSlidechage} />
                     </Box>
                   )}
-                  <SingleShift
-                    shiftHours={shiftHours}
-                    isDownTime={isDownTime}
+                  <FullShiftOverall
                     handleSlidechage={handleSlidechage}
-                    lastBarValue={lastBarValue}
+                    firstResponse={firstResponse}
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     secoundResponse={secoundResponse}
                     categories={categories}
-                    formatDate={formatDate}
+                    yesterdayDate={yesterdayDate}
+                    todayDate={todayDate}
+                    lastBarValue={lastBarValue}
+                    shiftHours={shiftHours}
                     downTimeAction={downTimeAction}
-                    ShiftCardDetailList={ShiftCardDetailList}
                   />
                 </Box>
               )}
             </Box>
           </CSSTransition>
         </SwitchTransition>
-      ) : (
+      ) : ShowShift === 'All' ? (
         <SwitchTransition>
           <CSSTransition
             key={currentSlide}
@@ -400,6 +409,29 @@ const AppContainer = ({
             </Box>
           </CSSTransition>
         </SwitchTransition>
+      ) : (
+        <Box
+          className="zoom-fade-container"
+          sx={{
+            background: primary.main,
+            fontWeight: 'bold',
+            height: currentSlide !== 0 ? '100%' : '90vh',
+          }}
+        >
+          <SingleShift
+            shiftHours={shiftHours}
+            isDownTime={isDownTime}
+            handleSlidechage={handleSlidechage}
+            lastBarValue={lastBarValue}
+            visibleQRCodeIndex={visibleQRCodeIndex}
+            setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+            secoundResponse={secoundResponse}
+            categories={categories}
+            formatDate={formatDate}
+            downTimeAction={downTimeAction}
+            ShiftCardDetailList={ShiftCardDetailList}
+          />
+        </Box>
       )}
     </>
   );

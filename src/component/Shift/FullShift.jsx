@@ -5,6 +5,7 @@ import BarChart from '../charts/BarChart';
 import BarChartCopy from '../charts/BarChartCopy';
 import ShiftHeader from './ShiftHeader';
 import DownTimeAction from '../Card/DownTimeAction';
+import { styled } from '@mui/material/styles';
 
 const FullShift = ({
   yesterdayDate,
@@ -21,7 +22,7 @@ const FullShift = ({
 }) => {
   return (
     <Box sx={{ p: 2 }}>
-      <Grid container spacing={2}>
+      <Grid container rowSpacing={1} spacing={2}>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader date={yesterdayDate} time={'09:00 PM - 05:30 AM'} />
@@ -52,7 +53,7 @@ const FullShift = ({
           </Card>
         </Grid>
       </Grid>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
+      <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={12} md={6}>
           {firstResponse !== undefined && (
             <BasicTable response={firstResponse} />
@@ -64,7 +65,7 @@ const FullShift = ({
           )}
         </Grid>
       </Grid>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
+      <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={6} md={6}>
           <DownTimeAction data={downTimeAction} />
         </Grid>

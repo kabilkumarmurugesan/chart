@@ -19,6 +19,7 @@ export default function BasicTable({ response }) {
           {series.map((item, i) => (
             <TableCell
               key={i}
+              // sx={{padding:"8px"}}
               style={{
                 textAlign: 'center',
               }}
@@ -78,7 +79,8 @@ function TableCellHeader(props) {
         fontWeight: 'bold',
         fontSize: '15px',
         color: '#fff',
-        width: '50px',
+        padding: '8px',
+        width: '88px',
         background: '#4d5a81',
       }}
     >

@@ -31,6 +31,7 @@ const BarChartCopy = ({
   response,
   animations,
   id,
+  height,
   shiftHours,
   ShowShift,
   setVisibleQRCodeIndex,
@@ -47,6 +48,7 @@ const BarChartCopy = ({
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [seriesLable, setSeriesLable] = useState();
   const tooltipRef = useRef(null);
 
   useEffect(() => {
@@ -57,9 +59,11 @@ const BarChartCopy = ({
     let temp = [];
     let emt = [];
     let terget = [];
+    let seriesLables = {};
     response &&
       response.updatedData.map((item) => {
         temp.push(item.y);
+        seriesLables[item.x] = item.product_id;
         item.target && terget.push(parseInt(item.target));
         emt.push(0);
       });
@@ -79,6 +83,8 @@ const BarChartCopy = ({
     !isNaN(average) && setTargetList(average);
     setSeries(temp);
     setEmtSeries(emt);
+    setSeriesLable(seriesLables);
+
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
     }, 500);
@@ -191,6 +197,22 @@ const BarChartCopy = ({
     },
     animations: animations,
     plugins: {
+      tooltip: {
+        enabled: true,
+        mode: 'nearest', // Show tooltip for the nearest item
+        intersect: true, // Ensure tooltip shows only for the intersected item
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = seriesLable[tooltipItem.label];
+            if (label) {
+              label += ': ';
+            }
+            label += tooltipItem.raw;
+            return label;
+          },
+        },
+        displayColors: false, // Disable the color box in tooltips
+      },
       legend: {
         display: false, // Disable legend
       },
@@ -201,23 +223,24 @@ const BarChartCopy = ({
             yMin: targetList,
             yMax: targetList,
             xMin: -1, // Start from the beginning of the chart
-            xMax: 8, // End at the index of "10-11"
+            xMax: categories.length - 1, // End at the last index of the chart
             borderColor: '#241773',
             borderWidth: 4,
             label: {
-              content: 'Target: 85', // This is where you specify the label text
+              content: [`Target: ${Math.round(targetList)}`], // Specify the label text
               enabled: true,
               position: 'start', // Change to 'start' or 'center'
               backgroundColor: '#241773',
               yAdjust: -15,
-              xAdjust: -5,
+              xAdjust: 0,
             },
-            onEnter: (e) => showTooltip(e, 'Target: 85'),
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
             onLeave: hideTooltip,
           },
         },
       },
     },
+    maintainAspectRatio: false,
   };
 
   return (
@@ -230,13 +253,14 @@ const BarChartCopy = ({
         style={{
           position: 'relative',
           width: '100%',
-          height: id === 'single' ? '0vh' : '45vh',
+          height: height,
+          // height: id === 'single' ? '0vh' : '45vh',
         }}
       >
         <Bar
           data={data}
           options={options}
-          style={{ width: '100%', height: '300px' }}
+          style={{ width: '100%', height: '100%' }}
         />
         <div
           className="qr-code-container"
@@ -247,7 +271,7 @@ const BarChartCopy = ({
           }}
         >
           {data.labels.map((label, index) => (
-            <div key={index} style={{ padding: '1px' }}>
+            <div key={index} style={{ padding: '5px' }}>
               <button
                 className="btn-one"
                 style={{
