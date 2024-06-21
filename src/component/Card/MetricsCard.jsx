@@ -29,7 +29,7 @@ const MetricsCard = () => {
               justifyContent: 'center',
               alignItems: 'center',
               borderBottom: index < 3 && '2px solid #fff',
-              padding: matches ? 6 : 5,
+              padding: 5,
               height: '100%',
               textAlign: 'center',
             }}

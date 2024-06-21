@@ -237,24 +237,10 @@ const SingleShift = ({
           <DownTimeAction data={downTimeAction} />
         </Grid>
         <Grid item xs={4} md={2}>
-          <Box>
-            <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button
-                style={{ background: '#483456' }}
-                onClick={() => setIsShift(true)}
-              >
-                Shift
-              </Button>
-              <Button
-                style={{ background: '#483456' }}
-                onClick={() => setIsShift(false)}
-              >
-                Crt Hrs
-              </Button>
-            </Box>
+          <Box>       
             {visibleQRCodeIndex === null ? (
               <img
-                style={{ width: '54%' }}
+                style={{ width: '40%' }}
                 alt="emoj"
                 src={isHappy ? smileEmoji : sadEmoji}
               />
@@ -268,6 +254,20 @@ const SingleShift = ({
                 />
               </Card>
             )}
+                 <Box style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                style={{ background: '#483456', marginRight:'1em' }}
+                onClick={() => setIsShift(true)}
+              >
+                Shift
+              </Button>
+              <Button
+                style={{ background: '#483456' }}
+                onClick={() => setIsShift(false)}
+              >
+                Crt Hrs
+              </Button>
+            </Box>
           </Box>
         </Grid>
       </Grid>
