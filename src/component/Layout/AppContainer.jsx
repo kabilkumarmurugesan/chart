@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, useTheme, IconButton } from '@mui/material';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import FullShift from '../Shift/FullShift';
 import SingleShift from '../Shift/SingleShift';
@@ -65,7 +65,6 @@ const AppContainer = ({
   useEffect(() => {
     let intervalshiftHours = 0;
     let interval = 0;
-    debugger;
     if (refreshStatus) {
       interval = setInterval(() => {
         handleSlidechage();
@@ -303,7 +302,6 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: 'bold',
-                // height: '100vh',
                 height: currentSlide !== 0 ? '100%' : '90vh',
               }}
             >
@@ -315,6 +313,21 @@ const AppContainer = ({
                     justifyContent: 'space-between',
                   }}
                 >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
                   <Box style={{ flex: '4' }}>
                     <FullShift
                       handleSlidechage={handleSlidechage}
@@ -330,8 +343,20 @@ const AppContainer = ({
                       downTimeAction={downTimeAction}
                     />
                   </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <ArrowForwardIosIcon onClick={handleSlidechage} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
                   </Box>
                 </Box>
               ) : (
@@ -342,11 +367,21 @@ const AppContainer = ({
                     // alignItems: "center",
                   }}
                 >
-                  {ShowShift === 'All' && (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <ArrowBackIosIcon onClick={handleSlidechage} />
-                    </Box>
-                  )}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
                   <FullShiftOverall
                     handleSlidechage={handleSlidechage}
                     firstResponse={firstResponse}
@@ -360,6 +395,22 @@ const AppContainer = ({
                     shiftHours={shiftHours}
                     downTimeAction={downTimeAction}
                   />
+
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
                 </Box>
               )}
             </Box>

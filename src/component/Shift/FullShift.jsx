@@ -5,7 +5,6 @@ import BarChart from '../charts/BarChart';
 import BarChartCopy from '../charts/BarChartCopy';
 import ShiftHeader from './ShiftHeader';
 import DownTimeAction from '../Card/DownTimeAction';
-import { styled } from '@mui/material/styles';
 
 const FullShift = ({
   yesterdayDate,

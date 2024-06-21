@@ -8,10 +8,10 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import Divider from '@mui/material/Divider';
 import { MUIWrapperContext } from '../MUIWrapper';
 import SyncIcon from '@mui/icons-material/Sync';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 import logo from '../../asset/img/Logo.png';
@@ -155,29 +155,140 @@ export default function AppHeader({
           </Box>
           <Box
             sx={{ p: 1, display: showMenu && 'none', cursor: 'pointer' }}
-            onClick={(e) => {
-              handleShiftDateUpdate(e);
-            }}
+            // onClick={(e) => {
+            //   handleShiftDateUpdate(e);
+            // }}
           >
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Box sx={{ width: '75px' }}>
-                {ShowShiftDate === 'Yesterday' ? 'Today' : 'Yesterday'}
+            {/*------ 1 */}
+            {/* <Stack direction="row" spacing={1} alignItems="center">
+              <Box sx={{ width: "75px" }}>
+                {ShowShiftDate === "Yesterday" ? "Today" : "Yesterday"}
               </Box>
               <CalendarMonthIcon />
-            </Stack>
+            </Stack> */}
+
+            {/* -------------1 end , 2 S */}
+
+            {/* <Stack direction="row" spacing={1} alignItems="center">
+              <Box
+                sx={{ width: "75px", display: "flex", flexDirection: "column" }}
+              >
+                <span
+                  onClick={(e) => {
+                    handleShiftDateUpdate(e);
+                  }}
+                  style={{
+                    color: ShowShiftDate === "Today" ? "#ff4f4ff0" : "white",
+                  }}
+                >
+                  Today
+                </span>
+                <span
+                  onClick={(e) => {
+                    handleShiftDateUpdate(e);
+                  }}
+                  style={{
+                    color: ShowShiftDate === "Yesterday" ? "#ff4f4ff0" : "white",
+                  }}
+                >
+                  Yesterday
+                </span>
+
+              </Box>
+              <CalendarMonthIcon />
+            </Stack> */}
+
+            {/* ----------2 end */}
+
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                bgcolor: 'background.paper',
+                color: 'text.secondary',
+                '& span': {
+                  m: 0.8,
+                },
+              }}
+            >
+              <span
+                onClick={(e) => {
+                  handleShiftDateUpdate(e);
+                }}
+                style={{
+                  color: ShowShiftDate === 'Today' ? '#eeaa0a' : 'black',
+                  // transform: ShowShiftDate === "Today" ? "translateY(-4px)" : "translateY(0)",
+                  // transition: "transform 0.2s ease",
+                }}
+              >
+                Today
+              </span>
+              <Divider orientation="vertical" variant="middle" flexItem />
+              <span
+                onClick={(e) => {
+                  handleShiftDateUpdate(e);
+                }}
+                style={{
+                  color: ShowShiftDate === 'Yesterday' ? '#eeaa0a' : 'black',
+                  // transform: ShowShiftDate === "Yesterday" ? "translateY(-4px)" : "translateY(0)",
+                  // transition: "transform 0.2s ease",
+                }}
+              >
+                Yesterday
+              </span>
+            </Box>
           </Box>
           <Box
             sx={{ p: 1, display: showMenu && 'none', cursor: 'pointer' }}
-            onClick={(e) => {
-              handleShiftUpdate(e);
-            }}
+            // onClick={(e) => {
+            //   handleShiftUpdate(e);
+            // }}
           >
-            <Stack direction="row" spacing={1} alignItems="center">
+            {/* <Stack direction="row" spacing={1} alignItems="center">
               <Box sx={{ width: '45px' }}>
                 {ShowShift === 'All' ? 'Shift' : 'Day'}
               </Box>
               <CalendarMonthIcon />
-            </Stack>
+            </Stack> */}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                bgcolor: 'background.paper',
+                color: 'text.secondary',
+                '& span': {
+                  m: 0.8,
+                },
+              }}
+            >
+              <span
+                onClick={(e) => {
+                  handleShiftUpdate(e);
+                }}
+                style={{
+                  color: ShowShift === 'Day' ? '#eeaa0a' : 'black',
+                }}
+              >
+                Shift
+              </span>
+              <Divider orientation="vertical" variant="middle" flexItem />
+              <span
+                onClick={(e) => {
+                  handleShiftUpdate(e);
+                }}
+                style={{
+                  color: ShowShift === 'All' ? '#eeaa0a' : 'black',
+                }}
+              >
+                Day
+              </span>
+            </Box>
           </Box>
           <IconButton
             sx={{ display: showMenu && 'none', fontSize: '1rem' }}

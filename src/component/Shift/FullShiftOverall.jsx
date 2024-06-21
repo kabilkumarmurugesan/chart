@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Card, Typography, Grid } from '@mui/material';
+import { Box, Card, Grid } from '@mui/material';
 import { QRCodeCanvas } from 'qrcode.react';
 import emoj from '../../asset/gif/emoj.png';
 import BarChart from '../charts/BarChart';
 import BarChartCopy from '../charts/BarChartCopy';
 import ShiftHeader from './ShiftHeader';
 import DownTimeAction from '../Card/DownTimeAction';
+import MetricsCard from '../Card/MetricsCard';
 
 const FullShiftOverall = ({
   yesterdayDate,
@@ -61,148 +62,7 @@ const FullShiftOverall = ({
         </Grid>
 
         <Grid item xs={4} md={2}>
-          <Card>
-            <Box className="grid-container">
-              <Box
-                className="grid-items"
-                style={{
-                  background: '#241773',
-                  color: '#fff',
-                  borderBottom: '2px solid #fff',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      style={{
-                        fontSize: '15px',
-                      }}
-                    >
-                      SHIFT TARGET <br />
-                      <b
-                        style={{
-                          fontSize: '30px',
-                        }}
-                      >
-                        {' '}
-                        115
-                      </b>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                className="grid-items"
-                style={{
-                  borderBottom: '2px solid #fff',
-                  background: '#3d860b',
-                  color: '#fff',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // height: "80px", // Set a fixed height or a percentage value
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      style={{
-                        fontSize: '15px',
-                      }}
-                    >
-                      SHIFT ACTUAL<br></br>
-                      <b
-                        style={{
-                          fontSize: '30px',
-                        }}
-                      >
-                        {' '}
-                        150
-                      </b>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                className="grid-items"
-                style={{
-                  background: '#483456',
-                  borderBottom: '2px solid #fff',
-                  color: '#fff',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // height: "80/px", // Match this height to the other Boxes
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      style={{
-                        fontSize: '15px',
-                      }}
-                    >
-                      SHIFT UPH
-                      <br />
-                      <b
-                        style={{
-                          fontSize: '30px',
-                        }}
-                      >
-                        {' '}
-                        125
-                      </b>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                className="grid-items"
-                style={{
-                  background: '#e1140a',
-                  color: '#fff',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // height: "25px", // Match this height to the other Boxes
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      style={{
-                        fontSize: '15px',
-                      }}
-                    >
-                      DOWN TIME <br />
-                      <b
-                        style={{
-                          fontSize: '30px',
-                        }}
-                      >
-                        145
-                      </b>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Card>
+          <MetricsCard />
         </Grid>
         <Grid item xs={6} md={12}>
           <Grid container spacing={4}>
