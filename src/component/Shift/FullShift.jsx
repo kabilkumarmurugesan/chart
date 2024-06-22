@@ -1,14 +1,15 @@
-import React from 'react';
-import { Box, Card, Grid } from '@mui/material';
-import BasicTable from '../Table/Table';
-import BarChart from '../charts/BarChart';
-import BarChartCopy from '../charts/BarChartCopy';
-import ShiftHeader from './ShiftHeader';
-import DownTimeAction from '../Card/DownTimeAction';
+import React from "react";
+import { Box, Card, Grid } from "@mui/material";
+import BasicTable from "../Table/Table";
+import BarChart from "../charts/BarChart";
+import BarChartCopy from "../charts/BarChartCopy";
+import ShiftHeader from "./ShiftHeader";
+import DownTimeAction from "../Card/DownTimeAction";
 
 const FullShift = ({
   yesterdayDate,
   secoundResponse,
+  shiftTiming,
   firstResponse,
   categories,
   shiftHours,
@@ -24,9 +25,9 @@ const FullShift = ({
       <Grid container rowSpacing={1} spacing={2}>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={yesterdayDate} time={'09:00 AM - 05:30 PM'} />
+            <ShiftHeader date={yesterdayDate} time={shiftTiming} />
             <BarChart
-              height={'38vh'}
+              height={"38vh"}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
               visibleQRCodeIndex={visibleQRCodeIndex}
@@ -37,9 +38,9 @@ const FullShift = ({
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={todayDate} time={'09:00 PM - 8:00 AM'} />
+            <ShiftHeader date={todayDate} time={"09:00 PM - 8:00 AM"} />
             <BarChartCopy
-              height={'40vh'}
+              height={"40vh"}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
               lastBarValue={lastBarValue}
@@ -70,7 +71,7 @@ const FullShift = ({
         </Grid>
         <Grid item xs={6} md={6}>
           <DownTimeAction data={downTimeAction} />
-        </Grid>{' '}
+        </Grid>{" "}
       </Grid>
     </Box>
   );

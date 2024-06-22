@@ -88,7 +88,6 @@ export default function AppHeader({
         background: "#04affb",
         color: "#fff",
       }}
-      // sx={{ flexGrow: 1 }}
     >
       <AppBar
         position="static"
@@ -97,22 +96,17 @@ export default function AppHeader({
         onMouseLeave={() => setShowMenu(true)}
       >
         <Toolbar sx={{ height: 65, padding: "0px 10px 0px 0px" }}>
-          <Box
-          style={{ margin: "0px 0px 0px -40px" }}
-          >
+          <Box style={{ margin: "0px 0px 0px -40px" }}>
             <img
               src={logo}
               alt="Logo"
               style={{
-                // padding: '5px 0px 0px 0px',
-                // margin: '0px 0px 0px -63px',
                 width: "74%",
                 height: "100%",
               }}
             />
           </Box>
           <Typography
-            // variant=""
             component="div"
             sx={{ flexGrow: 1 }}
             style={{
@@ -161,53 +155,7 @@ export default function AppHeader({
               <Typography>{ShowShift !== "Day" ? "9" : "12"}</Typography>
             </Stack>
           </Box>
-          <Box
-            sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}
-            // onClick={(e) => {
-            //   handleShiftDateUpdate(e);
-            // }}
-          >
-            {/*------ 1 */}
-            {/* <Stack direction="row" spacing={1} alignItems="center">
-              <Box sx={{ width: "75px" }}>
-                {ShowShiftDate === "Yesterday" ? "Today" : "Yesterday"}
-              </Box>
-              <CalendarMonthIcon />
-            </Stack> */}
-
-            {/* -------------1 end , 2 S */}
-
-            {/* <Stack direction="row" spacing={1} alignItems="center">
-              <Box
-                sx={{ width: "75px", display: "flex", flexDirection: "column" }}
-              >
-                <span
-                  onClick={(e) => {
-                    handleShiftDateUpdate(e);
-                  }}
-                  style={{
-                    color: ShowShiftDate === "Today" ? "#ff4f4ff0" : "white",
-                  }}
-                >
-                  Today
-                </span>
-                <span
-                  onClick={(e) => {
-                    handleShiftDateUpdate(e);
-                  }}
-                  style={{
-                    color: ShowShiftDate === "Yesterday" ? "#ff4f4ff0" : "white",
-                  }}
-                >
-                  Yesterday
-                </span>
-
-              </Box>
-              <CalendarMonthIcon />
-            </Stack> */}
-
-            {/* ----------2 end */}
-
+          <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
             <Box
               sx={{
                 display: "flex",
@@ -233,8 +181,6 @@ export default function AppHeader({
                       : theme.palette.mode === "dark"
                       ? "white"
                       : "black",
-                  // transform: ShowShiftDate === "Today" ? "translateY(-4px)" : "translateY(0)",
-                  // transition: "transform 0.2s ease",
                 }}
               >
                 Today
@@ -251,26 +197,13 @@ export default function AppHeader({
                       : theme.palette.mode === "dark"
                       ? "white"
                       : "black",
-                  // transform: ShowShiftDate === "Yesterday" ? "translateY(-4px)" : "translateY(0)",
-                  // transition: "transform 0.2s ease",
                 }}
               >
                 Yesterday
               </span>
             </Box>
           </Box>
-          <Box
-            sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}
-            // onClick={(e) => {
-            //   handleShiftUpdate(e);
-            // }}
-          >
-            {/* <Stack direction="row" spacing={1} alignItems="center">
-              <Box sx={{ width: '45px' }}>
-                {ShowShift === 'All' ? 'Shift' : 'Day'}
-              </Box>
-              <CalendarMonthIcon />
-            </Stack> */}
+          <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
             <Box
               sx={{
                 display: "flex",
@@ -325,7 +258,7 @@ export default function AppHeader({
             disableTouchRipple
             disableRipple
           >
-            <Box>{refreshRate === 45000  ? "30" : "45"} sec</Box>
+            <Box>{refreshRate === 45000 ? "30" : "45"} sec</Box>
           </IconButton>
           <IconButton
             sx={{ display: showMenu && "none", fontSize: "1rem" }}

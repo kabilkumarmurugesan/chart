@@ -8,6 +8,7 @@ import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
+import BarChart from "../charts/BarChart";
 
 const SingleShift = ({
   formatDate,
@@ -18,7 +19,9 @@ const SingleShift = ({
   ShowShiftDate,
   isDownTime,
   handleSlidechage,
+  firstResponse,
   lastBarValue,
+  shiftTiming,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   downTimeAction,
@@ -51,28 +54,47 @@ const SingleShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader
               date={formatDate(new Date())}
-              time={"09:00 AM - 05:30PM"}
+              time={shiftTiming}
             />
-            <BarChartCopy
-              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-              visibleQRCodeIndex={visibleQRCodeIndex}
-              handleSlidechage={handleSlidechage}
-              shiftHours={shiftHours}
-              ShowShiftDate={ShowShiftDate}
-              lastBarValue={lastBarValue}
-              response={secoundResponse}
-              categories={categories}
-              id={"single"}
-              height={"0vh"}
-              animations={{
-                tension: {
-                  duration: 1000,
-                  easing: "linear",
-                  from: 1,
-                  to: 0,
-                },
-              }}
-            />
+            {firstResponse ? (
+              <BarChart
+                height={"40vh"}
+                animations={{
+                  tension: {
+                    duration: 1000,
+                    easing: "linear",
+                    from: 1,
+                    to: 0,
+                  },
+                }}
+                setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleSlidechage={handleSlidechage}
+                visibleQRCodeIndex={visibleQRCodeIndex}
+                categories={categories}
+                response={firstResponse}
+              />
+            ) : (
+              <BarChartCopy
+                setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                visibleQRCodeIndex={visibleQRCodeIndex}
+                handleSlidechage={handleSlidechage}
+                shiftHours={shiftHours}
+                ShowShiftDate={ShowShiftDate}
+                lastBarValue={lastBarValue}
+                response={secoundResponse}
+                categories={categories}
+                id={"single"}
+                height={"0vh"}
+                animations={{
+                  tension: {
+                    duration: 1000,
+                    easing: "linear",
+                    from: 1,
+                    to: 0,
+                  },
+                }}
+              />
+            )}
           </Card>
         </Grid>
         <Grid item xs={4} md={2}>

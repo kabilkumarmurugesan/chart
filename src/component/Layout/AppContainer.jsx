@@ -49,7 +49,8 @@ const AppContainer = ({
         ]
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
-
+  const [showMenu, setShowMenu] = useState(true);
+  const [shiftTiming, setShiftTiming] = useState("09:00 AM - 05:30 PM");
   useEffect(() => {
     let date = "";
     if (ShowShiftDate === "Today") {
@@ -327,10 +328,12 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
+                  onMouseEnter={() => setShowMenu(false)}
+                  onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
-                      display: "flex",
+                      display: showMenu ? "none" : "flex",
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
@@ -346,6 +349,7 @@ const AppContainer = ({
                   <Box style={{ flex: "4" }}>
                     <FullShift
                       handleSlidechage={handleSlidechage}
+                      shiftTiming={shiftTiming}
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
                       setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -360,7 +364,7 @@ const AppContainer = ({
                   </Box>
                   <Box
                     sx={{
-                      display: "flex",
+                      display: showMenu ? "none" : "flex",
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
@@ -381,10 +385,12 @@ const AppContainer = ({
                     flexDirection: "row",
                     // alignItems: "center",
                   }}
+                  onMouseEnter={() => setShowMenu(false)}
+                  onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
-                      display: "flex",
+                      display: showMenu ? "none" : "flex",
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
@@ -413,7 +419,7 @@ const AppContainer = ({
 
                   <Box
                     sx={{
-                      display: "flex",
+                      display: showMenu ? "none" : "flex",
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
@@ -475,6 +481,137 @@ const AppContainer = ({
             </Box>
           </CSSTransition>
         </SwitchTransition>
+      ) : ShowShiftDate !== "Today" && ShowShift !== "All" ? (
+        <SwitchTransition>
+          <CSSTransition
+            key={currentSlide}
+            timeout={600}
+            classNames="zoom-fade"
+            unmountOnExit
+          >
+            <Box
+              className="zoom-fade-container"
+              sx={{
+                background: primary.main,
+                fontWeight: "bold",
+                height: currentSlide !== 0 ? "100%" : "94vh",
+              }}
+            >
+              {currentSlide === 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                  onMouseEnter={() => setShowMenu(false)}
+                  onMouseLeave={() => setShowMenu(true)}
+                >
+                  <Box
+                    sx={{
+                      display: showMenu ? "none" : "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
+                  <SingleShift
+                    shiftHours={shiftHours}
+                    isDownTime={isDownTime}
+                    handleSlidechage={handleSlidechage}
+                    lastBarValue={lastBarValue}
+                    ShowShiftDate={ShowShiftDate}
+                    visibleQRCodeIndex={visibleQRCodeIndex}
+                    setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                    firstResponse={firstResponse}
+                    categories={categories}
+                    formatDate={formatDate}
+                    downTimeAction={downTimeAction}
+                    ShiftCardDetailList={ShiftCardDetailList}
+                  />
+
+                  <Box
+                    sx={{
+                      display: showMenu ? "none" : "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                  onMouseEnter={() => setShowMenu(false)}
+                  onMouseLeave={() => setShowMenu(true)}
+                >
+                  <Box
+                    sx={{
+                      display: showMenu ? "none" : "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
+                  <SingleShift
+                    shiftHours={shiftHours}
+                    isDownTime={isDownTime}
+                    handleSlidechage={handleSlidechage}
+                    lastBarValue={lastBarValue}
+                    ShowShiftDate={ShowShiftDate}
+                    visibleQRCodeIndex={visibleQRCodeIndex}
+                    setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                    secoundResponse={secoundResponse}
+                    categories={categories}
+                    formatDate={formatDate}
+                    downTimeAction={downTimeAction}
+                    ShiftCardDetailList={ShiftCardDetailList}
+                  />
+                  <Box
+                    sx={{
+                      display: showMenu ? "none" : "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton disabled onClick={handleSlidechage}>
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                    <IconButton onClick={handleSlidechage}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          </CSSTransition>
+        </SwitchTransition>
       ) : (
         <Box
           className="zoom-fade-container"
@@ -487,6 +624,7 @@ const AppContainer = ({
           <SingleShift
             shiftHours={shiftHours}
             isDownTime={isDownTime}
+            shiftTiming={shiftTiming}
             handleSlidechage={handleSlidechage}
             lastBarValue={lastBarValue}
             ShowShiftDate={ShowShiftDate}

@@ -9,7 +9,7 @@ function Laoyout() {
   const [ShowShiftDate, setShowShiftDate] = useState('Today');
   const [shiftHours, setShiftHours] = useState(true);
   const [refreshStatus, setRefreshStatus] = useState(true);
-  const [isDownTime, setIsDownTime] = useState(true);
+  const [isDownTime, setIsDownTime] = useState(false);
 
   const handleOnShift = (e) => {
     setShiftHours((pre) => e.target.checked);
