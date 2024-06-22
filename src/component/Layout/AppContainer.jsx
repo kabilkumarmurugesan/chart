@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Box, useTheme, IconButton } from '@mui/material';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import FullShift from '../Shift/FullShift';
-import SingleShift from '../Shift/SingleShift';
-import { socket } from '../socket';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import FullShiftOverall from '../Shift/FullShiftOverall';
+import React, { useEffect, useState } from "react";
+import { Box, useTheme, IconButton } from "@mui/material";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import FullShift from "../Shift/FullShift";
+import SingleShift from "../Shift/SingleShift";
+import { socket } from "../socket";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import FullShiftOverall from "../Shift/FullShiftOverall";
 
 const ShiftCardDetailList = [
-  { title: 'MODEL', value: 155 },
-  { title: 'MOTHLY ORDER', value: 135 },
-  { title: 'P.M TARGET', value: 135 },
-  { title: 'P.M ACTUAL', value: 135 },
+  { title: "MO", value: 155 },
+  { title: "MTM", value: 135 },
+  { title: "PRODUCT MONTHLY TARGET", value: 1200 },
+  { title: "PRODUCT MONTHLY ACTUAL", value: 850 },
 ];
 
 const AppContainer = ({
@@ -30,37 +30,37 @@ const AppContainer = ({
   const [firstResponse, setFirstResponse] = useState();
   const [secoundResponse, setSecoundResponse] = useState();
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
-  const yesterdayDate = Dates.toLocaleDateString('en-US'); // MM/DD/YYYY in US English
-  const [shiftType, setShiftType] = useState('1st');
+  const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
+  const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [downTimeAction, setDownTimeAction] = useState([]);
   const [categories, setCategories] = useState(
     shiftHours
       ? [
-          '09 - 10',
-          '10 - 11',
-          '11 - 12',
-          '12 - 01',
-          '01 - 02',
-          '02 - 03',
-          '03 - 04',
-          '04 - 05',
-          '05 - 06',
+          "09 - 10",
+          "10 - 11",
+          "11 - 12",
+          "12 - 01",
+          "01 - 02",
+          "02 - 03",
+          "03 - 04",
+          "04 - 05",
+          "05 - 06",
         ]
-      : ['09 - 10', '10 - 11', '11 - 12', '12 - 01', '01 - 02', '02 - 03'],
+      : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
 
   useEffect(() => {
-    let date = '';
-    if (ShowShiftDate === 'Today') {
-      getFirstData('L1');
-      getSecoundData('L1');
+    let date = "";
+    if (ShowShiftDate === "Today") {
+      getFirstData("L1");
+      getSecoundData("L1");
       date = formatDate(new Date());
     } else {
       date = yesterdayDate;
     }
     setTodayDate(date);
-  }, [shiftHours, ShowShiftDate, shiftType]);
+  }, [shiftHours, ShowShift, ShowShiftDate, shiftType]);
 
   useEffect(() => {
     let intervalshiftHours = 0;
@@ -73,7 +73,7 @@ const AppContainer = ({
         clearInterval(interval);
         intervalshiftHours = setInterval(() => {
           handleSlidechage();
-          setShiftType((prevType) => (prevType === '1st' ? '2nd' : '1st'));
+          setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
         }, refreshRate / 2);
       }
     } else {
@@ -88,40 +88,40 @@ const AppContainer = ({
 
   useEffect(() => {
     if (shiftHours) {
-      setShiftType('1st');
+      setShiftType("1st");
     }
-    if (ShowShift === 'All') {
+    if (ShowShift === "All") {
       setCategories(() => {
         let categoriesList = [
-          '09 - 10',
-          '10 - 11',
-          '11 - 12',
-          '12 - 01',
-          '01 - 02',
-          '02 - 03',
-          '03 - 04',
-          '04 - 05',
-          '05 - 06',
+          "09 - 10",
+          "10 - 11",
+          "11 - 12",
+          "12 - 01",
+          "01 - 02",
+          "02 - 03",
+          "03 - 04",
+          "04 - 05",
+          "05 - 06",
         ];
 
         if (!shiftHours) {
-          if (shiftType === '1st') {
+          if (shiftType === "1st") {
             categoriesList = [
-              '09 - 10',
-              '10 - 11',
-              '11 - 12',
-              '12 - 01',
-              '01 - 02',
-              '02 - 03',
+              "09 - 10",
+              "10 - 11",
+              "11 - 12",
+              "12 - 01",
+              "01 - 02",
+              "02 - 03",
             ];
           } else {
             categoriesList = [
-              '03 - 04',
-              '04 - 05',
-              '05 - 06',
-              '06 - 07',
-              '07 - 08',
-              '08 - 09',
+              "03 - 04",
+              "04 - 05",
+              "05 - 06",
+              "06 - 07",
+              "07 - 08",
+              "08 - 09",
             ];
           }
         }
@@ -131,31 +131,31 @@ const AppContainer = ({
     } else {
       setCategories(() => {
         let categoriesList = [
-          '09 - 10',
-          '10 - 11',
-          '11 - 12',
-          '12 - 01',
-          '01 - 02',
-          '02 - 03',
-          '03 - 04',
-          '04 - 05',
-          '05 - 06',
-          '06 - 07',
-          '07 - 08',
-          '08 - 09',
+          "09 - 10",
+          "10 - 11",
+          "11 - 12",
+          "12 - 01",
+          "01 - 02",
+          "02 - 03",
+          "03 - 04",
+          "04 - 05",
+          "05 - 06",
+          "06 - 07",
+          "07 - 08",
+          "08 - 09",
         ];
 
         if (!shiftHours) {
           categoriesList = [
-            '09 - 10',
-            '10 - 11',
-            '11 - 12',
-            '12 - 01',
-            '01 - 02',
-            '02 - 03',
-            '03 - 04',
-            '04 - 05',
-            '05 - 06',
+            "09 - 10",
+            "10 - 11",
+            "11 - 12",
+            "12 - 01",
+            "01 - 02",
+            "02 - 03",
+            "03 - 04",
+            "04 - 05",
+            "05 - 06",
           ];
         }
 
@@ -172,24 +172,29 @@ const AppContainer = ({
   };
 
   useEffect(() => {
-    if (ShowShiftDate === 'Today') {
-      socket.on('dataUpdate', (data) => {
+    if (ShowShiftDate === "Today") {
+      socket.on("dataUpdate", (data) => {
         setLastBarValue(data);
       });
     } else {
       setLastBarValue({});
       socket.close();
-      getPreviousData('L1');
+      getPreviousData("L1");
     }
-  }, [ShowShiftDate, shiftHours]);
+  }, [ShowShiftDate, ShowShift, shiftHours]);
 
   const getFirstData = async (line) => {
-    let temp = shiftHours
-      ? `&duration=12hrs&shift=1st`
-      : `&duration=9hrs&shift=${shiftType}`;
+    let temp =
+      ShowShift === "All"
+        ? shiftHours
+          ? `&duration=9hrs&shift=1st`
+          : `&duration=6hrs&shift=${shiftType}`
+        : shiftHours
+        ? `&duration=12hrs&shift=1st`
+        : `&duration=9hrs&shift=${shiftType}`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&${temp}`,
+        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&${temp}`
       );
       const result = await response.json();
       setFirstResponse(result.data.data);
@@ -199,42 +204,47 @@ const AppContainer = ({
   };
 
   const getSecoundData = async (line) => {
-    let temp = shiftHours
-      ? `&duration=9hrs&shift=${shiftType}`
-      : `&duration=6hrs&shift=${shiftType}`;
+    let temp =
+      ShowShift === "All"
+        ? shiftHours
+          ? `&duration=9hrs&shift=1st`
+          : `&duration=6hrs&shift=${shiftType}`
+        : shiftHours
+        ? `&duration=12hrs&shift=1st`
+        : `&duration=9hrs&shift=${shiftType}`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/shift2?line=${line}&${temp}`,
+        `http://localhost:8001/api/v1/general/shift2?line=${line}&${temp}`
       );
       const result = await response.json();
       let dome = [];
       let updatedData = result.data.updatedData;
       let categoriesList = shiftHours
         ? [
-            '09 - 10',
-            '10 - 11',
-            '11 - 12',
-            '12 - 01',
-            '01 - 02',
-            '02 - 03',
-            '03 - 04',
-            '04 - 05',
-            '05 - 06',
+            "09 - 10",
+            "10 - 11",
+            "11 - 12",
+            "12 - 01",
+            "01 - 02",
+            "02 - 03",
+            "03 - 04",
+            "04 - 05",
+            "05 - 06",
           ]
         : categories;
       categoriesList.map((item, i) => {
         dome.push({
-          id: updatedData[i] === undefined ? '-' : updatedData[i].id,
-          x: updatedData[i] === undefined ? '-' : updatedData[i].x,
-          y: updatedData[i] === undefined ? '-' : updatedData[i].y,
-          z: updatedData[i] === undefined ? '-' : updatedData[i].z,
+          id: updatedData[i] === undefined ? "-" : updatedData[i].id,
+          x: updatedData[i] === undefined ? "-" : updatedData[i].x,
+          y: updatedData[i] === undefined ? "-" : updatedData[i].y,
+          z: updatedData[i] === undefined ? "-" : updatedData[i].z,
           product_id:
-            updatedData[i] === undefined ? '-' : updatedData[i].product_id,
-          target: updatedData[i] === undefined ? '-' : updatedData[i].target,
+            updatedData[i] === undefined ? "-" : updatedData[i].product_id,
+          target: updatedData[i] === undefined ? "-" : updatedData[i].target,
           comments:
-            updatedData[i] === undefined ? '-' : updatedData[i].comments,
-          op_date: updatedData[i] === undefined ? '-' : updatedData[i].op_date,
-          line: updatedData[i] === undefined ? '-' : updatedData[i].line,
+            updatedData[i] === undefined ? "-" : updatedData[i].comments,
+          op_date: updatedData[i] === undefined ? "-" : updatedData[i].op_date,
+          line: updatedData[i] === undefined ? "-" : updatedData[i].line,
         });
       });
       let temps = {
@@ -251,12 +261,17 @@ const AppContainer = ({
   };
 
   const getPreviousData = async (line) => {
-    let temps = shiftHours
-      ? `&duration=9hrs&shift=1st`
-      : `&duration=6hrs&shift=${shiftType}`;
+    let temps =
+      ShowShift === "All"
+        ? shiftHours
+          ? `&duration=9hrs&shift=1st`
+          : `&duration=6hrs&shift=${shiftType}`
+        : shiftHours
+        ? `&duration=12hrs&shift=1st`
+        : `&duration=9hrs&shift=${shiftType}`;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/displayprevioustwoshiftsdata?line=${line}&${temps}`,
+        `http://localhost:8001/api/v1/general/displayprevioustwoshiftsdata?line=${line}&${temps}`
       );
       const result = await response.json();
       setFirstResponse(result.data.shiftA);
@@ -278,7 +293,7 @@ const AppContainer = ({
   const getDownTimeData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`,
+        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`
       );
       const result = await response.json();
       setDownTimeAction(result.data);
@@ -289,7 +304,7 @@ const AppContainer = ({
 
   return (
     <>
-      {ShowShiftDate === 'Today' && ShowShift === 'All' ? (
+      {ShowShiftDate === "Today" && ShowShift === "All" ? (
         <SwitchTransition>
           <CSSTransition
             key={currentSlide}
@@ -301,24 +316,24 @@ const AppContainer = ({
               className="zoom-fade-container"
               sx={{
                 background: primary.main,
-                fontWeight: 'bold',
-                height: currentSlide !== 0 ? '100%' : '90vh',
+                fontWeight: "bold",
+                height: "94vh",
               }}
             >
               {currentSlide === 0 ? (
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Box
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
                     }}
                   >
                     <IconButton disabled onClick={handleSlidechage}>
@@ -328,7 +343,7 @@ const AppContainer = ({
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
-                  <Box style={{ flex: '4' }}>
+                  <Box style={{ flex: "4" }}>
                     <FullShift
                       handleSlidechage={handleSlidechage}
                       firstResponse={firstResponse}
@@ -345,10 +360,10 @@ const AppContainer = ({
                   </Box>
                   <Box
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
                     }}
                   >
                     <IconButton disabled onClick={handleSlidechage}>
@@ -362,17 +377,17 @@ const AppContainer = ({
               ) : (
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
+                    display: "flex",
+                    flexDirection: "row",
                     // alignItems: "center",
                   }}
                 >
                   <Box
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
                     }}
                   >
                     <IconButton onClick={handleSlidechage}>
@@ -398,10 +413,10 @@ const AppContainer = ({
 
                   <Box
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      justifyContent: "center",
                     }}
                   >
                     <IconButton onClick={handleSlidechage}>
@@ -416,7 +431,7 @@ const AppContainer = ({
             </Box>
           </CSSTransition>
         </SwitchTransition>
-      ) : ShowShift === 'All' ? (
+      ) : ShowShift === "All" ? (
         <SwitchTransition>
           <CSSTransition
             key={currentSlide}
@@ -428,8 +443,8 @@ const AppContainer = ({
               className="zoom-fade-container"
               sx={{
                 background: primary.main,
-                fontWeight: 'bold',
-                height: currentSlide !== 0 ? '100%' : '90vh',
+                fontWeight: "bold",
+                height: currentSlide !== 0 ? "100%" : "94vh",
               }}
             >
               {currentSlide === 0 ? (
@@ -465,8 +480,8 @@ const AppContainer = ({
           className="zoom-fade-container"
           sx={{
             background: primary.main,
-            fontWeight: 'bold',
-            height: currentSlide !== 0 ? '100%' : '90vh',
+            fontWeight: "bold",
+            height: currentSlide !== 0 ? "100%" : "94vh",
           }}
         >
           <SingleShift
@@ -474,6 +489,7 @@ const AppContainer = ({
             isDownTime={isDownTime}
             handleSlidechage={handleSlidechage}
             lastBarValue={lastBarValue}
+            ShowShiftDate={ShowShiftDate}
             visibleQRCodeIndex={visibleQRCodeIndex}
             setVisibleQRCodeIndex={setVisibleQRCodeIndex}
             secoundResponse={secoundResponse}

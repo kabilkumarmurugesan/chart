@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React, { useState, useEffect, useRef } from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,11 +8,11 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import annotationPlugin from 'chartjs-plugin-annotation';
-import 'chartjs-plugin-annotation';
-import '../../asset/css/BarChartCopy.css';
-import { Card, useTheme } from '@mui/material';
+} from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
+import "chartjs-plugin-annotation";
+import "../../asset/css/BarChartCopy.css";
+import { Card, useTheme } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -21,7 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin,
+  annotationPlugin
 );
 
 const BarChartCopy = ({
@@ -34,6 +34,7 @@ const BarChartCopy = ({
   height,
   shiftHours,
   ShowShift,
+  ShowShiftDate,
   setVisibleQRCodeIndex,
   visibleQRCodeIndex,
 }) => {
@@ -45,7 +46,7 @@ const BarChartCopy = ({
   const [targetList, setTargetList] = useState(90);
   const [emtSeries, setEmtSeries] = useState([]);
   const [series, setSeries] = useState([]);
-  const [tooltipContent, setTooltipContent] = useState('');
+  const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [seriesLable, setSeriesLable] = useState();
@@ -69,7 +70,7 @@ const BarChartCopy = ({
       });
     const sum = terget.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
-      0,
+      0
     );
     const average = sum / terget.length;
     let valuran = lastBarValue.timeRange;
@@ -91,20 +92,20 @@ const BarChartCopy = ({
     return () => {
       clearInterval(blinkInterval);
     };
-  }, [response, lastBarValue, ShowShift, shiftHours]);
+  }, [response, ShowShiftDate, lastBarValue, ShowShift, shiftHours]);
 
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
     getUpdateData();
-    id !== 'single' && handleSlidechage();
+    id !== "single" && handleSlidechage();
   };
 
   const getUpdateData = async () => {
-    const url = 'http://localhost:8001/api/v1/general/1';
+    const url = "http://localhost:8001/api/v1/general/1";
     const options = {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
     fetch(url, options)
@@ -115,10 +116,10 @@ const BarChartCopy = ({
         return response.json();
       })
       .then((updatedData) => {
-        console.log('Data updated:', updatedData);
+        console.log("Data updated:", updatedData);
       })
       .catch((error) => {
-        console.error('Error updating data:', error);
+        console.error("Error updating data:", error);
       });
   };
 
@@ -150,7 +151,7 @@ const BarChartCopy = ({
     labels: categoriesList,
     datasets: [
       {
-        label: 'PRODUCT A',
+        label: "PRODUCT A",
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
@@ -158,18 +159,18 @@ const BarChartCopy = ({
         barThickness: 34,
       },
       {
-        label: 'PRODUCT B',
+        label: "PRODUCT B",
         data: emtSeries,
         backgroundColor: (context) => {
           const index = context.dataIndex;
           return index === blinkingIndex && isBlinking
-            ? '#fff'
+            ? "#fff"
             : primary.complete;
         },
         borderColor: (context) => {
           const index = context.dataIndex;
           return index === blinkingIndex && isBlinking
-            ? '#fff'
+            ? "#fff"
             : primary.complete;
         },
         borderWidth: 35,
@@ -199,13 +200,13 @@ const BarChartCopy = ({
     plugins: {
       tooltip: {
         enabled: true,
-        mode: 'nearest', // Show tooltip for the nearest item
+        mode: "nearest", // Show tooltip for the nearest item
         intersect: true, // Ensure tooltip shows only for the intersected item
         callbacks: {
           label: function (tooltipItem) {
             let label = seriesLable[tooltipItem.label];
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             label += tooltipItem.raw;
             return label;
@@ -219,18 +220,18 @@ const BarChartCopy = ({
       annotation: {
         annotations: {
           line1: {
-            type: 'line',
+            type: "line",
             yMin: targetList,
             yMax: targetList,
             xMin: -1, // Start from the beginning of the chart
             xMax: categories.length - 1, // End at the last index of the chart
-            borderColor: '#241773',
+            borderColor: "#241773",
             borderWidth: 4,
             label: {
               content: [`Target: ${Math.round(targetList)}`], // Specify the label text
               enabled: true,
-              position: 'start', // Change to 'start' or 'center'
-              backgroundColor: '#241773',
+              position: "start", // Change to 'start' or 'center'
+              backgroundColor: "#241773",
               yAdjust: -15,
               xAdjust: 0,
             },
@@ -246,41 +247,43 @@ const BarChartCopy = ({
   return (
     <Card
       className="mb-4"
-      style={{ position: 'relative', padding: '10px 20px' }}
+      style={{ position: "relative", padding: "20px" }}
     >
       <div
-        id={id === 'single' ? 'single' : 'chart'}
+        id={id === "single" ? "single" : "chart"}
         style={{
-          position: 'relative',
-          width: '100%',
+          position: "relative",
+          width: "100%",
           height: height,
           // height: id === 'single' ? '0vh' : '45vh',
         }}
       >
-        <Bar
-          data={data}
-          options={options}
-          style={{ width: '100%', height: '100%' }}
-        />
+        {data && (
+          <Bar
+            data={data}
+            options={options}
+            style={{ width: "100%", height: "100%" }}
+          />
+        )}
         <div
           className="qr-code-container"
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
           {data.labels.map((label, index) => (
-            <div key={index} style={{ padding: '5px' }}>
+            <div key={index} style={{ padding: "5px" }}>
               <button
                 className="btn-one"
                 style={{
                   background:
                     visibleQRCodeIndex === index + 5
-                      ? '#4d5a81'
-                      : 'rgb(220, 223, 224)',
-                  width: '10px',
-                  height: '5px',
+                      ? "#4d5a81"
+                      : "rgb(220, 223, 224)",
+                  width: "10px",
+                  height: "5px",
                 }}
                 onClick={() => handleButtonClick(index + 5)}
               ></button>
@@ -292,15 +295,15 @@ const BarChartCopy = ({
             ref={tooltipRef}
             className="custom-tooltip"
             style={{
-              position: 'absolute',
+              position: "absolute",
               left: tooltipPosition.x,
               top: tooltipPosition.y,
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              color: '#fff',
-              padding: '5px',
-              borderRadius: '5px',
-              pointerEvents: 'none',
-              transform: 'translate(-50%, -50%)',
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+              pointerEvents: "none",
+              transform: "translate(-50%, -50%)",
             }}
           >
             {tooltipContent}

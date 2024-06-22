@@ -6,10 +6,10 @@ const MetricsCard = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('lg'));
   const metrics = [
-    { label: 'OVERALL TARGET', value: 115, background: '#241773' },
-    { label: 'OVERALL ACTUAL', value: 150, background: '#3d860b' },
+    { label: 'OVERALL TARGET', value: 155, background: '#241773' },
+    { label: 'OVERALL ACTUAL', value: 120, background: '#3d860b' },
     { label: 'OVERALL UPH', value: 125, background: '#483456' },
-    { label: 'DOWN TIME', value: 145, background: '#e1140a' },
+    { label: 'DOWN TIME', value: 30, background: '#e1140a' },
   ];
 
   return (
