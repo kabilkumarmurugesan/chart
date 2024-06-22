@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Box } from '@mui/material';
 
 function Laoyout() {
-  const [refreshRate, setRefreshRate] = useState(15000);
+  const [refreshRate, setRefreshRate] = useState(30000);
   const [ShowShift, setShowShift] = useState('All');
   const [ShowShiftDate, setShowShiftDate] = useState('Today');
   const [shiftHours, setShiftHours] = useState(true);
@@ -20,7 +20,7 @@ function Laoyout() {
   };
 
   const handleRefresh = (e) => {
-    let temp = e.currentTarget.innerText === '30 sec' ? 30000 : 15000;
+    let temp = e.currentTarget.innerText === '30 sec' ? 30000 : 45000;
     setRefreshRate(temp);
   };
 

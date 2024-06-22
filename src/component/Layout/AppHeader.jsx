@@ -133,14 +133,14 @@ export default function AppHeader({
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Box>DownTime Report:</Box>
-              <Typography>2Hrs</Typography>
+              <Box>Target UPH:</Box>
+              <Typography>Manual</Typography>
               <AntSwitch
                 onChange={(e) => handleOnDownTime(e)}
                 checked={isDownTime}
                 inputProps={{ "aria-label": "ant design" }}
               />
-              <Typography>Shift</Typography>
+              <Typography>Systematic</Typography>
             </Stack>
           </Box>
           <Box
@@ -151,14 +151,14 @@ export default function AppHeader({
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Box>Report:</Box>
-              <Typography>{ShowShift !== "Day" ? "6Hrs" : "9hrs"}</Typography>
+              <Box>Shift (Hrs):</Box>
+              <Typography>{ShowShift !== "Day" ? "6" : "9"}</Typography>
               <AntSwitch
                 onChange={(e) => handleOnShift(e)}
                 checked={shiftHours}
                 inputProps={{ "aria-label": "ant design" }}
               />
-              <Typography>{ShowShift !== "Day" ? "9Hrs" : "12hrs"}</Typography>
+              <Typography>{ShowShift !== "Day" ? "9" : "12"}</Typography>
             </Stack>
           </Box>
           <Box
@@ -325,7 +325,7 @@ export default function AppHeader({
             disableTouchRipple
             disableRipple
           >
-            <Box>{refreshRate === 15000 ? "30" : "15"} sec</Box>
+            <Box>{refreshRate === 45000  ? "30" : "45"} sec</Box>
           </IconButton>
           <IconButton
             sx={{ display: showMenu && "none", fontSize: "1rem" }}
