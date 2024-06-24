@@ -26,6 +26,8 @@ const SingleShift = ({
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   downTimeAction,
+  targetList,
+  cardData,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -55,7 +57,7 @@ const SingleShift = ({
           <Card sx={{ minWidth: 275 , height: 500}}>
             <ShiftHeader
               date={formatDate(new Date())}
-              time={firstResponse ?  firstShiftTiming : secoundShiftTiming}
+              time={firstResponse ? firstShiftTiming : secoundShiftTiming}
             />
             {firstResponse ? (
               <BarChart
@@ -68,6 +70,7 @@ const SingleShift = ({
                     to: 0,
                   },
                 }}
+                targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 handleSlidechage={handleSlidechage}
                 visibleQRCodeIndex={visibleQRCodeIndex}
@@ -76,6 +79,7 @@ const SingleShift = ({
               />
             ) : (
               <BarChartCopy
+                targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 handleSlidechage={handleSlidechage}
@@ -246,9 +250,9 @@ const SingleShift = ({
           {secoundResponse !== undefined && (
             <BasicTable response={secoundResponse.updatedData} />
           )}
-            {firstResponse !== undefined && (
+          {firstResponse !== undefined && (
             <BasicTable response={firstResponse} />
-          )}          
+          )}
         </Grid>{" "}
         <Grid item xs={4} md={2}>
           <Card>
@@ -264,18 +268,61 @@ const SingleShift = ({
         <Grid item xs={6} md={10}>
           <DownTimeAction data={downTimeAction} />
         </Grid>
-        <Grid item xs={4} md={2}>
+        <Grid
+          item
+          xs={4}
+          md={2}
+          onMouseEnter={() => setShowMenu(false)}
+          onMouseLeave={() => setShowMenu(true)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Box>
             {visibleQRCodeIndex === null ? (
-              <Box
-                onMouseEnter={() => setShowMenu(false)}
-                onMouseLeave={() => setShowMenu(true)}
-              >
-                <img
-                  style={{ width: "40%" }}
-                  alt="emoj"
-                  src={isHappy ? smileEmoji : sadEmoji}
-                />
+              <Box>
+                {showMenu ? (
+                  <img
+                    style={{ width: "40%" }}
+                    alt="emoj"
+                    src={isHappy ? smileEmoji : sadEmoji}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}
+                  >
+                    <Button
+                      sx={{
+                        background: "#483456",
+                        marginRight: "1em",
+                        "&:hover": {
+                          background: "#483456",
+                        },
+                      }}
+                      onClick={() => setIsShift(true)}
+                    >
+                      Shift
+                    </Button>
+                    <Button
+                      sx={{
+                        background: "#483456",
+                        "&:hover": {
+                          background: "#483456",
+                        },
+                      }}
+                      onClick={() => setIsShift(false)}
+                    >
+                      Crt Hrs
+                    </Button>
+                  </Box>
+                )}
               </Box>
             ) : (
               <Card>
@@ -287,20 +334,6 @@ const SingleShift = ({
                 />
               </Card>
             )}
-            <Box style={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                style={{ background: "#483456", marginRight: "1em" }}
-                onClick={() => setIsShift(true)}
-              >
-                Shift
-              </Button>
-              <Button
-                style={{ background: "#483456" }}
-                onClick={() => setIsShift(false)}
-              >
-                Crt Hrs
-              </Button>
-            </Box>
           </Box>
         </Grid>
       </Grid>

@@ -37,13 +37,13 @@ const BarChartCopy = ({
   ShowShiftDate,
   setVisibleQRCodeIndex,
   visibleQRCodeIndex,
+  targetList,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [isBlinking, setIsBlinking] = useState(true);
   const [blinkingIndex, setBlinkingIndex] = useState(0);
   const [categoriesList, setCategories] = useState(categories);
-  const [targetList, setTargetList] = useState(90);
   const [emtSeries, setEmtSeries] = useState([]);
   const [series, setSeries] = useState([]);
   const [tooltipContent, setTooltipContent] = useState("");
@@ -68,11 +68,7 @@ const BarChartCopy = ({
         item.target && terget.push(parseInt(item.target));
         emt.push(0);
       });
-    const sum = terget.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0
-    );
-    const average = sum / terget.length;
+
     let valuran = lastBarValue.timeRange;
 
     let indeOdf = categoriesList.indexOf(valuran);
@@ -81,7 +77,6 @@ const BarChartCopy = ({
       emt[indeOdf] = 5;
       temp[indeOdf] = lastBarValue.totalCount;
     }
-    !isNaN(average) && setTargetList(average);
     setSeries(temp);
     setEmtSeries(emt);
     setSeriesLable(seriesLables);
@@ -245,10 +240,7 @@ const BarChartCopy = ({
   };
 
   return (
-    <Card
-      className="mb-4"
-      style={{ position: "relative", padding: "20px" }}
-    >
+    <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
       <div
         id={id === "single" ? "single" : "chart"}
         style={{

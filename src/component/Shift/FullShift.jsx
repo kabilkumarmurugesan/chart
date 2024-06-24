@@ -20,15 +20,17 @@ const FullShift = ({
   setVisibleQRCodeIndex,
   todayDate,
   downTimeAction,
+  targetList,
 }) => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container rowSpacing={1} spacing={2}>
         <Grid item xs={12} md={6}>
-          <Card sx={{ minWidth: 275 }} className="smartCard">
+          <Card sx={{ minWidth: 275 }}>
             <ShiftHeader date={yesterdayDate} time={firstShiftTiming} />
             <BarChart
-              height={"35vh"}
+              height={"28vh"}
+              targetList={targetList}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
               visibleQRCodeIndex={visibleQRCodeIndex}
@@ -41,7 +43,8 @@ const FullShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader date={todayDate} time={secoundShiftTiming} />
             <BarChartCopy
-              height={"37vh"}
+              targetList={targetList}
+              height={"30vh"}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechage={handleSlidechage}
               lastBarValue={lastBarValue}

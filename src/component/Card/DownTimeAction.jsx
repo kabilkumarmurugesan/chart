@@ -43,13 +43,15 @@ export default function DownTimeAction({ data }) {
   }, [data]);
 
   const handleSlidechage = (pageNo) => {
-    let temp = data.reduce((acc, val, i) => {
-      let idx = Math.floor(i / 2);
-      let page = acc[idx] || (acc[idx] = []);
-      page.push(val);
+    let temp =
+      data.length > 0 &&
+      data.reduce((acc, val, i) => {
+        let idx = Math.floor(i / 2);
+        let page = acc[idx] || (acc[idx] = []);
+        page.push(val);
 
-      return acc;
-    }, []);
+        return acc;
+      }, []);
     temp[pageNo] && setDownTimeReport(temp[pageNo]);
   };
 

@@ -22,6 +22,7 @@ const AppContainer = ({
   shiftHours,
   isDownTime,
   refreshStatus,
+  targetList,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -40,6 +41,7 @@ const AppContainer = ({
   const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [downTimeAction, setDownTimeAction] = useState([]);
+  const [cardData, setCardData] = useState([]);
   const [categories, setCategories] = useState(
     shiftHours
       ? [
@@ -56,6 +58,7 @@ const AppContainer = ({
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
   const [showMenu, setShowMenu] = useState(true);
+
   useEffect(() => {
     let date = "";
     if (ShowShiftDate === "Today") {
@@ -68,29 +71,33 @@ const AppContainer = ({
     setTodayDate(date);
   }, [shiftHours, ShowShift, ShowShiftDate, shiftType]);
 
-  // useEffect(() => {
-  //   let intervalshiftHours = 0;
-  //   let interval = 0;
-  //   if (refreshStatus) {
-  //     interval = setInterval(() => {
-  //       handleSlidechage();
-  //     }, refreshRate);
-  //     if (!shiftHours) {
-  //       clearInterval(interval);
-  //       intervalshiftHours = setInterval(() => {
-  //         handleSlidechage();
-  //         setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
-  //       }, refreshRate / 2);
-  //     }
-  //   } else {
-  //     clearInterval(interval);
-  //     clearInterval(intervalshiftHours);
-  //   }
-  //   return () => {
-  //     clearInterval(interval);
-  //     clearInterval(intervalshiftHours);
-  //   };
-  // }, [refreshRate, refreshStatus, shiftHours]);
+  useEffect(() => {
+    getDownTimeData();
+  }, []);
+
+  useEffect(() => {
+    let intervalshiftHours = 0;
+    let interval = 0;
+    if (refreshStatus) {
+      interval = setInterval(() => {
+        handleSlidechage();
+      }, refreshRate);
+      if (!shiftHours) {
+        clearInterval(interval);
+        intervalshiftHours = setInterval(() => {
+          handleSlidechage();
+          setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
+        }, refreshRate / 2);
+      }
+    } else {
+      clearInterval(interval);
+      clearInterval(intervalshiftHours);
+    }
+    return () => {
+      clearInterval(interval);
+      clearInterval(intervalshiftHours);
+    };
+  }, [refreshRate, refreshStatus, shiftHours]);
 
   useEffect(() => {
     if (shiftHours) {
@@ -187,6 +194,7 @@ const AppContainer = ({
       socket.close();
       getPreviousData("L1");
     }
+    getCardValue(ShowShiftDate);
   }, [ShowShiftDate, ShowShift, shiftHours]);
 
   const getFirstData = async (line) => {
@@ -295,9 +303,72 @@ const AppContainer = ({
 
   const [todayDate, setTodayDate] = useState(formatDate(new Date()));
 
-  useEffect(() => {
-    getDownTimeData();
-  }, []);
+  const getCardValue = async (date) => {
+    let shiftHour =
+      ShowShift === "All" ? (shiftHours ? 9 : 6) : shiftHours ? 12 : 9;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8001/api/v1/general/getCardValue?isShift=${
+          ShowShift !== "Day"
+        }&target=${targetList}&shiftHours=${shiftHour}&isToday=${
+          ShowShiftDate === "Today"
+        }`
+      );
+      const result = await response.json();
+      const overallData = [
+        {
+          label: "OVERALL TARGET",
+          value: result.data.overAllTarget,
+          background: "#241773",
+        },
+        {
+          label: "OVERALL ACTUAL",
+          value: result.data.overAllActual,
+          background: "#3d860b",
+        },
+        {
+          label: "OVERALL UPH",
+          value: result.data.overAllUPH,
+          background: "#483456",
+        },
+        {
+          label: "DOWN TIME",
+          value: result.data.overAlldownTime,
+          background: "#e1140a",
+        },
+      ];
+      const shiftData = [
+        {
+          label: "SHIFT TARGET",
+          value: result.data.shiftTarget,
+          background: "#241773",
+        },
+        {
+          label: "SHIFT ACTUAL",
+          value: result.data.shiftActual,
+          background: "#3d860b",
+        },
+        {
+          label: "SHIFT UPH",
+          value: result.data.shiftUPH,
+          background: "#483456",
+        },
+        {
+          label: "DOWN TIME",
+          value: result.data.shiftdownTime,
+          background: "#e1140a",
+        },
+      ];
+      if (ShowShift !== "Day") {
+        setCardData(overallData);
+      } else {
+        setCardData(shiftData);
+      }
+    } catch (error) {
+      console.error(`Download error: ${error.message}`);
+    }
+  };
 
   const getDownTimeData = async () => {
     try {
@@ -345,12 +416,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      right: "0%",
                     }}
                   >
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -364,6 +445,7 @@ const AppContainer = ({
                       secoundShiftTiming={secoundShiftTiming}
                       firstShiftTiming={firstShiftTiming}
                       categories={categories}
+                      targetList={targetList}
                       yesterdayDate={yesterdayDate}
                       todayDate={todayDate}
                       lastBarValue={lastBarValue}
@@ -377,12 +459,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      left: "0%",
                     }}
                   >
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -403,16 +495,27 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      right: "0%",
                     }}
                   >
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
                   <FullShiftOverall
+                    targetList={targetList}
                     handleSlidechage={handleSlidechage}
                     firstResponse={firstResponse}
                     visibleQRCodeIndex={visibleQRCodeIndex}
@@ -424,6 +527,7 @@ const AppContainer = ({
                     lastBarValue={lastBarValue}
                     shiftHours={shiftHours}
                     downTimeAction={downTimeAction}
+                    cardData={cardData}
                   />
 
                   <Box
@@ -432,12 +536,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      right: "0%",
                     }}
                   >
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -464,6 +578,7 @@ const AppContainer = ({
             >
               {currentSlide === 0 ? (
                 <FullShift
+                  targetList={targetList}
                   handleSlidechage={handleSlidechage}
                   firstResponse={firstResponse}
                   visibleQRCodeIndex={visibleQRCodeIndex}
@@ -492,6 +607,7 @@ const AppContainer = ({
                   todayDate={todayDate}
                   lastBarValue={lastBarValue}
                   shiftHours={shiftHours}
+                  targetList={targetList}
                   downTimeAction={downTimeAction}
                 />
               )}
@@ -530,12 +646,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      right: "0%",
                     }}
                   >
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -543,6 +669,7 @@ const AppContainer = ({
                     shiftHours={shiftHours}
                     isDownTime={isDownTime}
                     handleSlidechage={handleSlidechage}
+                    targetList={targetList}
                     lastBarValue={lastBarValue}
                     ShowShiftDate={ShowShiftDate}
                     visibleQRCodeIndex={visibleQRCodeIndex}
@@ -552,6 +679,7 @@ const AppContainer = ({
                     categories={categories}
                     formatDate={formatDate}
                     downTimeAction={downTimeAction}
+                    cardData={cardData}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
 
@@ -561,12 +689,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      left: "0%",
                     }}
                   >
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -587,12 +725,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      left: "0%",
                     }}
                   >
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -607,6 +755,8 @@ const AppContainer = ({
                     secoundResponse={secoundResponse}
                     secoundShiftTiming={secoundShiftTiming}
                     categories={categories}
+                    cardData={cardData}
+                    targetList={targetList}
                     formatDate={formatDate}
                     downTimeAction={downTimeAction}
                     ShiftCardDetailList={ShiftCardDetailList}
@@ -617,12 +767,22 @@ const AppContainer = ({
                       alignItems: "center",
                       flexDirection: "column",
                       justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      left: "0%",
                     }}
                   >
-                    <IconButton disabled onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      disabled
+                      onClick={handleSlidechage}
+                    >
                       <ArrowBackIosIcon />
                     </IconButton>
-                    <IconButton onClick={handleSlidechage}>
+                    <IconButton
+                      sx={{ background: "#fff" }}
+                      onClick={handleSlidechage}
+                    >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
@@ -648,12 +808,14 @@ const AppContainer = ({
             lastBarValue={lastBarValue}
             ShowShiftDate={ShowShiftDate}
             visibleQRCodeIndex={visibleQRCodeIndex}
+            targetList={targetList}
             setVisibleQRCodeIndex={setVisibleQRCodeIndex}
             secoundResponse={secoundResponse}
             categories={categories}
             formatDate={formatDate}
             downTimeAction={downTimeAction}
             ShiftCardDetailList={ShiftCardDetailList}
+            cardData={cardData}
           />
         </Box>
       )}

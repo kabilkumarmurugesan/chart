@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React, { useState, useRef, useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,11 +8,11 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import annotationPlugin from 'chartjs-plugin-annotation';
-import 'chartjs-plugin-annotation';
-import { Card, useTheme } from '@mui/material';
-import '../../asset/css/BarChartCopy.css';
+} from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
+import "chartjs-plugin-annotation";
+import { Card, useTheme } from "@mui/material";
+import "../../asset/css/BarChartCopy.css";
 
 ChartJS.register(
   CategoryScale,
@@ -21,7 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin,
+  annotationPlugin
 );
 
 const BarChart = ({
@@ -32,13 +32,13 @@ const BarChart = ({
   handleSlidechage,
   response,
   height,
+  targetList,
 }) => {
   const theme = useTheme(); // Initial value for the last bar of PRODUCT A
   const { primary } = theme.palette;
-  const [targetList, setTargetList] = useState(90);
   const [series, setSeries] = useState([]);
   const [seriesLable, setSeriesLable] = useState();
-  const [tooltipContent, setTooltipContent] = useState('');
+  const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const tooltipRef = useRef(null);
@@ -54,12 +54,7 @@ const BarChart = ({
         item.target && terget.push(parseInt(item.target));
       });
     }
-    const sum = terget.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0,
-    );
-    const average = sum / terget.length;
-    !isNaN(average) && setTargetList(average);
+
     setSeries(temp);
     setSeriesLable(seriesLables);
   }, [response]);
@@ -93,7 +88,7 @@ const BarChart = ({
     labels: categories,
     datasets: [
       {
-        label: 'PRODUCT A',
+        label: "PRODUCT A",
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
@@ -108,14 +103,14 @@ const BarChart = ({
     plugins: {
       tooltip: {
         enabled: true, // Enable tooltips
-        mode: 'nearest', // Show tooltip for the nearest item
+        mode: "nearest", // Show tooltip for the nearest item
         intersect: true, // Ensure tooltip shows only for the intersected item
         callbacks: {
           label: function (tooltipItem) {
             // Customize the tooltip label
             let label = seriesLable[tooltipItem.label];
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             label += tooltipItem.raw;
             return label;
@@ -129,18 +124,18 @@ const BarChart = ({
       annotation: {
         annotations: {
           line1: {
-            type: 'line',
+            type: "line",
             yMin: targetList,
             yMax: targetList,
             xMin: -1, // Start from the beginning of the chart
             xMax: categories.length - 1, // End at the last index of the chart
-            borderColor: '#241773',
+            borderColor: "#241773",
             borderWidth: 4,
             label: {
               content: `Target: ${Math.round(targetList)}`, // Specify the label text
               enabled: true,
-              position: 'start', // Change to 'start' or 'center'
-              backgroundColor: '#241773',
+              position: "start", // Change to 'start' or 'center'
+              backgroundColor: "#241773",
               yAdjust: -15,
               xAdjust: -5,
             },
@@ -170,36 +165,36 @@ const BarChart = ({
   };
 
   return (
-    <Card className="mb-4" style={{ position: 'relative', padding: '20px' }}>
+    <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
       <div
         id="charts"
-        style={{ position: 'relative', width: '100%', height: height }}
+        style={{ position: "relative", width: "100%", height: height }}
       >
         <Bar
           data={data}
           options={options}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: "100%", height: "100%" }}
         />
         <div
           className="qr-code-container"
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
             // paddingTop: "15px",
           }}
         >
           {data.labels.map((label, index) => (
-            <div key={index} style={{ padding: '10px' }}>
+            <div key={index} style={{ padding: "10px" }}>
               <button
                 className="btn-one"
                 style={{
                   background:
                     visibleQRCodeIndex === index + 3
-                      ? '#4d5a81'
-                      : 'rgb(220, 223, 224)',
-                  width: '10px',
-                  height: '5px',
+                      ? "#4d5a81"
+                      : "rgb(220, 223, 224)",
+                  width: "10px",
+                  height: "5px",
                 }}
                 onClick={() => handleButtonClick(index + 3)}
               ></button>
@@ -211,15 +206,15 @@ const BarChart = ({
             ref={tooltipRef}
             className="custom-tooltip"
             style={{
-              position: 'absolute',
+              position: "absolute",
               left: tooltipPosition.x,
               top: tooltipPosition.y,
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              color: '#fff',
-              padding: '5px',
-              borderRadius: '5px',
-              pointerEvents: 'none',
-              transform: 'translate(-50%, -50%)',
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+              pointerEvents: "none",
+              transform: "translate(-50%, -50%)",
             }}
           >
             {tooltipContent}
@@ -228,7 +223,7 @@ const BarChart = ({
       </div>
       <div
         style={{
-          padding: '10px',
+          padding: "10px",
         }}
       ></div>
     </Card>

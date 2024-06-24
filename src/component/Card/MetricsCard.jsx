@@ -1,42 +1,36 @@
-import React from 'react';
-import { Card, Box, Typography, useMediaQuery } from '@mui/material';
-import { useTheme } from '@emotion/react';
+import React from "react";
+import { Card, Box, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
-const MetricsCard = () => {
+const MetricsCard = ({ data }) => {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('lg'));
-  const metrics = [
-    { label: 'OVERALL TARGET', value: 155, background: '#241773' },
-    { label: 'OVERALL ACTUAL', value: 120, background: '#3d860b' },
-    { label: 'OVERALL UPH', value: 125, background: '#483456' },
-    { label: 'DOWN TIME', value: 30, background: '#e1140a' },
-  ];
+  const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
   return (
     <Card>
       <Box
         sx={{
-          width: '100%',
+          width: "100%",
         }}
       >
-        {metrics.map((metric, index) => (
+        {data.map((metric, index) => (
           <Box
-          className="overalltarget"
+            className="overalltarget"
             sx={{
               backgroundColor: metric.background,
-              color: '#fff',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderBottom: index < 3 && '2px solid #fff',
-              textAlign: 'center',
+              color: "#fff",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              borderBottom: index < 3 && "2px solid #fff",
+              textAlign: "center",
             }}
           >
-            <Typography sx={{ fontSize: '15px' }}>
+            <Typography sx={{ fontSize: "15px" }}>
               {metric.label}
               <br />
-              <b style={{ fontSize: '30px' }}>{metric.value}</b>
+              <b style={{ fontSize: "30px" }}>{metric.value}</b>
             </Typography>
           </Box>
         ))}

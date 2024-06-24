@@ -73,11 +73,14 @@ export default function AppHeader({
   shiftHours,
   refreshStatus,
   isDownTime,
+  handleShiftTarget,
+  isSystem
 }) {
   const theme = useTheme();
   const { toggleColorMode } = useContext(MUIWrapperContext);
   const [showMenu, setShowMenu] = useState(true);
 
+  
   return (
     <Box
       id="app-header"
@@ -130,8 +133,8 @@ export default function AppHeader({
               <Box>Target UPH:</Box>
               <Box>M</Box>
               <AntSwitch
-                onChange={(e) => handleOnDownTime(e)}
-                checked={isDownTime}
+                onChange={(e) => handleShiftTarget(e)}
+                checked={isSystem}
                 inputProps={{ "aria-label": "ant design" }}
               />
               <Box>S</Box>
