@@ -54,7 +54,7 @@ const SingleShift = ({
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
         <Grid item xs={6} md={10}>
-          <Card sx={{ minWidth: 275 , height: 500}}>
+          <Card sx={{ minWidth: 275, height: 500 }}>
             <ShiftHeader
               date={formatDate(new Date())}
               time={firstResponse ? firstShiftTiming : secoundShiftTiming}
@@ -132,8 +132,7 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {" "}
-                        800
+                        {cardData.shiftTarget}
                       </b>
                     </Typography>
                   </Box>
@@ -167,8 +166,7 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {" "}
-                        650
+                        {cardData.shiftActual}
                       </b>
                     </Typography>
                   </Box>
@@ -203,8 +201,7 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {" "}
-                        125
+                        {cardData.shiftUPH}
                       </b>
                     </Typography>
                   </Box>
@@ -237,7 +234,7 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        145
+                        {cardData.shiftdownTime}
                       </b>
                     </Typography>
                   </Box>

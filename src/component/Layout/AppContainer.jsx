@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, useTheme, IconButton } from "@mui/material";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import FullShift from "../Shift/FullShift";
@@ -58,7 +58,7 @@ const AppContainer = ({
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
   const [showMenu, setShowMenu] = useState(true);
-
+  const mousehover = useRef(null);
   useEffect(() => {
     let date = "";
     if (ShowShiftDate === "Today") {
@@ -306,11 +306,10 @@ const AppContainer = ({
   const getCardValue = async (date) => {
     let shiftHour =
       ShowShift === "All" ? (shiftHours ? 9 : 6) : shiftHours ? 12 : 9;
-
     try {
       const response = await fetch(
         `http://localhost:8001/api/v1/general/getCardValue?isShift=${
-          ShowShift !== "Day"
+          ShowShift === "Day"
         }&target=${targetList}&shiftHours=${shiftHour}&isToday=${
           ShowShiftDate === "Today"
         }`
@@ -338,32 +337,11 @@ const AppContainer = ({
           background: "#e1140a",
         },
       ];
-      const shiftData = [
-        {
-          label: "SHIFT TARGET",
-          value: result.data.shiftTarget,
-          background: "#241773",
-        },
-        {
-          label: "SHIFT ACTUAL",
-          value: result.data.shiftActual,
-          background: "#3d860b",
-        },
-        {
-          label: "SHIFT UPH",
-          value: result.data.shiftUPH,
-          background: "#483456",
-        },
-        {
-          label: "DOWN TIME",
-          value: result.data.shiftdownTime,
-          background: "#e1140a",
-        },
-      ];
+
       if (ShowShift !== "Day") {
         setCardData(overallData);
       } else {
-        setCardData(shiftData);
+        setCardData(result.data);
       }
     } catch (error) {
       console.error(`Download error: ${error.message}`);
@@ -381,7 +359,6 @@ const AppContainer = ({
       console.error(`Download error: ${error.message}`);
     }
   };
-
   return (
     <>
       {ShowShiftDate === "Today" && ShowShift === "All" ? (
@@ -411,6 +388,7 @@ const AppContainer = ({
                   onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
+                    ref={mousehover}
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
