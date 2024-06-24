@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 function Laoyout() {
   const [refreshRate, setRefreshRate] = useState(30000);
-  const [ShowShift, setShowShift] = useState("All");
+  const [ShowShift, setShowShift] = useState("Day");
   const [ShowShiftDate, setShowShiftDate] = useState("Today");
   const [shiftHours, setShiftHours] = useState(true);
   const [refreshStatus, setRefreshStatus] = useState(true);
@@ -33,9 +33,8 @@ function Laoyout() {
     setRefreshStatus(!refreshStatus);
   };
 
-  const handleShiftUpdate = (e) => {
-    let temp = e.currentTarget.innerText === "Shift" ? "Day" : "All";
-    setShowShift(temp);
+  const handleShiftUpdate = (innerText) => {
+    setShowShift(innerText);
   };
 
   const handleShiftDateUpdate = (e) => {
@@ -50,7 +49,7 @@ function Laoyout() {
   const getShiftTarget = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getTarget?isSystem=${isSystem}`
+        `http://localhost:8001/api/v1/general/getTarget?isSystem=${isSystem}`,
       );
       const result = await response.json();
       setTargetList((pre) => result.data.target);

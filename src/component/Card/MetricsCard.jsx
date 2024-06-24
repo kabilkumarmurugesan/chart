@@ -15,6 +15,7 @@ const MetricsCard = ({ data }) => {
       >
         {data.map((metric, index) => (
           <Box
+            key={index}
             className="overalltarget"
             sx={{
               backgroundColor: metric.background,

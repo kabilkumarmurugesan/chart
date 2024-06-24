@@ -74,13 +74,12 @@ export default function AppHeader({
   refreshStatus,
   isDownTime,
   handleShiftTarget,
-  isSystem
+  isSystem,
 }) {
   const theme = useTheme();
   const { toggleColorMode } = useContext(MUIWrapperContext);
   const [showMenu, setShowMenu] = useState(true);
 
-  
   return (
     <Box
       id="app-header"
@@ -223,11 +222,11 @@ export default function AppHeader({
             >
               <span
                 onClick={(e) => {
-                  handleShiftUpdate(e);
+                  handleShiftUpdate("Shift");
                 }}
                 style={{
                   color:
-                    ShowShift === "Day"
+                    ShowShift === "Shift"
                       ? "#eeaa0a"
                       : theme.palette.mode === "dark"
                       ? "white"
@@ -239,11 +238,11 @@ export default function AppHeader({
               <Divider orientation="vertical" variant="middle" flexItem />
               <span
                 onClick={(e) => {
-                  handleShiftUpdate(e);
+                  handleShiftUpdate("Day");
                 }}
                 style={{
                   color:
-                    ShowShift === "All"
+                    ShowShift === "Day"
                       ? "#eeaa0a"
                       : theme.palette.mode === "dark"
                       ? "white"
@@ -254,6 +253,7 @@ export default function AppHeader({
               </span>
             </Box>
           </Box>
+          <Box sx={{ display: showMenu && "none" }}> Refresh:</Box>
           <IconButton
             sx={{ display: showMenu && "none", fontSize: "1rem" }}
             onClick={handleRefresh}
@@ -261,7 +261,7 @@ export default function AppHeader({
             disableTouchRipple
             disableRipple
           >
-            <Box>{refreshRate === 45000 ? "30" : "45"} sec</Box>
+            <Box>{refreshRate === 30000 ? "45" : "30"} sec</Box>
           </IconButton>
           <IconButton
             sx={{ display: showMenu && "none", fontSize: "1rem" }}

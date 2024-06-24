@@ -41,7 +41,7 @@ const SingleShift = ({
     let dataCount = lastBarValue.totalCount;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`
+        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`,
       );
       const result = await response.json();
       setIsHappy(result.data.isHappy);
