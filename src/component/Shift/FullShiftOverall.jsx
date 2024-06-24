@@ -27,13 +27,13 @@ const FullShiftOverall = ({
         <Grid item xs={12} md={10} className='dateChart'>
           <Grid container rowSpacing={2}>
             <Grid item xs={12} md={12} sx={{ height: '34vh' }}>
-              <Card sx={{ minWidth: 275 }}>
+              <Card sx={{ minWidth: 275}} >
                 <ShiftHeader
                   date={yesterdayDate}
                   time={'09:00 PM - 05:30 AM'}
                 />
                 <BarChart
-                  height={'22vh'}
+                  height={'25vh'}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   handleSlidechage={handleSlidechage}
                   visibleQRCodeIndex={visibleQRCodeIndex}
@@ -42,7 +42,7 @@ const FullShiftOverall = ({
                 />
               </Card>
             </Grid>
-            <Grid item xs={12} md={12} sx={{ height: '34vh' }}>
+            <Grid item xs={12} md={12} sx={{ height: '34vh', marginTop: '20px' }}>
               <Card sx={{ minWidth: 275 }}>
                 <ShiftHeader date={todayDate} time={'09:00 AM - 05:30 PM'} />
                 <BarChartCopy

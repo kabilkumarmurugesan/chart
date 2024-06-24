@@ -52,7 +52,7 @@ const SingleShift = ({
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
         <Grid item xs={6} md={10}>
-          <Card sx={{ minWidth: 275 , height: 402}}>
+          <Card sx={{ minWidth: 275 , height: 500}}>
             <ShiftHeader
               date={formatDate(new Date())}
               time={firstResponse ?  firstShiftTiming : secoundShiftTiming}

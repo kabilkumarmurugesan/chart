@@ -326,7 +326,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: "90vh",
+                height: "94vh",
               }}
             >
               {currentSlide === 0 ? (
@@ -459,7 +459,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: currentSlide !== 0 ? "100%" : "93.2vh",
+                height: currentSlide !== 0 ? "100%" : "94vh !important",
               }}
             >
               {currentSlide === 0 ? (

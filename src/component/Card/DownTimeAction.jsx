@@ -40,13 +40,6 @@ export default function DownTimeAction({ data }) {
 
   useEffect(() => {
     handleSlidechage(pageNo);
-
-   const interval =  setInterval(() => {
-      handleSlidechage(pageNo);
-    }, 5000);
-     return () => {
-      clearInterval(interval);
-    };
   }, [data]);
 
   const handleSlidechage = (pageNo) => {

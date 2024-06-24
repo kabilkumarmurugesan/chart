@@ -198,7 +198,7 @@ header {
     /* padding: 32px 20px; */
     font-size: 30px;
     text-align: center;
-    height: 100px;
+    height: 123px;
     justify-content: center;
     display: flex;
   }
@@ -224,7 +224,7 @@ header {
   margin: 20px 0;
 }
 .overalltarget {
-  height: 156px;
+  height: 179px;
 }
 .dateChart {
   padding-top: 22px !important;
