@@ -18,10 +18,11 @@ const SingleShift = ({
   shiftHours,
   ShowShiftDate,
   isDownTime,
+  secoundShiftTiming,
   handleSlidechage,
   firstResponse,
   lastBarValue,
-  shiftTiming,
+  firstShiftTiming,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   downTimeAction,
@@ -54,7 +55,7 @@ const SingleShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader
               date={formatDate(new Date())}
-              time={shiftTiming}
+              time={firstResponse ?  firstShiftTiming : secoundShiftTiming}
             />
             {firstResponse ? (
               <BarChart
@@ -246,6 +247,9 @@ const SingleShift = ({
           {secoundResponse !== undefined && (
             <BasicTable response={secoundResponse.updatedData} />
           )}
+            {firstResponse !== undefined && (
+            <BasicTable response={firstResponse} />
+          )}          
         </Grid>{" "}
         <Grid item xs={4} md={2}>
           <Card>

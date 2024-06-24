@@ -28,6 +28,12 @@ const AppContainer = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
   const [firstResponse, setFirstResponse] = useState();
+  const [firstShiftTiming, setFirstShiftTiming] = useState(
+    "09:00 PM - 05:30 AM"
+  );
+  const [secoundShiftTiming, setSecoundShiftTiming] = useState(
+    "09:00 AM - 05:30 PM"
+  );
   const [secoundResponse, setSecoundResponse] = useState();
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
   const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
@@ -50,7 +56,6 @@ const AppContainer = ({
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
   const [showMenu, setShowMenu] = useState(true);
-  const [shiftTiming, setShiftTiming] = useState("09:00 AM - 05:30 PM");
   useEffect(() => {
     let date = "";
     if (ShowShiftDate === "Today") {
@@ -251,6 +256,7 @@ const AppContainer = ({
       let temps = {
         updatedData: dome,
       };
+      setSecoundShiftTiming(result.data.shiftTiming);
       setSecoundResponse(temps);
     } catch (error) {
       console.error(`Download error: ${error.message}`);
@@ -279,6 +285,8 @@ const AppContainer = ({
       let temp = {
         updatedData: result.data.shiftB,
       };
+      setSecoundShiftTiming(result.data.shiftBTiming);
+      setFirstShiftTiming(result.data.shiftATiming);
       setSecoundResponse(temp);
     } catch (error) {
       console.error(error.message);
@@ -349,11 +357,12 @@ const AppContainer = ({
                   <Box style={{ flex: "4" }}>
                     <FullShift
                       handleSlidechage={handleSlidechage}
-                      shiftTiming={shiftTiming}
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
                       setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                       secoundResponse={secoundResponse}
+                      secoundShiftTiming={secoundShiftTiming}
+                      firstShiftTiming={firstShiftTiming}
                       categories={categories}
                       yesterdayDate={yesterdayDate}
                       todayDate={todayDate}
@@ -457,7 +466,11 @@ const AppContainer = ({
                 <FullShift
                   handleSlidechage={handleSlidechage}
                   firstResponse={firstResponse}
+                  visibleQRCodeIndex={visibleQRCodeIndex}
+                  setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   secoundResponse={secoundResponse}
+                  secoundShiftTiming={secoundShiftTiming}
+                  firstShiftTiming={firstShiftTiming}
                   categories={categories}
                   yesterdayDate={yesterdayDate}
                   todayDate={todayDate}
@@ -469,7 +482,11 @@ const AppContainer = ({
                 <FullShift
                   handleSlidechage={handleSlidechage}
                   firstResponse={firstResponse}
+                  visibleQRCodeIndex={visibleQRCodeIndex}
+                  setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   secoundResponse={secoundResponse}
+                  secoundShiftTiming={secoundShiftTiming}
+                  firstShiftTiming={firstShiftTiming}
                   categories={categories}
                   yesterdayDate={yesterdayDate}
                   todayDate={todayDate}
@@ -531,6 +548,7 @@ const AppContainer = ({
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     firstResponse={firstResponse}
+                    firstShiftTiming={firstShiftTiming}
                     categories={categories}
                     formatDate={formatDate}
                     downTimeAction={downTimeAction}
@@ -587,6 +605,7 @@ const AppContainer = ({
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     secoundResponse={secoundResponse}
+                    secoundShiftTiming={secoundShiftTiming}
                     categories={categories}
                     formatDate={formatDate}
                     downTimeAction={downTimeAction}
@@ -624,7 +643,7 @@ const AppContainer = ({
           <SingleShift
             shiftHours={shiftHours}
             isDownTime={isDownTime}
-            shiftTiming={shiftTiming}
+            secoundShiftTiming={secoundShiftTiming}
             handleSlidechage={handleSlidechage}
             lastBarValue={lastBarValue}
             ShowShiftDate={ShowShiftDate}

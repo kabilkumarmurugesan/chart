@@ -40,10 +40,16 @@ export default function DownTimeAction({ data }) {
 
   useEffect(() => {
     handleSlidechage(pageNo);
+
+   const interval =  setInterval(() => {
+      handleSlidechage(pageNo);
+    }, 5000);
+     return () => {
+      clearInterval(interval);
+    };
   }, [data]);
 
   const handleSlidechage = (pageNo) => {
-    debugger;
     let temp = data.reduce((acc, val, i) => {
       let idx = Math.floor(i / 2);
       let page = acc[idx] || (acc[idx] = []);
@@ -51,7 +57,6 @@ export default function DownTimeAction({ data }) {
 
       return acc;
     }, []);
-    console.log("temp", temp[pageNo]);
     temp[pageNo] && setDownTimeReport(temp[pageNo]);
   };
 
@@ -101,7 +106,7 @@ export default function DownTimeAction({ data }) {
             display: "flex",
             alignItems: "center",
             flexDirection: "row",
-            justifyContent: "space-between",
+            justifyContent: "end",
           }}
         >
           <IconButton

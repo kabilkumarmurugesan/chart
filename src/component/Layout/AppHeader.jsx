@@ -128,13 +128,13 @@ export default function AppHeader({
           >
             <Stack direction="row" spacing={1} alignItems="center">
               <Box>Target UPH:</Box>
-              <Typography>Manual</Typography>
+              <Box>M</Box>
               <AntSwitch
                 onChange={(e) => handleOnDownTime(e)}
                 checked={isDownTime}
                 inputProps={{ "aria-label": "ant design" }}
               />
-              <Typography>Systematic</Typography>
+              <Box>S</Box>
             </Stack>
           </Box>
           <Box
@@ -146,13 +146,13 @@ export default function AppHeader({
           >
             <Stack direction="row" spacing={1} alignItems="center">
               <Box>Shift (Hrs):</Box>
-              <Typography>{ShowShift !== "Day" ? "6" : "9"}</Typography>
+              <Box>{ShowShift !== "Day" ? "6" : "9"}</Box>
               <AntSwitch
                 onChange={(e) => handleOnShift(e)}
                 checked={shiftHours}
                 inputProps={{ "aria-label": "ant design" }}
               />
-              <Typography>{ShowShift !== "Day" ? "9" : "12"}</Typography>
+              <Box>{ShowShift !== "Day" ? "9" : "12"}</Box>
             </Stack>
           </Box>
           <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
