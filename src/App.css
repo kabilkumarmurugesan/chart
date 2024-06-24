@@ -191,35 +191,22 @@ header {
   /* background-color: #2196f3; */
   /* padding: 10px; */
 }
-@media (min-width: 1600px) {
+
   .grid-item {
     /* background-color: rgba(255, 255, 255, 0.8); */
     /* border: 1px solid rgba(0, 0, 0, 0.8); */
-    padding: 32px 20px;
+    /* padding: 32px 20px; */
     font-size: 30px;
     text-align: center;
+    height: 100px;
+    justify-content: center;
+    display: flex;
   }
   .grid-items {
     padding: 36px 20px;
     font-size: 30px;
     text-align: center;
   }
-}
-
-@media (max-width: 1600px) {
-  .grid-item {
-    /* background-color: rgba(255, 255, 255, 0.8); */
-    /* border: 1px solid rgba(0, 0, 0, 0.8); */
-    padding: 25px 20px;
-    font-size: 30px;
-    text-align: center;
-  }
-  .grid-items {
-    padding: 35px 20px;
-    font-size: 30px;
-    text-align: center;
-  }
-}
 
 /* .table-container {
   border: 2px solid #4d5a81;
@@ -235,4 +222,16 @@ header {
   border: 2px solid #4d5a81;
   border-radius: 10px;
   margin: 20px 0;
+}
+.overalltarget {
+  height: 156px;
+}
+.dateChart {
+  padding-top: 22px !important;
+}
+.timeChart {
+  padding-top: 22px !important;
+}
+.uphTable {
+  height: 230px;
 }

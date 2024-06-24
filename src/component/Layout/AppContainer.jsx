@@ -68,29 +68,29 @@ const AppContainer = ({
     setTodayDate(date);
   }, [shiftHours, ShowShift, ShowShiftDate, shiftType]);
 
-  useEffect(() => {
-    let intervalshiftHours = 0;
-    let interval = 0;
-    if (refreshStatus) {
-      interval = setInterval(() => {
-        handleSlidechage();
-      }, refreshRate);
-      if (!shiftHours) {
-        clearInterval(interval);
-        intervalshiftHours = setInterval(() => {
-          handleSlidechage();
-          setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
-        }, refreshRate / 2);
-      }
-    } else {
-      clearInterval(interval);
-      clearInterval(intervalshiftHours);
-    }
-    return () => {
-      clearInterval(interval);
-      clearInterval(intervalshiftHours);
-    };
-  }, [refreshRate, refreshStatus, shiftHours]);
+  // useEffect(() => {
+  //   let intervalshiftHours = 0;
+  //   let interval = 0;
+  //   if (refreshStatus) {
+  //     interval = setInterval(() => {
+  //       handleSlidechage();
+  //     }, refreshRate);
+  //     if (!shiftHours) {
+  //       clearInterval(interval);
+  //       intervalshiftHours = setInterval(() => {
+  //         handleSlidechage();
+  //         setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
+  //       }, refreshRate / 2);
+  //     }
+  //   } else {
+  //     clearInterval(interval);
+  //     clearInterval(intervalshiftHours);
+  //   }
+  //   return () => {
+  //     clearInterval(interval);
+  //     clearInterval(intervalshiftHours);
+  //   };
+  // }, [refreshRate, refreshStatus, shiftHours]);
 
   useEffect(() => {
     if (shiftHours) {
@@ -326,7 +326,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: "94vh",
+                height: "90vh",
               }}
             >
               {currentSlide === 0 ? (
@@ -459,7 +459,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: currentSlide !== 0 ? "100%" : "94vh",
+                height: currentSlide !== 0 ? "100%" : "93.2vh",
               }}
             >
               {currentSlide === 0 ? (
@@ -511,7 +511,7 @@ const AppContainer = ({
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: currentSlide !== 0 ? "100%" : "94vh",
+                height: currentSlide !== 0 ? "100%" : "93.2vh",
               }}
             >
               {currentSlide === 0 ? (
@@ -637,7 +637,7 @@ const AppContainer = ({
           sx={{
             background: primary.main,
             fontWeight: "bold",
-            height: currentSlide !== 0 ? "100%" : "94vh",
+            height: currentSlide !== 0 ? "100%" : "93.2vh",
           }}
         >
           <SingleShift

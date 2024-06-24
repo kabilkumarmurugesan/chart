@@ -13,6 +13,7 @@ export default function BasicTable({ response }) {
         orientation="vertical"
         sx={{ minWidth: 650 }}
         aria-label="simple table"
+        className='uphTable'
       >
         <TableRow>
           <TableCellHeader title={'UPH'} />

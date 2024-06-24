@@ -34,7 +34,6 @@
   }
 }
 
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -72,7 +71,6 @@
 }
 
 .qr-code-flow {
-
   position: absolute;
   right: 2rem;
 }
@@ -90,7 +88,6 @@ div#single canvas {
 .close-qr-code-flow {
   position: absolute;
   right: 5rem;
-
 }
 
 .zoom-fade-container {
@@ -175,9 +172,6 @@ div#single canvas {
   .qr-code-item {
     width: 30%;
   }
-  #single {
-    height: 50vh !important;
-    }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
@@ -192,53 +186,44 @@ div#single canvas {
     width: 20%;
   }
 
-#single {
-  height: 50vh !important;
-  }}
+}
 
-  @media  (min-width: 1800px) {
-    .qr-code-container {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-around;
-    }
-  
-    .qr-code-item {
-      width: 20%;
-    }
-  
-  #single {
-    height: 44vh !important;
-    }}
-  @media (max-width: 2000px) {
-    .qr-code-container {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-around;
-    }
-  
-    .qr-code-item {
-      width: 20%;
-    }
-  
-  #single {
-    height: 45vh !important;
-    }}
+@media (min-width: 1800px) {
+  .qr-code-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
 
-  @media only screen and (min-width: 1950px) {
-    .qr-code-container {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-around;
-    }
-  
-    .qr-code-item {
-      width: 20%;
-    }
-  
-  #single {
-    height: 44vh !important;
-    }}
+  .qr-code-item {
+    width: 20%;
+  }
+
+}
+@media (max-width: 2000px) {
+  .qr-code-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
+  .qr-code-item {
+    width: 20%;
+  }
+}
+
+@media only screen and (min-width: 1950px) {
+  .qr-code-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
+  .qr-code-item {
+    width: 20%;
+  }
+
+}
 /* Additional styles */
 .custom-tooltip {
   position: absolute;
@@ -250,8 +235,6 @@ div#single canvas {
   transform: translate(-50%, -50%);
 }
 
-
-
 .btn-orange {
   background-color: rgb(121, 123, 124);
   color: white;
@@ -262,4 +245,7 @@ div#single canvas {
 
 .btn-orange:hover {
   background-color: rgb(43, 0, 255);
+}
+#single {
+  height: 34vh !important;
 }

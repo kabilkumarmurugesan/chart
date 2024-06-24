@@ -24,7 +24,7 @@ const FullShiftOverall = ({
   return (
     <Box sx={{ p: 2 }}>
       <Grid container rowSpacing={3} spacing={4}>
-        <Grid item xs={12} md={10}>
+        <Grid item xs={12} md={10} className='dateChart'>
           <Grid container rowSpacing={2}>
             <Grid item xs={12} md={12} sx={{ height: '34vh' }}>
               <Card sx={{ minWidth: 275 }}>
@@ -64,7 +64,7 @@ const FullShiftOverall = ({
         <Grid item xs={4} md={2}>
           <MetricsCard />
         </Grid>
-        <Grid item xs={6} md={12}>
+        <Grid item xs={6} md={12} className='timeChart'>
           <Grid container spacing={4}>
             <Grid item xs={6} md={10}>
               <DownTimeAction data={downTimeAction} />

@@ -21,6 +21,7 @@ const MetricsCard = () => {
       >
         {metrics.map((metric, index) => (
           <Box
+          className="overalltarget"
             sx={{
               backgroundColor: metric.background,
               color: '#fff',
@@ -29,8 +30,6 @@ const MetricsCard = () => {
               justifyContent: 'center',
               alignItems: 'center',
               borderBottom: index < 3 && '2px solid #fff',
-              padding: 5,
-              height: '100%',
               textAlign: 'center',
             }}
           >
