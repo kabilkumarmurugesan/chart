@@ -1,7 +1,8 @@
-import React from "react";
-import { Box, Card, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Card, Grid } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react";
-import emoj from "../../asset/gif/emoj.png";
+import smileEmoji from "../../asset/gif/emoj.png";
+import sadEmoji from "../../asset/gif/SadEmoji.png";
 import BarChart from "../charts/BarChart";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
@@ -15,7 +16,7 @@ const FullShiftOverall = ({
   categories,
   shiftHours,
   lastBarValue,
-  handleSlidechage,
+  handleSlidechange,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   todayDate,
@@ -23,6 +24,31 @@ const FullShiftOverall = ({
   targetList,
   cardData,
 }) => {
+  const [isHappy, setIsHappy] = useState();
+  const [isShift, setIsShift] = useState(true);
+  const [showMenu, setShowMenu] = useState(true);
+
+  useEffect(() => {
+    getEmojiStatus();
+  }, [isShift]);
+
+  const handleSlidechanges = () => {
+    handleSlidechange("Full");
+  };
+
+  const getEmojiStatus = async () => {
+    let dataCount = lastBarValue.totalCount;
+    try {
+      const response = await fetch(
+        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`,
+      );
+      const result = await response.json();
+      setIsHappy(result.data.isHappy);
+    } catch (error) {
+      console.error(`Download error: ${error.message}`);
+    }
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Grid container rowSpacing={3} spacing={4}>
@@ -37,7 +63,7 @@ const FullShiftOverall = ({
                 <BarChart
                   height={"25vh"}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-                  handleSlidechage={handleSlidechage}
+                  handleSlidechange={handleSlidechanges}
                   visibleQRCodeIndex={visibleQRCodeIndex}
                   categories={categories}
                   response={firstResponse}
@@ -57,7 +83,7 @@ const FullShiftOverall = ({
                   height={"24vh"}
                   targetList={targetList}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-                  handleSlidechage={handleSlidechage}
+                  handleSlidechange={handleSlidechanges}
                   lastBarValue={lastBarValue}
                   animations={false}
                   response={secoundResponse}
@@ -78,19 +104,73 @@ const FullShiftOverall = ({
             <Grid item xs={6} md={10}>
               <DownTimeAction data={downTimeAction} />
             </Grid>
-            <Grid item xs={4} md={2}>
-              {visibleQRCodeIndex === null ? (
-                <img style={{ width: "54%" }} alt="emoj" src={emoj} />
-              ) : (
-                <Card>
-                  <QRCodeCanvas
-                    value={
-                      "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
-                    }
-                    size={150}
-                  />
-                </Card>
-              )}
+            <Grid
+              item
+              xs={4}
+              md={2}
+              onMouseEnter={() => setShowMenu(false)}
+              onMouseLeave={() => setShowMenu(true)}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Box>
+                {visibleQRCodeIndex === null ? (
+                  <Box>
+                    {showMenu ? (
+                      <img
+                        style={{ width: "40%" }}
+                        alt="emoj"
+                        src={isHappy ? smileEmoji : sadEmoji}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "100%",
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            background: "#483456",
+                            marginRight: "1em",
+                            "&:hover": {
+                              background: "#483456",
+                            },
+                          }}
+                          onClick={() => setIsShift(true)}
+                        >
+                          Shift
+                        </Button>
+                        <Button
+                          sx={{
+                            background: "#483456",
+                            "&:hover": {
+                              background: "#483456",
+                            },
+                          }}
+                          onClick={() => setIsShift(false)}
+                        >
+                          Crt Hrs
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                ) : (
+                  <Card>
+                    <QRCodeCanvas
+                      value={
+                        "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+                      }
+                      size={150}
+                    />
+                  </Card>
+                )}
+              </Box>
             </Grid>
           </Grid>{" "}
         </Grid>

@@ -21,13 +21,13 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin
+  annotationPlugin,
 );
 
 const BarChartCopy = ({
   categories,
   lastBarValue,
-  handleSlidechage,
+  handleSlidechange,
   response,
   animations,
   id,
@@ -92,7 +92,7 @@ const BarChartCopy = ({
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
     getUpdateData();
-    id !== "single" && handleSlidechage();
+    id !== "single" && handleSlidechange();
   };
 
   const getUpdateData = async () => {
@@ -271,13 +271,13 @@ const BarChartCopy = ({
                 className="btn-one"
                 style={{
                   background:
-                    visibleQRCodeIndex === index + 5
+                    visibleQRCodeIndex === index + 12
                       ? "#4d5a81"
                       : "rgb(220, 223, 224)",
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() => handleButtonClick(index + 5)}
+                onClick={() => handleButtonClick(index + 12)}
               ></button>
             </div>
           ))}

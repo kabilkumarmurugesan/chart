@@ -19,7 +19,7 @@ const SingleShift = ({
   ShowShiftDate,
   isDownTime,
   secoundShiftTiming,
-  handleSlidechage,
+  handleSlidechange,
   firstResponse,
   lastBarValue,
   firstShiftTiming,
@@ -72,7 +72,7 @@ const SingleShift = ({
                 }}
                 targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-                handleSlidechage={handleSlidechage}
+                handleSlidechange={handleSlidechange}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
                 response={firstResponse}
@@ -82,7 +82,7 @@ const SingleShift = ({
                 targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 visibleQRCodeIndex={visibleQRCodeIndex}
-                handleSlidechage={handleSlidechage}
+                handleSlidechange={handleSlidechange}
                 shiftHours={shiftHours}
                 ShowShiftDate={ShowShiftDate}
                 lastBarValue={lastBarValue}

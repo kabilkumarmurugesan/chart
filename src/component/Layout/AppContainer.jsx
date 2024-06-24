@@ -72,14 +72,14 @@ const AppContainer = ({
       if (!shiftHours) {
         clearInterval(interval);
         intervalshiftHours = setInterval(() => {
-          handleSlidechage();
+          handleSlidechange();
         }, refreshRate / 2);
         interval = setInterval(() => {
           setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
         }, refreshRate);
       } else {
         interval = setInterval(() => {
-          handleSlidechage();
+          handleSlidechange();
         }, refreshRate);
       }
     } else {
@@ -203,7 +203,9 @@ const AppContainer = ({
         },
         {
           label: "OVERALL UPH",
-          value: firstCardData.shiftUPH + secoundCardData.shiftUPH,
+          value: Math.round(
+            firstCardData.shiftUPH + secoundCardData.shiftUPH / 2,
+          ),
           background: "#483456",
         },
         {
@@ -288,8 +290,10 @@ const AppContainer = ({
     }
   };
 
-  const handleSlidechage = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % 2);
+  const handleSlidechange = (type) => {
+    type === "Full"
+      ? setCurrentSlide((prevSlide) => 1)
+      : setCurrentSlide((prevSlide) => (prevSlide + 1) % 2);
   };
 
   const getPreviousData = async (line) => {
@@ -398,20 +402,20 @@ const AppContainer = ({
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
                   <Box style={{ flex: "4" }}>
                     <FullShift
-                      handleSlidechage={handleSlidechage}
+                      handleSlidechange={handleSlidechange}
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
                       setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -441,13 +445,13 @@ const AppContainer = ({
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -475,21 +479,21 @@ const AppContainer = ({
                   >
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
                   <FullShiftOverall
                     targetList={targetList}
-                    handleSlidechage={handleSlidechage}
+                    handleSlidechange={handleSlidechange}
                     firstResponse={firstResponse}
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -516,14 +520,14 @@ const AppContainer = ({
                   >
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -573,13 +577,13 @@ const AppContainer = ({
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -587,7 +591,7 @@ const AppContainer = ({
                   <SingleShift
                     shiftHours={shiftHours}
                     isDownTime={isDownTime}
-                    handleSlidechage={handleSlidechage}
+                    handleSlidechange={handleSlidechange}
                     targetList={targetList}
                     lastBarValue={lastBarValue}
                     ShowShiftDate={ShowShiftDate}
@@ -616,13 +620,13 @@ const AppContainer = ({
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -652,13 +656,13 @@ const AppContainer = ({
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -666,7 +670,7 @@ const AppContainer = ({
                   <SingleShift
                     shiftHours={shiftHours}
                     isDownTime={isDownTime}
-                    handleSlidechage={handleSlidechage}
+                    handleSlidechange={handleSlidechange}
                     lastBarValue={lastBarValue}
                     ShowShiftDate={ShowShiftDate}
                     visibleQRCodeIndex={visibleQRCodeIndex}
@@ -694,13 +698,13 @@ const AppContainer = ({
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechage}
+                      onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -723,7 +727,7 @@ const AppContainer = ({
             shiftHours={shiftHours}
             isDownTime={isDownTime}
             secoundShiftTiming={secoundShiftTiming}
-            handleSlidechage={handleSlidechage}
+            handleSlidechange={handleSlidechange}
             lastBarValue={lastBarValue}
             ShowShiftDate={ShowShiftDate}
             visibleQRCodeIndex={visibleQRCodeIndex}

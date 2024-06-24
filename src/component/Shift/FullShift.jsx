@@ -15,13 +15,16 @@ const FullShift = ({
   categories,
   shiftHours,
   lastBarValue,
-  handleSlidechage,
+  handleSlidechange,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   todayDate,
   downTimeAction,
   targetList,
 }) => {
+  const handleSlidechanges = () => {
+    handleSlidechange();
+  };
   return (
     <Box sx={{ p: 2 }}>
       <Grid container rowSpacing={1} spacing={2}>
@@ -32,7 +35,7 @@ const FullShift = ({
               height={"28vh"}
               targetList={targetList}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-              handleSlidechage={handleSlidechage}
+              handleSlidechange={handleSlidechanges}
               visibleQRCodeIndex={visibleQRCodeIndex}
               categories={categories}
               response={firstResponse}
@@ -46,7 +49,7 @@ const FullShift = ({
               targetList={targetList}
               height={"30vh"}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-              handleSlidechage={handleSlidechage}
+              handleSlidechange={handleSlidechanges}
               lastBarValue={lastBarValue}
               animations={false}
               response={secoundResponse}

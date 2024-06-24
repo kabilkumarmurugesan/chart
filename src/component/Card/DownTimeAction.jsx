@@ -39,10 +39,10 @@ export default function DownTimeAction({ data }) {
   const [downTimeReport, setDownTimeReport] = useState([]);
 
   useEffect(() => {
-    handleSlidechage(pageNo);
+    handlePageChange(pageNo);
   }, [data]);
 
-  const handleSlidechage = (pageNo) => {
+  const handlePageChange = (pageNo) => {
     let temp =
       data.length > 0 &&
       data.reduce((acc, val, i) => {
@@ -107,7 +107,7 @@ export default function DownTimeAction({ data }) {
           <IconButton
             disabled={pageNo < 1}
             onClick={() => {
-              handleSlidechage(pageNo - 1);
+              handlePageChange(pageNo - 1);
               setPageNo(pageNo - 1);
             }}
           >
@@ -116,7 +116,7 @@ export default function DownTimeAction({ data }) {
           <IconButton
             disabled={pageNo >= Math.floor(data.length / 2)}
             onClick={() => {
-              handleSlidechage(pageNo + 1);
+              handlePageChange(pageNo + 1);
               setPageNo(pageNo + 1);
             }}
           >

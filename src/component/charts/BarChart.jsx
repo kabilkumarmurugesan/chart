@@ -21,7 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin
+  annotationPlugin,
 );
 
 const BarChart = ({
@@ -29,7 +29,7 @@ const BarChart = ({
   animations,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
-  handleSlidechage,
+  handleSlidechange,
   response,
   height,
   targetList,
@@ -75,7 +75,7 @@ const BarChart = ({
 
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-    handleSlidechage();
+    handleSlidechange();
   };
 
   const getColor = (value) => {
