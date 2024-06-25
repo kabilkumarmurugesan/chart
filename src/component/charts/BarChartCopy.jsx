@@ -21,7 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin,
+  annotationPlugin
 );
 
 const BarChartCopy = ({
@@ -61,6 +61,7 @@ const BarChartCopy = ({
     let emt = [];
     let terget = [];
     let seriesLables = {};
+    debugger;
     response &&
       response.updatedData.map((item) => {
         temp.push(item.y);
@@ -70,7 +71,7 @@ const BarChartCopy = ({
       });
 
     let valuran = lastBarValue.timeRange;
-
+    console.log("valuran", lastBarValue);
     let indeOdf = categoriesList.indexOf(valuran);
     indeOdf > 0 && setBlinkingIndex(indeOdf);
     if (valuran) {
@@ -78,6 +79,8 @@ const BarChartCopy = ({
       temp[indeOdf] = lastBarValue.totalCount;
     }
     setSeries(temp);
+    console.log("temp", temp);
+
     setEmtSeries(emt);
     setSeriesLable(seriesLables);
 

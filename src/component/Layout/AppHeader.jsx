@@ -148,13 +148,13 @@ export default function AppHeader({
           >
             <Stack direction="row" spacing={1} alignItems="center">
               <Box>Shift (Hrs):</Box>
-              <Box>{ShowShift !== "Day" ? "6" : "9"}</Box>
+              <Box>{ShowShift === "Day" ? "6" : "9"}</Box>
               <AntSwitch
                 onChange={(e) => handleOnShift(e)}
                 checked={shiftHours}
                 inputProps={{ "aria-label": "ant design" }}
               />
-              <Box>{ShowShift !== "Day" ? "9" : "12"}</Box>
+              <Box>{ShowShift === "Day" ? "9" : "12"}</Box>
             </Stack>
           </Box>
           <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>

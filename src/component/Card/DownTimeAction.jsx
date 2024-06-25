@@ -43,6 +43,7 @@ export default function DownTimeAction({ data }) {
   }, [data]);
 
   const handlePageChange = (pageNo) => {
+    console.log(data, "data.length", data.length);
     let temp =
       data.length > 0 &&
       data.reduce((acc, val, i) => {

@@ -27,6 +27,8 @@ const SingleShift = ({
   setVisibleQRCodeIndex,
   downTimeAction,
   targetList,
+  yesterdayDate,
+  todayDate,
   cardData,
 }) => {
   const [isHappy, setIsHappy] = useState();
@@ -41,7 +43,7 @@ const SingleShift = ({
     let dataCount = lastBarValue.totalCount;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`,
+        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`
       );
       const result = await response.json();
       setIsHappy(result.data.isHappy);
@@ -56,7 +58,7 @@ const SingleShift = ({
         <Grid item xs={6} md={10}>
           <Card sx={{ minWidth: 275, height: 500 }}>
             <ShiftHeader
-              date={formatDate(new Date())}
+              date={ShowShiftDate !== "Today" ? yesterdayDate : todayDate}
               time={firstResponse ? firstShiftTiming : secoundShiftTiming}
             />
             {firstResponse ? (

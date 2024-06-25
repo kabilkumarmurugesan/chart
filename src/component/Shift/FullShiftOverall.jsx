@@ -22,7 +22,9 @@ const FullShiftOverall = ({
   todayDate,
   downTimeAction,
   targetList,
+  secoundShiftTiming,
   cardData,
+  firstShiftTiming,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -40,7 +42,7 @@ const FullShiftOverall = ({
     let dataCount = lastBarValue.totalCount;
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`,
+        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`
       );
       const result = await response.json();
       setIsHappy(result.data.isHappy);
@@ -56,10 +58,7 @@ const FullShiftOverall = ({
           <Grid container rowSpacing={2}>
             <Grid item xs={12} md={12} sx={{ height: "34vh" }}>
               <Card sx={{ minWidth: 275 }}>
-                <ShiftHeader
-                  date={yesterdayDate}
-                  time={"09:00 PM - 05:30 AM"}
-                />
+                <ShiftHeader date={yesterdayDate} time={firstShiftTiming} />
                 <BarChart
                   height={"25vh"}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -78,7 +77,7 @@ const FullShiftOverall = ({
               sx={{ height: "34vh", marginTop: "20px" }}
             >
               <Card sx={{ minWidth: 275 }}>
-                <ShiftHeader date={todayDate} time={"09:00 AM - 05:30 PM"} />
+                <ShiftHeader date={todayDate} time={secoundShiftTiming} />
                 <BarChartCopy
                   height={"24vh"}
                   targetList={targetList}
