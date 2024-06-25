@@ -97,6 +97,11 @@ const BarChart = ({
         borderColor: series.map(getColor),
         borderWidth: 34,
         barThickness: 35,
+        datalabels: {
+          display: true,
+          align: "center",
+          color: "white",
+        },
       },
     ],
   };
@@ -144,21 +149,6 @@ const BarChart = ({
             },
             onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
             onLeave: hideTooltip,
-          },
-        },
-      },
-      datalabels: {
-        display: true,
-        color: "white",
-        align: "center",
-        padding: {
-          right: 0,
-        },
-        labels: {
-          title: {
-            font: {
-              size: 14,
-            },
           },
         },
       },

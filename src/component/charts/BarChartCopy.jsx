@@ -8,12 +8,14 @@ import {
   Title,
   Tooltip,
   Legend,
+  registerables,
 } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
 import "../../asset/css/BarChartCopy.css";
 import { Card, useTheme } from "@mui/material";
-
+import "chartjs-plugin-datalabels";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,8 +23,10 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin
+  annotationPlugin,
+  ChartDataLabels
 );
+ChartJS.register(...registerables);
 
 const BarChartCopy = ({
   categories,
@@ -155,6 +159,11 @@ const BarChartCopy = ({
         borderColor: series.map(getColor),
         borderWidth: 35,
         barThickness: 34,
+        datalabels: {
+          display: true,
+          align: "center",
+          color: "white",
+        },
       },
       {
         label: "PRODUCT B",
@@ -173,6 +182,9 @@ const BarChartCopy = ({
         },
         borderWidth: 35,
         barThickness: 34,
+        datalabels: {
+          display: false,
+        },
       },
     ],
   };
@@ -228,10 +240,16 @@ const BarChartCopy = ({
             label: {
               content: [`Target: ${Math.round(targetList)}`], // Specify the label text
               enabled: true,
-              position: "start", // Change to 'start' or 'center'
+              position: "start", // Change to 'start', 'center', or 'end'
               backgroundColor: "#241773",
               yAdjust: -15,
               xAdjust: 0,
+              padding: 6,
+              font: {
+                size: 14,
+                weight: "bold",
+                family: "Arial",
+              },
             },
             onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
             onLeave: hideTooltip,
