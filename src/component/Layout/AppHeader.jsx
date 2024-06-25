@@ -182,7 +182,7 @@ export default function AppHeader({
                       ? "#eeaa0a"
                       : theme.palette.mode === "dark"
                       ? "white"
-                      : "black",
+                      : "#646363bf",
                 }}
               >
                 Today
@@ -198,7 +198,7 @@ export default function AppHeader({
                       ? "#eeaa0a"
                       : theme.palette.mode === "dark"
                       ? "white"
-                      : "black",
+                      : "#646363bf",
                 }}
               >
                 Yesterday
@@ -229,8 +229,8 @@ export default function AppHeader({
                     ShowShift === "Shift"
                       ? "#eeaa0a"
                       : theme.palette.mode === "dark"
-                      ? "white"
-                      : "black",
+                      ? "#efeeeee0"
+                      : "#646363bf",
                 }}
               >
                 Shift
@@ -245,8 +245,8 @@ export default function AppHeader({
                     ShowShift === "Day"
                       ? "#eeaa0a"
                       : theme.palette.mode === "dark"
-                      ? "white"
-                      : "black",
+                      ? "#efeeeee0"
+                      : "#646363bf",
                 }}
               >
                 Day

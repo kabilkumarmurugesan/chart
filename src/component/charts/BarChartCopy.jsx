@@ -65,8 +65,7 @@ const BarChartCopy = ({
     let emt = [];
     let terget = [];
     let seriesLables = {};
-    debugger;
-    response &&
+     response &&
       response.updatedData.map((item) => {
         temp.push(item.y);
         seriesLables[item.x] = item.product_id;
@@ -75,16 +74,14 @@ const BarChartCopy = ({
       });
 
     let valuran = lastBarValue.timeRange;
-    console.log("valuran", lastBarValue);
-    let indeOdf = categoriesList.indexOf(valuran);
+     let indeOdf = categoriesList.indexOf(valuran);
     indeOdf > 0 && setBlinkingIndex(indeOdf);
     if (valuran) {
       emt[indeOdf] = 5;
       temp[indeOdf] = lastBarValue.totalCount;
     }
     setSeries(temp);
-    console.log("temp", temp);
-
+ 
     setEmtSeries(emt);
     setSeriesLable(seriesLables);
 
@@ -140,7 +137,7 @@ const BarChartCopy = ({
   };
 
   const getColor = (value, index) => {
-    if (blinkingIndex === index) {
+     if (blinkingIndex === index) {
       return primary.complete;
     } else {
       if (value < targetList / 3) return primary.incomplete;

@@ -9,10 +9,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 
 const ShiftCardDetailList = [
-  { title: "MO", value: 155 },
-  { title: "MTM", value: 135 },
-  { title: "PRODUCT MONTHLY TARGET", value: 1200 },
-  { title: "PRODUCT MONTHLY ACTUAL", value: 850 },
+  { title: "MATERIAL ORDER(MO)", value: 155 },
+  { title: "MACHINE TYPE MODEL(MTM)", value: 135 },
+  { title: "PRODUCT MONTHLY TARGET", value: 11200 },
+  { title: "PRODUCT MONTHLY ACTUAL", value: 8150 },
 ];
 
 const AppContainer = ({

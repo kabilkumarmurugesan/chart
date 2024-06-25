@@ -44,16 +44,16 @@ export default function DownTimeAction({ data }) {
 
   const handlePageChange = (pageNo) => {
     console.log(data, "data.length", data.length);
-    let temp =
-      data.length > 0 &&
-      data.reduce((acc, val, i) => {
+    if (data.length > 0) {
+      let temp = data.reduce((acc, val, i) => {
         let idx = Math.floor(i / 2);
         let page = acc[idx] || (acc[idx] = []);
         page.push(val);
 
         return acc;
       }, []);
-    temp[pageNo] && setDownTimeReport(temp[pageNo]);
+      temp[pageNo] && setDownTimeReport(temp[pageNo]);
+    }
   };
 
   return (
