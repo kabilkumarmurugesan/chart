@@ -52,10 +52,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   "& .MuiSwitch-track": {
     borderRadius: 16 / 2,
     opacity: 1,
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? "rgba(255,255,255,.35)"
-        : "rgba(0,0,0,.25)",
+    backgroundColor: theme.palette.mode === "dark" ? "#177ddc" : "#1890ff",
     boxSizing: "border-box",
   },
 }));
@@ -148,15 +145,34 @@ export default function AppHeader({
           >
             <Stack direction="row" spacing={1} alignItems="center">
               <Box>Shift (Hrs):</Box>
-              <Box>{ShowShift === "Day" ? "6" : "9"}</Box>
+              <Box> 9</Box>
               <AntSwitch
                 onChange={(e) => handleOnShift(e)}
                 checked={shiftHours}
                 inputProps={{ "aria-label": "ant design" }}
               />
-              <Box>{ShowShift === "Day" ? "9" : "12"}</Box>
+              <Box>12</Box>
             </Stack>
           </Box>
+          <Box
+            sx={{
+              pl: 1,
+              display: showMenu ? "none" : "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Box>Refresh (Hrs):</Box>
+              <Box> 30</Box>
+              <AntSwitch
+                onChange={(e) => handleRefresh(e)}
+                checked={refreshRate !== 30000}
+                inputProps={{ "aria-label": "ant design" }}
+              />
+              <Box>45</Box>
+            </Stack>
+          </Box>
+       
           <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
             <Box
               sx={{
@@ -253,16 +269,6 @@ export default function AppHeader({
               </span>
             </Box>
           </Box>
-          <Box sx={{ display: showMenu && "none" }}> Refresh:</Box>
-          <IconButton
-            sx={{ display: showMenu && "none", fontSize: "1rem" }}
-            onClick={handleRefresh}
-            color="inherit"
-            disableTouchRipple
-            disableRipple
-          >
-            <Box>{refreshRate === 30000 ? "45" : "30"} sec</Box>
-          </IconButton>
           <IconButton
             sx={{ display: showMenu && "none", fontSize: "1rem" }}
             onClick={handleRefreshStatus}

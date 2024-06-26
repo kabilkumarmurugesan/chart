@@ -25,7 +25,7 @@ function Laoyout() {
   };
 
   const handleRefresh = (e) => {
-    let temp = e.currentTarget.innerText === "30 sec" ? 30000 : 45000;
+    let temp = !e.currentTarget.checked ? 30000 : 45000;
     setRefreshRate(temp);
   };
 

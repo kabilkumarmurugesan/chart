@@ -43,8 +43,7 @@ export default function DownTimeAction({ data }) {
   }, [data]);
 
   const handlePageChange = (pageNo) => {
-    console.log(data, "data.length", data.length);
-    if (data.length > 0) {
+     if (data.length > 0) {
       let temp = data.reduce((acc, val, i) => {
         let idx = Math.floor(i / 2);
         let page = acc[idx] || (acc[idx] = []);
@@ -57,9 +56,9 @@ export default function DownTimeAction({ data }) {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{mt:0.5}}>
       <Grid item xs={12}>
-        <TableContainer component={Paper} className="table-container">
+        <TableContainer component={Paper} sx={{height:'15.2vh'}} className="table-container">
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>

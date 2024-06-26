@@ -17,7 +17,7 @@ const ShiftCardDetails = (props) => {
           fontSize: '16px',         
         }}
       >
-        {props.title}:
+        {props.title}
       </Typography>
       <Typography
         style={{

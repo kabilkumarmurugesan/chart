@@ -9,10 +9,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 
 const ShiftCardDetailList = [
-  { title: "MATERIAL ORDER(MO)", value: 155 },
-  { title: "MACHINE TYPE MODEL(MTM)", value: 135 },
-  { title: "PRODUCT MONTHLY TARGET", value: 11200 },
-  { title: "PRODUCT MONTHLY ACTUAL", value: 8150 },
+  { title: "MFG ORDER", value: 155 },
+  { title: "MTM", value: 135 },
+  { title: "MONTH TARGET", value: 11200 },
+  { title: "MONTH ACTUAL", value: 8150 },
 ];
 
 const AppContainer = ({
@@ -59,7 +59,7 @@ const AppContainer = ({
         ]
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     getDownTimeData();
@@ -69,13 +69,14 @@ const AppContainer = ({
     let intervalshiftHours = 0;
     let interval = 0;
     if (refreshStatus) {
-      if (!shiftHours) {
+      if (shiftHours) {
         clearInterval(interval);
         intervalshiftHours = setInterval(() => {
-          handleSlidechange();
+          setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
+          console.log(shiftType);
         }, refreshRate / 2);
         interval = setInterval(() => {
-          setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
+          handleSlidechange();
         }, refreshRate);
       } else {
         interval = setInterval(() => {
@@ -93,12 +94,12 @@ const AppContainer = ({
   }, [refreshRate, refreshStatus, shiftHours]);
 
   useEffect(() => {
-    if (shiftHours) {
-      setShiftType("1st");
-    }
+    // if (shiftHours) {
+    //   setShiftType("1st");
+    // }
     let date = "";
     let categoriesList = [];
-    if (ShowShift === "Day") {
+    if (currentSlide === 0 && ShowShift === "Day") {
       categoriesList = [
         "09 - 10",
         "10 - 11",
@@ -106,12 +107,9 @@ const AppContainer = ({
         "12 - 01",
         "01 - 02",
         "02 - 03",
-        "03 - 04",
-        "04 - 05",
-        "05 - 06",
       ];
 
-      if (!shiftHours) {
+      if (shiftHours) {
         if (shiftType === "1st") {
           categoriesList = [
             "09 - 10",
@@ -131,6 +129,18 @@ const AppContainer = ({
             "08 - 09",
           ];
         }
+      } else {
+        categoriesList = [
+          "09 - 10",
+          "10 - 11",
+          "11 - 12",
+          "12 - 01",
+          "01 - 02",
+          "02 - 03",
+          "03 - 04",
+          "04 - 05",
+          "05 - 06",
+        ];
       }
     } else {
       categoriesList = [
@@ -173,7 +183,14 @@ const AppContainer = ({
       date = yesterdayDate;
     }
     setTodayDate(date);
-  }, [shiftHours, targetList, ShowShift, ShowShiftDate, shiftType]);
+  }, [
+    shiftHours,
+    currentSlide,
+    targetList,
+    ShowShift,
+    ShowShiftDate,
+    shiftType,
+  ]);
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
@@ -182,7 +199,7 @@ const AppContainer = ({
         : setLastBarValue({});
     });
     ShowShiftDate !== "Today" && getPreviousData("L1");
-  }, [ShowShiftDate, targetList, ShowShift, shiftHours]);
+  }, [ShowShiftDate,shiftType, currentSlide, targetList, ShowShift, shiftHours]);
 
   useEffect(() => {
     if (ShowShiftDate === "Today") {
@@ -225,8 +242,8 @@ const AppContainer = ({
 
   const getFirstData = async (line) => {
     let temp =
-      ShowShift === "Day"
-        ? shiftHours
+      currentSlide === 0 && ShowShift === "Day"
+        ? !shiftHours
           ? `&duration=9hrs&shift=1st`
           : `&duration=6hrs&shift=${shiftType}`
         : shiftHours
@@ -247,8 +264,8 @@ const AppContainer = ({
 
   const getSecoundData = async (line, categoriesList) => {
     let temp =
-      ShowShift === "Day"
-        ? shiftHours
+      currentSlide === 0 && ShowShift === "Day"
+        ? !shiftHours
           ? `&duration=9hrs&shift=1st`
           : `&duration=6hrs&shift=${shiftType}`
         : shiftHours
@@ -295,8 +312,8 @@ const AppContainer = ({
 
   const getPreviousData = async (line) => {
     let temps =
-      ShowShift === "Day"
-        ? shiftHours
+      currentSlide === 0 && ShowShift === "Day"
+        ? !shiftHours
           ? `&duration=9hrs&shift=1st`
           : `&duration=6hrs&shift=${shiftType}`
         : shiftHours
@@ -382,14 +399,14 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
-                  onMouseEnter={() => setShowMenu(false)}
-                  onMouseLeave={() => setShowMenu(true)}
+                  // onMouseEnter={() => setShowMenu(false)}
+                  // onMouseLeave={() => setShowMenu(true)}
                 >
-                  <Box
+                  {/* <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
                       top: "50%",
@@ -409,7 +426,7 @@ const AppContainer = ({
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
-                  </Box>
+                  </Box> */}
                   <Box style={{ flex: "4" }}>
                     <FullShift
                       handleSlidechange={handleSlidechange}
@@ -432,23 +449,41 @@ const AppContainer = ({
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
-                      top: "50%",
-                      left: "0%",
+                      top: "74%",
+                      right: "1%",
                     }}
                   >
                     <IconButton
-                      sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechange}
+                      onClick={() => {
+                        if (shiftHours) {
+                          if (shiftType === "2nd" && currentSlide === 0) {
+                            handleSlidechange();
+                          } else {
+                            setShiftType("2nd");
+                          }
+                        } else {
+                          handleSlidechange();
+                        }
+                      }}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
-                      sx={{ background: "#fff" }}
-                      onClick={handleSlidechange}
+                      onClick={() => {
+                        if (shiftHours) {
+                          if (shiftType === "2nd" && currentSlide === 0) {
+                            handleSlidechange();
+                          } else {
+                            setShiftType("2nd");
+                          }
+                        } else {
+                          handleSlidechange();
+                        }
+                      }}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -460,30 +495,36 @@ const AppContainer = ({
                     display: "flex",
                     flexDirection: "row",
                   }}
-                  onMouseEnter={() => setShowMenu(false)}
-                  onMouseLeave={() => setShowMenu(true)}
+                  // onMouseEnter={() => setShowMenu(false)}
+                  // onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
-                      top: "50%",
-                      right: "0%",
+                      top: "75%",
+                      right: "1%",
                     }}
                   >
                     <IconButton
                       sx={{ background: "#fff" }}
-                      onClick={handleSlidechange}
+                      onClick={() => {
+                        handleSlidechange();
+                        setShiftType("1st");
+                      }}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
                       sx={{ background: "#fff" }}
                       disabled
-                      onClick={handleSlidechange}
+                      onClick={() => {
+                        handleSlidechange();
+                        setShiftType("1st");
+                      }}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
@@ -506,11 +547,11 @@ const AppContainer = ({
                     secoundShiftTiming={secoundShiftTiming}
                   />
 
-                  <Box
+                  {/* <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
                       top: "50%",
@@ -530,7 +571,7 @@ const AppContainer = ({
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
-                  </Box>
+                  </Box> */}
                 </Box>
               )}
             </Box>
@@ -559,29 +600,28 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
-                  onMouseEnter={() => setShowMenu(false)}
-                  onMouseLeave={() => setShowMenu(true)}
+                  // onMouseEnter={() => setShowMenu(false)}
+                  // onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
-                      top: "50%",
-                      right: "0%",
+                      top: "75%",
+                      right: "1%",
                     }}
                   >
                     <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
+                      disabled={currentSlide === 0}
                       onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
-                      sx={{ background: "#fff" }}
+                      disabled={currentSlide > 0}
                       onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
@@ -600,12 +640,14 @@ const AppContainer = ({
                     firstShiftTiming={firstShiftTiming}
                     categories={categories}
                     formatDate={formatDate}
+                    yesterdayDate={yesterdayDate}
+                    todayDate={todayDate}
                     downTimeAction={downTimeAction}
                     cardData={firstCardData}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
 
-                  <Box
+                  {/* <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
@@ -629,7 +671,7 @@ const AppContainer = ({
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
-                  </Box>
+                  </Box> */}
                 </Box>
               ) : (
                 <Box
@@ -638,29 +680,28 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
-                  onMouseEnter={() => setShowMenu(false)}
-                  onMouseLeave={() => setShowMenu(true)}
+                  // onMouseEnter={() => setShowMenu(false)}
+                  // onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
-                      top: "50%",
-                      left: "0%",
+                      top: "75%",
+                      right: "1%",
                     }}
                   >
                     <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
+                      disabled={currentSlide === 0}
                       onClick={handleSlidechange}
                     >
                       <ArrowBackIosIcon />
                     </IconButton>
                     <IconButton
-                      sx={{ background: "#fff" }}
+                      disabled={currentSlide > 0}
                       onClick={handleSlidechange}
                     >
                       <ArrowForwardIosIcon />
@@ -678,20 +719,22 @@ const AppContainer = ({
                     secoundShiftTiming={secoundShiftTiming}
                     categories={categories}
                     cardData={secoundCardData}
+                    yesterdayDate={yesterdayDate}
+                    todayDate={todayDate}
                     targetList={targetList}
                     formatDate={formatDate}
                     downTimeAction={downTimeAction}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
-                  <Box
+                  {/* <Box
                     sx={{
                       display: showMenu ? "none" : "flex",
                       alignItems: "center",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       justifyContent: "center",
                       position: "absolute",
-                      top: "50%",
-                      right: "0%",
+                      top: "75%",
+                      left: "0%",
                     }}
                   >
                     <IconButton
@@ -707,7 +750,7 @@ const AppContainer = ({
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
-                  </Box>
+                  </Box> */}
                 </Box>
               )}
             </Box>

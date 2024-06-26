@@ -32,7 +32,7 @@ const FullShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader date={yesterdayDate} time={firstShiftTiming} />
             <BarChart
-              height={"35vh"}
+              height={"33vh"}
               targetList={targetList}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechange={handleSlidechanges}
@@ -47,7 +47,7 @@ const FullShift = ({
             <ShiftHeader date={todayDate} time={secoundShiftTiming} />
             <BarChartCopy
               targetList={targetList}
-              height={"37vh"}
+              height={"35vh"}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechange={handleSlidechanges}
               lastBarValue={lastBarValue}

@@ -65,7 +65,7 @@ const BarChartCopy = ({
     let emt = [];
     let terget = [];
     let seriesLables = {};
-     response &&
+    response &&
       response.updatedData.map((item) => {
         temp.push(item.y);
         seriesLables[item.x] = item.product_id;
@@ -74,14 +74,15 @@ const BarChartCopy = ({
       });
 
     let valuran = lastBarValue.timeRange;
-     let indeOdf = categoriesList.indexOf(valuran);
+    let indeOdf = categoriesList.indexOf(valuran);
     indeOdf > 0 && setBlinkingIndex(indeOdf);
     if (valuran) {
       emt[indeOdf] = 5;
       temp[indeOdf] = lastBarValue.totalCount;
     }
-    setSeries(temp);
- 
+
+    setSeries(()=>temp);
+
     setEmtSeries(emt);
     setSeriesLable(seriesLables);
 
@@ -91,7 +92,14 @@ const BarChartCopy = ({
     return () => {
       clearInterval(blinkInterval);
     };
-  }, [response, ShowShiftDate, lastBarValue, ShowShift, shiftHours]);
+  }, [
+    response,
+    ShowShiftDate,
+    lastBarValue,
+    lastBarValue.totalCount,
+    ShowShift,categoriesList,
+    shiftHours,
+  ]);
 
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -137,7 +145,7 @@ const BarChartCopy = ({
   };
 
   const getColor = (value, index) => {
-     if (blinkingIndex === index) {
+    if (blinkingIndex === index) {
       return primary.complete;
     } else {
       if (value < targetList / 3) return primary.incomplete;
