@@ -4,7 +4,7 @@ import BasicTable from "../Table/Table";
 import BarChart from "../charts/BarChart";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
-import DownTimeAction from "../Card/DownTimeAction";
+import DownTimeAction from "../Table/DownTimeAction";
 
 const FullShift = ({
   yesterdayDate,

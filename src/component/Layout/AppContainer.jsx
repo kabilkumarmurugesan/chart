@@ -59,7 +59,6 @@ const AppContainer = ({
         ]
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
-  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     getDownTimeData();
@@ -94,9 +93,6 @@ const AppContainer = ({
   }, [refreshRate, refreshStatus, shiftHours]);
 
   useEffect(() => {
-    // if (shiftHours) {
-    //   setShiftType("1st");
-    // }
     let date = "";
     let categoriesList = [];
     if (currentSlide === 0 && ShowShift === "Day") {
@@ -199,7 +195,14 @@ const AppContainer = ({
         : setLastBarValue({});
     });
     ShowShiftDate !== "Today" && getPreviousData("L1");
-  }, [ShowShiftDate,shiftType, currentSlide, targetList, ShowShift, shiftHours]);
+  }, [
+    ShowShiftDate,
+    shiftType,
+    currentSlide,
+    targetList,
+    ShowShift,
+    shiftHours,
+  ]);
 
   useEffect(() => {
     if (ShowShiftDate === "Today") {
@@ -399,34 +402,7 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
-                  // onMouseEnter={() => setShowMenu(false)}
-                  // onMouseLeave={() => setShowMenu(true)}
                 >
-                  {/* <Box
-                    sx={{
-                      display: showMenu ? "none" : "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "50%",
-                      right: "0%",
-                    }}
-                  >
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box> */}
                   <Box style={{ flex: "4" }}>
                     <FullShift
                       handleSlidechange={handleSlidechange}
@@ -447,7 +423,7 @@ const AppContainer = ({
                   </Box>
                   <Box
                     sx={{
-                      display: showMenu ? "none" : "flex",
+                      display: "flex",
                       alignItems: "center",
                       flexDirection: "row",
                       justifyContent: "center",
@@ -495,12 +471,10 @@ const AppContainer = ({
                     display: "flex",
                     flexDirection: "row",
                   }}
-                  // onMouseEnter={() => setShowMenu(false)}
-                  // onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
-                      display: showMenu ? "none" : "flex",
+                      display: "flex",
                       alignItems: "center",
                       flexDirection: "row",
                       justifyContent: "center",
@@ -546,32 +520,6 @@ const AppContainer = ({
                     firstShiftTiming={firstShiftTiming}
                     secoundShiftTiming={secoundShiftTiming}
                   />
-
-                  {/* <Box
-                    sx={{
-                      display: showMenu ? "none" : "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "50%",
-                      left: "0%",
-                    }}
-                  >
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box> */}
                 </Box>
               )}
             </Box>
@@ -600,12 +548,10 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
-                  // onMouseEnter={() => setShowMenu(false)}
-                  // onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
-                      display: showMenu ? "none" : "flex",
+                      display: "flex",
                       alignItems: "center",
                       flexDirection: "row",
                       justifyContent: "center",
@@ -646,32 +592,6 @@ const AppContainer = ({
                     cardData={firstCardData}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
-
-                  {/* <Box
-                    sx={{
-                      display: showMenu ? "none" : "flex",
-                      alignItems: "center",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "50%",
-                      left: "0%",
-                    }}
-                  >
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box> */}
                 </Box>
               ) : (
                 <Box
@@ -680,12 +600,10 @@ const AppContainer = ({
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
-                  // onMouseEnter={() => setShowMenu(false)}
-                  // onMouseLeave={() => setShowMenu(true)}
                 >
                   <Box
                     sx={{
-                      display: showMenu ? "none" : "flex",
+                      display: "flex",
                       alignItems: "center",
                       flexDirection: "row",
                       justifyContent: "center",
@@ -726,31 +644,6 @@ const AppContainer = ({
                     downTimeAction={downTimeAction}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
-                  {/* <Box
-                    sx={{
-                      display: showMenu ? "none" : "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "75%",
-                      left: "0%",
-                    }}
-                  >
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box> */}
                 </Box>
               )}
             </Box>

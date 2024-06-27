@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
 import BasicTable from "../Table/Table";
-import DownTimeAction from "../Card/DownTimeAction";
+import DownTimeAction from "../Table/DownTimeAction";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
@@ -55,8 +55,8 @@ const SingleShift = ({
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
-        <Grid item xs={6} md={10}> 
-          <Card sx={{ minWidth: 275, height: 500 }}> 
+        <Grid item xs={6} md={10}>
+          <Card sx={{ minWidth: 275, height: 500 }}>
             <ShiftHeader
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={firstResponse ? firstShiftTiming : secoundShiftTiming}
@@ -153,7 +153,6 @@ const SingleShift = ({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    // height: "80px", // Set a fixed height or a percentage value
                   }}
                 >
                   <Box>
@@ -187,7 +186,6 @@ const SingleShift = ({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    // height: "80/px", // Match this height to the other Boxes
                   }}
                 >
                   <Box>
@@ -221,7 +219,6 @@ const SingleShift = ({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    // height: "25px", // Match this height to the other Boxes
                   }}
                 >
                   <Box>

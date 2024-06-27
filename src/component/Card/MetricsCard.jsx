@@ -1,11 +1,7 @@
 import React from "react";
-import { Card, Box, Typography, useMediaQuery } from "@mui/material";
-import { useTheme } from "@emotion/react";
+import { Card, Box, Typography } from "@mui/material";
 
 const MetricsCard = ({ data }) => {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("lg"));
-
   return (
     <Card>
       <Box

@@ -49,7 +49,7 @@ function Laoyout() {
   const getShiftTarget = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/v1/general/getTarget?isSystem=${isSystem}`,
+        `http://localhost:8001/api/v1/general/getTarget?isSystem=${isSystem}`
       );
       const result = await response.json();
       setTargetList((pre) => result.data.target);

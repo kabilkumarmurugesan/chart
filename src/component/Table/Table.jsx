@@ -20,8 +20,7 @@ export default function BasicTable({ response }) {
           {series.map((item, i) => (
             <TableCell
               key={i}
-              // sx={{padding:"8px"}}
-              style={{
+               style={{
                 textAlign: 'center',
               }}
             >

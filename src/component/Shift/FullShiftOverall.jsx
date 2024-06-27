@@ -6,7 +6,7 @@ import sadEmoji from "../../asset/gif/SadEmoji.png";
 import BarChart from "../charts/BarChart";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
-import DownTimeAction from "../Card/DownTimeAction";
+import DownTimeAction from "../Table/DownTimeAction";
 import MetricsCard from "../Card/MetricsCard";
 
 const FullShiftOverall = ({
