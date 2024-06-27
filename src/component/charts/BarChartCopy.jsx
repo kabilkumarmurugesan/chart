@@ -66,7 +66,7 @@ const BarChartCopy = ({
     let terget = [];
     let seriesLables = {};
     response &&
-      response.updatedData.map((item) => {
+      response.forEach((item) => {
         temp.push(item.y);
         seriesLables[item.x] = item.product_id;
         item.target && terget.push(parseInt(item.target));
@@ -81,7 +81,7 @@ const BarChartCopy = ({
       temp[indeOdf] = lastBarValue.totalCount;
     }
 
-    setSeries(()=>temp);
+    setSeries(() => temp);
 
     setEmtSeries(emt);
     setSeriesLable(seriesLables);
@@ -97,7 +97,8 @@ const BarChartCopy = ({
     ShowShiftDate,
     lastBarValue,
     lastBarValue.totalCount,
-    ShowShift,categoriesList,
+    ShowShift,
+    categoriesList,
     shiftHours,
   ]);
 

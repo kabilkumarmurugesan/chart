@@ -7,6 +7,7 @@ import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 
 const FullShift = ({
+  ShowShiftDate,
   yesterdayDate,
   secoundResponse,
   secoundShiftTiming,
@@ -19,8 +20,9 @@ const FullShift = ({
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   todayDate,
-  downTimeAction,
   targetList,
+  firstDowntimeDetails,
+  secoundDowntimeDetails,
 }) => {
   const handleSlidechanges = () => {
     handleSlidechange();
@@ -30,7 +32,10 @@ const FullShift = ({
       <Grid container rowSpacing={1} spacing={2}>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={yesterdayDate} time={firstShiftTiming} />
+            <ShiftHeader
+              date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
+              time={firstShiftTiming}
+            />
             <BarChart
               height={"33vh"}
               targetList={targetList}
@@ -44,7 +49,10 @@ const FullShift = ({
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ minWidth: 275 }}>
-            <ShiftHeader date={todayDate} time={secoundShiftTiming} />
+            <ShiftHeader
+              date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
+              time={secoundShiftTiming}
+            />
             <BarChartCopy
               targetList={targetList}
               height={"35vh"}
@@ -68,16 +76,16 @@ const FullShift = ({
         </Grid>
         <Grid item xs={12} md={6}>
           {secoundResponse !== undefined && (
-            <BasicTable response={secoundResponse.updatedData} />
+            <BasicTable response={secoundResponse} />
           )}
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={6} md={6}>
-          <DownTimeAction data={downTimeAction} />
+          <DownTimeAction data={firstDowntimeDetails} />
         </Grid>
         <Grid item xs={6} md={6}>
-          <DownTimeAction data={downTimeAction} />
+          <DownTimeAction data={secoundDowntimeDetails} />
         </Grid>{" "}
       </Grid>
     </Box>

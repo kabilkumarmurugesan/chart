@@ -1,9 +1,9 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 export default function BasicTable({ response }) {
   const series = response;
@@ -13,15 +13,15 @@ export default function BasicTable({ response }) {
         orientation="vertical"
         sx={{ minWidth: 650 }}
         aria-label="simple table"
-        className='uphTable'
+        className="uphTable"
       >
         <TableRow>
-          <TableCellHeader title={'UPH'} />
+          <TableCellHeader title={"UPH"} />
           {series.map((item, i) => (
             <TableCell
               key={i}
-               style={{
-                textAlign: 'center',
+              style={{
+                textAlign: "center",
               }}
             >
               {item.y}
@@ -29,12 +29,12 @@ export default function BasicTable({ response }) {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={'Operator'} />
+          <TableCellHeader title={"Operator"} />
           {series.map((item, i) => (
             <TableCell
               key={i}
               style={{
-                textAlign: 'center',
+                textAlign: "center",
               }}
             >
               {item.y}
@@ -42,12 +42,12 @@ export default function BasicTable({ response }) {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={'UPPH'} />
+          <TableCellHeader title={"UPPH"} />
           {series.map((item, i) => (
             <TableCell
               key={i}
               style={{
-                textAlign: 'center',
+                textAlign: "center",
               }}
             >
               {item.target}
@@ -55,15 +55,15 @@ export default function BasicTable({ response }) {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={'Down Time'} />
+          <TableCellHeader title={"Down Time"} />
           {series.map((item, i) => (
             <TableCell
               key={i}
               style={{
-                textAlign: 'center',
+                textAlign: "center",
               }}
             >
-              -
+              {item.downtime}
             </TableCell>
           ))}
         </TableRow>
@@ -76,12 +76,12 @@ function TableCellHeader(props) {
   return (
     <TableCell
       style={{
-        fontWeight: 'bold',
-        fontSize: '15px',
-        color: '#fff',
-        padding: '8px',
-        width: '88px',
-        background: '#4d5a81',
+        fontWeight: "bold",
+        fontSize: "15px",
+        color: "#fff",
+        padding: "8px",
+        width: "88px",
+        background: "#4d5a81",
       }}
     >
       {props.title}

@@ -8,6 +8,7 @@ import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 import MetricsCard from "../Card/MetricsCard";
+import { CommonAPIService } from "../../utilities/CommonAPI";
 
 const FullShiftOverall = ({
   yesterdayDate,
@@ -20,10 +21,12 @@ const FullShiftOverall = ({
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   todayDate,
-  downTimeAction,
   targetList,
   secoundShiftTiming,
+  ShowShiftDate,
   cardData,
+  firstDowntimeDetails,
+  secoundDowntimeDetails,
   firstShiftTiming,
 }) => {
   const [isHappy, setIsHappy] = useState();
@@ -31,24 +34,15 @@ const FullShiftOverall = ({
   const [showMenu, setShowMenu] = useState(true);
 
   useEffect(() => {
-    getEmojiStatus();
+    CommonAPIService.getEmojiStatus(
+      isShift,
+      lastBarValue.totalCount,
+      setIsHappy
+    );
   }, [isShift]);
 
   const handleSlidechanges = () => {
     handleSlidechange("Full");
-  };
-
-  const getEmojiStatus = async () => {
-    let dataCount = lastBarValue.totalCount;
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`
-      );
-      const result = await response.json();
-      setIsHappy(result.data.isHappy);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
-    }
   };
 
   return (
@@ -58,7 +52,12 @@ const FullShiftOverall = ({
           <Grid container rowSpacing={2}>
             <Grid item xs={12} md={12} sx={{ height: "34vh" }}>
               <Card sx={{ minWidth: 275 }}>
-                <ShiftHeader date={yesterdayDate} time={firstShiftTiming} />
+                <ShiftHeader
+                  date={
+                    ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
+                  }
+                  time={firstShiftTiming}
+                />
                 <BarChart
                   height={"25vh"}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -77,7 +76,12 @@ const FullShiftOverall = ({
               sx={{ height: "34vh", marginTop: "20px" }}
             >
               <Card sx={{ minWidth: 275 }}>
-                <ShiftHeader date={todayDate} time={secoundShiftTiming} />
+                <ShiftHeader
+                  date={
+                    ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
+                  }
+                  time={secoundShiftTiming}
+                />
                 <BarChartCopy
                   height={"24vh"}
                   targetList={targetList}
@@ -101,7 +105,7 @@ const FullShiftOverall = ({
         <Grid item xs={6} md={12} className="timeChart">
           <Grid container spacing={4}>
             <Grid item xs={6} md={10}>
-              <DownTimeAction data={downTimeAction} />
+              <DownTimeAction data={secoundDowntimeDetails} />
             </Grid>
             <Grid
               item

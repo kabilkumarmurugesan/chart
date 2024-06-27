@@ -51,7 +51,7 @@ const BarChart = ({
     let seriesLables = {};
     let terget = [];
     if (response) {
-      response.map((item) => {
+      response.forEach((item) => {
         temp.push(item.y);
         seriesLables[item.x] = item.product_id;
         item.target && terget.push(parseInt(item.target));

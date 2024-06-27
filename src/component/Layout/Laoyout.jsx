@@ -1,7 +1,8 @@
-import AppContainer from "./AppContainer";
-import AppHeader from "./AppHeader";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
+import ENV from "../../utilities/ENV";
+import AppContainer from "./AppContainer";
+import AppHeader from "./AppHeader";
 
 function Laoyout() {
   const [refreshRate, setRefreshRate] = useState(30000);
@@ -11,7 +12,7 @@ function Laoyout() {
   const [refreshStatus, setRefreshStatus] = useState(true);
   const [isDownTime, setIsDownTime] = useState(false);
   const [isSystem, setIsSystem] = useState(true);
-  const [targetList, setTargetList] = useState(90);
+  const [targetList, setTargetList] = useState();
 
   useEffect(() => {
     getShiftTarget();
@@ -47,16 +48,15 @@ function Laoyout() {
   };
 
   const getShiftTarget = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/getTarget?isSystem=${isSystem}`
-      );
-      const result = await response.json();
-      setTargetList((pre) => result.data.target);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
-    }
+    ENV.get(`/getTarget?isSystem=${isSystem}`)
+      .then((res) => {
+        setTargetList(res.data.data.target);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
   return (
     <>
       <AppHeader

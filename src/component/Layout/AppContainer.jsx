@@ -7,6 +7,7 @@ import { socket } from "../socket";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullShiftOverall from "../Shift/FullShiftOverall";
+import ENV from "../../utilities/ENV";
 
 const ShiftCardDetailList = [
   { title: "MFG ORDER", value: 155 },
@@ -40,10 +41,11 @@ const AppContainer = ({
   const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
   const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
-  const [downTimeAction, setDownTimeAction] = useState([]);
   const [cardData, setCardData] = useState([]);
   const [firstCardData, setFirstCardData] = useState([]);
   const [secoundCardData, setSecoundCardData] = useState([]);
+  const [firstDowntimeDetails, setFirstDowntimeDetails] = useState([]);
+  const [secoundDowntimeDetails, setSecoundDowntimeDetails] = useState([]);
   const [categories, setCategories] = useState(
     shiftHours
       ? [
@@ -61,10 +63,6 @@ const AppContainer = ({
   );
 
   useEffect(() => {
-    getDownTimeData();
-  }, []);
-
-  useEffect(() => {
     let intervalshiftHours = 0;
     let interval = 0;
     if (refreshStatus) {
@@ -72,7 +70,6 @@ const AppContainer = ({
         clearInterval(interval);
         intervalshiftHours = setInterval(() => {
           setShiftType((prevType) => (prevType === "1st" ? "2nd" : "1st"));
-          console.log(shiftType);
         }, refreshRate / 2);
         interval = setInterval(() => {
           handleSlidechange();
@@ -171,12 +168,20 @@ const AppContainer = ({
     setCategories(() => {
       return categoriesList;
     });
-    if (ShowShiftDate === "Today") {
-      getFirstData("L1");
-      getSecoundData("L1", categoriesList);
+    const dates = new Date();
+
+    if (ShowShiftDate === "Today" && targetList) {
       date = formatDate(new Date());
+      const formattedDate = `${dates.getFullYear()}-${
+        dates.getMonth() + 1
+      }-${dates.getDate()}`;
+      getProductData("L1", categoriesList, formattedDate);
     } else {
       date = yesterdayDate;
+      const formattedDate = `${dates.getFullYear()}-${dates.getMonth() + 1}-${
+        dates.getDate() - 1
+      }`;
+      getProductData("L1", categoriesList, formattedDate);
     }
     setTodayDate(date);
   }, [
@@ -194,7 +199,6 @@ const AppContainer = ({
         ? setLastBarValue(() => data)
         : setLastBarValue({});
     });
-    ShowShiftDate !== "Today" && getPreviousData("L1");
   }, [
     ShowShiftDate,
     shiftType,
@@ -204,38 +208,6 @@ const AppContainer = ({
     shiftHours,
   ]);
 
-  useEffect(() => {
-    if (ShowShiftDate === "Today") {
-      let TARGET = firstCardData.shiftTarget + secoundCardData.shiftTarget;
-      const overallData = [
-        {
-          label: "OVERALL TARGET",
-          value: TARGET,
-          background: "#241773",
-        },
-        {
-          label: "OVERALL ACTUAL",
-          value: firstCardData.shiftActual + secoundCardData.shiftActual,
-          background: "#3d860b",
-        },
-        {
-          label: "OVERALL UPH",
-          value: Math.round(
-            firstCardData.shiftUPH + secoundCardData.shiftUPH / 2
-          ),
-          background: "#483456",
-        },
-        {
-          label: "DOWN TIME",
-          value: firstCardData.shiftdownTime,
-          background: "#e1140a",
-        },
-      ];
-
-      setCardData(overallData);
-    }
-  }, [firstCardData, ShowShiftDate, secoundCardData]);
-
   const formatDate = (date) => {
     const day = String(date.getDate());
     const month = String(date.getMonth() + 1);
@@ -243,7 +215,8 @@ const AppContainer = ({
     return `${month}/${day}/${year}`;
   };
 
-  const getFirstData = async (line) => {
+  const getProductData = async (line, categoriesList, date) => {
+    debugger;
     let temp =
       currentSlide === 0 && ShowShift === "Day"
         ? !shiftHours
@@ -252,85 +225,36 @@ const AppContainer = ({
         : shiftHours
         ? `&duration=12hrs&shift=1st`
         : `&duration=9hrs&shift=${shiftType}`;
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/previousshiftdata?line=${line}&target=${targetList}${temp}`
-      );
-      const result = await response.json();
-      setFirstCardData(result.data);
-      setFirstShiftTiming(result.data.shiftTime);
-      setFirstResponse(result.data.data);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
-    }
-  };
-
-  const getSecoundData = async (line, categoriesList) => {
-    let temp =
-      currentSlide === 0 && ShowShift === "Day"
-        ? !shiftHours
-          ? `&duration=9hrs&shift=1st`
-          : `&duration=6hrs&shift=${shiftType}`
-        : shiftHours
-        ? `&duration=12hrs&shift=1st`
-        : `&duration=9hrs&shift=${shiftType}`;
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/shift2?line=${line}&target=${targetList}${temp}`
-      );
-      const result = await response.json();
-      let dome = [];
-      let updatedData = result.data.updatedData;
-      categoriesList.map((item, i) => {
-        dome.push({
-          id: updatedData[i] === undefined ? "-" : updatedData[i].id,
-          x: updatedData[i] === undefined ? "-" : updatedData[i].x,
-          y: updatedData[i] === undefined ? "-" : updatedData[i].y,
-          z: updatedData[i] === undefined ? "-" : updatedData[i].z,
-          product_id:
-            updatedData[i] === undefined ? "-" : updatedData[i].product_id,
-          target: updatedData[i] === undefined ? "-" : updatedData[i].target,
-          comments:
-            updatedData[i] === undefined ? "-" : updatedData[i].comments,
-          op_date: updatedData[i] === undefined ? "-" : updatedData[i].op_date,
-          line: updatedData[i] === undefined ? "-" : updatedData[i].line,
+    ENV.get(
+      `productiondata?line=${line}${temp}&date=${date}&target=${targetList}`
+    ).then((response) => {
+      const result = response.data;
+      let shift = ["shiftA", "shiftB"];
+      shift.forEach((item) => {
+        let dome = [];
+        let shiftData = result.data[item];
+        categoriesList.forEach((_element, i) => {
+          dome.push({
+            id: shiftData[i] === undefined ? "-" : shiftData[i].id,
+            x: shiftData[i] === undefined ? "-" : shiftData[i].x,
+            y: shiftData[i] === undefined ? "-" : shiftData[i].y,
+            z: shiftData[i] === undefined ? "-" : shiftData[i].z,
+            product_id:
+              shiftData[i] === undefined ? "-" : shiftData[i].product_id,
+            target: shiftData[i] === undefined ? "-" : shiftData[i].target,
+            comments: shiftData[i] === undefined ? "-" : shiftData[i].comments,
+            op_date: shiftData[i] === undefined ? "-" : shiftData[i].op_date,
+            line: shiftData[i] === undefined ? "-" : shiftData[i].line,
+            downtime: shiftData[i] === undefined ? "-" : shiftData[i].downtime,
+          });
         });
+        if (item === "shiftA") {
+          setFirstResponse(dome);
+        } else {
+          setSecoundResponse(dome);
+        }
       });
-      let temps = {
-        updatedData: dome,
-      };
-      setSecoundCardData(result.data);
-      setSecoundShiftTiming(result.data.shiftTiming);
-      setSecoundResponse(temps);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
 
-  const handleSlidechange = (type) => {
-    type === "Full"
-      ? setCurrentSlide((prevSlide) => 1)
-      : setCurrentSlide((prevSlide) => (prevSlide + 1) % 2);
-  };
-
-  const getPreviousData = async (line) => {
-    let temps =
-      currentSlide === 0 && ShowShift === "Day"
-        ? !shiftHours
-          ? `&duration=9hrs&shift=1st`
-          : `&duration=6hrs&shift=${shiftType}`
-        : shiftHours
-        ? `&duration=12hrs&shift=1st`
-        : `&duration=9hrs&shift=${shiftType}`;
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/displayprevioustwoshiftsdata?line=${line}${temps}&target=${targetList}`
-      );
-      const result = await response.json();
-      setFirstResponse(result.data.shiftA);
-      let temp = {
-        updatedData: result.data.shiftB,
-      };
       const overallData = [
         {
           label: "OVERALL TARGET",
@@ -356,27 +280,21 @@ const AppContainer = ({
       setCardData(overallData);
       setFirstCardData(result.data.shiftADetails);
       setSecoundCardData(result.data.shiftBDetails);
-      setSecoundShiftTiming(result.data.shiftBTiming);
-      setFirstShiftTiming(result.data.shiftATiming);
-      setSecoundResponse(temp);
-    } catch (error) {
-      console.error(error.message);
-    }
+      setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
+      setFirstShiftTiming(result.data.shiftADetails.shiftTiming);
+      setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
+      setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
+    });
+  };
+
+  const handleSlidechange = (type) => {
+    type === "Full"
+      ? setCurrentSlide((prevSlide) => 1)
+      : setCurrentSlide((prevSlide) => (prevSlide + 1) % 2);
   };
 
   const [todayDate, setTodayDate] = useState(formatDate(new Date()));
 
-  const getDownTimeData = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/getDownTime?isShift=${isDownTime}&record=true`
-      );
-      const result = await response.json();
-      setDownTimeAction(result.data);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
   return (
     <>
       {ShowShift === "Day" ? (
@@ -418,7 +336,9 @@ const AppContainer = ({
                       todayDate={todayDate}
                       lastBarValue={lastBarValue}
                       shiftHours={shiftHours}
-                      downTimeAction={downTimeAction}
+                      firstDowntimeDetails={firstDowntimeDetails}
+                      secoundDowntimeDetails={secoundDowntimeDetails}
+                      ShowShiftDate={ShowShiftDate}
                     />
                   </Box>
                   <Box
@@ -504,6 +424,7 @@ const AppContainer = ({
                     </IconButton>
                   </Box>
                   <FullShiftOverall
+                    ShowShiftDate={ShowShiftDate}
                     targetList={targetList}
                     handleSlidechange={handleSlidechange}
                     firstResponse={firstResponse}
@@ -515,7 +436,8 @@ const AppContainer = ({
                     todayDate={todayDate}
                     lastBarValue={lastBarValue}
                     shiftHours={shiftHours}
-                    downTimeAction={downTimeAction}
+                    firstDowntimeDetails={firstDowntimeDetails}
+                    secoundDowntimeDetails={secoundDowntimeDetails}
                     cardData={cardData}
                     firstShiftTiming={firstShiftTiming}
                     secoundShiftTiming={secoundShiftTiming}
@@ -588,7 +510,8 @@ const AppContainer = ({
                     formatDate={formatDate}
                     yesterdayDate={yesterdayDate}
                     todayDate={todayDate}
-                    downTimeAction={downTimeAction}
+                    firstDowntimeDetails={firstDowntimeDetails}
+                    secoundDowntimeDetails={secoundDowntimeDetails}
                     cardData={firstCardData}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
@@ -641,7 +564,8 @@ const AppContainer = ({
                     todayDate={todayDate}
                     targetList={targetList}
                     formatDate={formatDate}
-                    downTimeAction={downTimeAction}
+                    firstDowntimeDetails={firstDowntimeDetails}
+                    secoundDowntimeDetails={secoundDowntimeDetails}
                     ShiftCardDetailList={ShiftCardDetailList}
                   />
                 </Box>
@@ -673,7 +597,8 @@ const AppContainer = ({
             formatDate={formatDate}
             yesterdayDate={yesterdayDate}
             todayDate={todayDate}
-            downTimeAction={downTimeAction}
+            firstDowntimeDetails={firstDowntimeDetails}
+            secoundDowntimeDetails={secoundDowntimeDetails}
             ShiftCardDetailList={ShiftCardDetailList}
             cardData={secoundCardData}
           />

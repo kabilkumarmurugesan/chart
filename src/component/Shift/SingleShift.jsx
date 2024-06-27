@@ -9,6 +9,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
 import BarChart from "../charts/BarChart";
+import { CommonAPIService } from "../../utilities/CommonAPI";
 
 const SingleShift = ({
   formatDate,
@@ -25,32 +26,24 @@ const SingleShift = ({
   firstShiftTiming,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
-  downTimeAction,
   targetList,
   yesterdayDate,
   todayDate,
   cardData,
+  firstDowntimeDetails,
+  secoundDowntimeDetails,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
 
   useEffect(() => {
-    getEmojiStatus();
+    CommonAPIService.getEmojiStatus(
+      isShift,
+      lastBarValue.totalCount,
+      setIsHappy
+    );
   }, [isShift]);
-
-  const getEmojiStatus = async () => {
-    let dataCount = lastBarValue.totalCount;
-    try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/general/getEmoji?isShift=${isShift}&dataCount=${dataCount}`
-      );
-      const result = await response.json();
-      setIsHappy(result.data.isHappy);
-    } catch (error) {
-      console.error(`Download error: ${error.message}`);
-    }
-  };
 
   return (
     <Box sx={{ p: 2 }}>
@@ -244,7 +237,7 @@ const SingleShift = ({
         </Grid>
         <Grid item xs={6} md={10}>
           {secoundResponse !== undefined && (
-            <BasicTable response={secoundResponse.updatedData} />
+            <BasicTable response={secoundResponse} />
           )}
           {firstResponse !== undefined && (
             <BasicTable response={firstResponse} />
@@ -262,7 +255,7 @@ const SingleShift = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <DownTimeAction data={downTimeAction} />
+          <DownTimeAction data={secoundDowntimeDetails} />
         </Grid>
         <Grid
           item
