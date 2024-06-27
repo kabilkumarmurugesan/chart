@@ -55,7 +55,7 @@ const SingleShift = ({
               time={firstResponse ? firstShiftTiming : secoundShiftTiming}
             />
             {firstResponse ? (
-              <BarChart
+              <BarChartCopy
                 height={"40vh"}
                 animations={{
                   tension: {
@@ -70,6 +70,9 @@ const SingleShift = ({
                 handleSlidechange={handleSlidechange}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
+                shiftHours={shiftHours}
+                ShowShiftDate={ShowShiftDate}
+                lastBarValue={lastBarValue}
                 response={firstResponse}
               />
             ) : (

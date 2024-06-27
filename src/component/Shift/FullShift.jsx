@@ -36,9 +36,10 @@ const FullShift = ({
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={firstShiftTiming}
             />
-            <BarChart
-              height={"33vh"}
+            <BarChartCopy
+              height={"35vh"}
               targetList={targetList}
+              lastBarValue={lastBarValue}
               setVisibleQRCodeIndex={setVisibleQRCodeIndex}
               handleSlidechange={handleSlidechanges}
               visibleQRCodeIndex={visibleQRCodeIndex}

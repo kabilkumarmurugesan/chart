@@ -58,8 +58,9 @@ const FullShiftOverall = ({
                   }
                   time={firstShiftTiming}
                 />
-                <BarChart
+                <BarChartCopy
                   height={"25vh"}
+                  lastBarValue={lastBarValue}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   handleSlidechange={handleSlidechanges}
                   visibleQRCodeIndex={visibleQRCodeIndex}

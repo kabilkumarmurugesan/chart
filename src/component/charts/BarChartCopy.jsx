@@ -53,7 +53,7 @@ const BarChartCopy = ({
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [seriesLable, setSeriesLable] = useState();
+  const [seriesLabel, setSeriesLabel] = useState({});
   const tooltipRef = useRef(null);
 
   useEffect(() => {
@@ -63,28 +63,27 @@ const BarChartCopy = ({
   useEffect(() => {
     let temp = [];
     let emt = [];
-    let terget = [];
-    let seriesLables = {};
+    let target = [];
+    let seriesLabels = {};
     response &&
       response.forEach((item) => {
-        temp.push(item.y);
-        seriesLables[item.x] = item.product_id;
-        item.target && terget.push(parseInt(item.target));
+        item.y !== "-" && temp.push(item.y);
+        seriesLabels[item.x] = item.product_id;
+        item.target && target.push(parseInt(item.target));
         emt.push(0);
       });
 
     let valuran = lastBarValue.timeRange;
-    let indeOdf = categoriesList.indexOf(valuran);
-    indeOdf > 0 && setBlinkingIndex(indeOdf);
-    if (valuran) {
-      emt[indeOdf] = 5;
-      temp[indeOdf] = lastBarValue.totalCount;
+    let indexOf = categoriesList.indexOf(valuran);
+    indexOf > 0 && setBlinkingIndex(indexOf);
+    if (indexOf > 0 && valuran) {
+      emt[indexOf] = 5;
+      temp[indexOf] = lastBarValue.totalCount;
     }
-
     setSeries(() => temp);
 
     setEmtSeries(emt);
-    setSeriesLable(seriesLables);
+    setSeriesLabel(seriesLabels);
 
     const blinkInterval = setInterval(() => {
       setIsBlinking((prevState) => !prevState);
@@ -220,7 +219,7 @@ const BarChartCopy = ({
         intersect: true, // Ensure tooltip shows only for the intersected item
         callbacks: {
           label: function (tooltipItem) {
-            let label = seriesLable[tooltipItem.label];
+            let label = seriesLabel[tooltipItem.label];
             if (label) {
               label += ": ";
             }
@@ -274,7 +273,6 @@ const BarChartCopy = ({
           position: "relative",
           width: "100%",
           height: height,
-          // height: id === 'single' ? '0vh' : '45vh',
         }}
       >
         {data && (
