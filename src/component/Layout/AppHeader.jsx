@@ -162,7 +162,7 @@ export default function AppHeader({
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Box>Refresh (Hrs):</Box>
+              <Box>Refresh (sec):</Box>
               <Box> 30</Box>
               <AntSwitch
                 onChange={(e) => handleRefresh(e)}

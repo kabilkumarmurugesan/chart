@@ -53,7 +53,15 @@ const SingleShift = ({
           <Card sx={{ minWidth: 275, height: 500 }}>
             <ShiftHeader
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
-              time={firstResponse ? firstShiftTiming : secoundShiftTiming}
+              time={
+                ShowShiftDate === "Today"
+                  ? currentShift === "shiftA"
+                    ? firstShiftTiming
+                    : secoundShiftTiming
+                  : firstResponse
+                  ? firstShiftTiming
+                  : secoundShiftTiming
+              }
             />
             {firstResponse ? (
               <BarChartCopy
@@ -240,7 +248,17 @@ const SingleShift = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <BasicTable response={ secoundResponse ?secoundResponse :firstResponse} />
+          <BasicTable
+            response={
+              ShowShiftDate === "Today"
+                ? currentShift === "shiftA"
+                  ? firstResponse
+                  : secoundResponse
+                : firstResponse
+                ? firstResponse
+                : secoundResponse
+            }
+          />
         </Grid>{" "}
         <Grid item xs={4} md={2}>
           <Card>

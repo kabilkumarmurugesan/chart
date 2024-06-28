@@ -591,6 +591,7 @@ const AppContainer = ({
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     ShiftCardDetailList={ShiftCardDetailList}
+                    firstShiftTiming={firstShiftTiming}                
                   />
                 </Box>
               )}
@@ -627,6 +628,7 @@ const AppContainer = ({
             ShiftCardDetailList={ShiftCardDetailList}
             cardData={secoundCardData}
             firstResponse={firstResponse}
+            firstShiftTiming={firstShiftTiming}                
           />
         </Box>
       )}

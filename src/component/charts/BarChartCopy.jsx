@@ -16,6 +16,7 @@ import "../../asset/css/BarChartCopy.css";
 import { Card, useTheme } from "@mui/material";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -77,8 +78,7 @@ const BarChartCopy = ({
     if (valuran) {
       let indexOf = categoriesList.indexOf(valuran);
       setBlinkingIndex(indexOf);
-      debugger;
-      emt[indexOf] = 5;
+       emt[indexOf] = 5;
       temp[indexOf] = lastBarValue.totalCount;
     }
     setSeries(() => temp);
