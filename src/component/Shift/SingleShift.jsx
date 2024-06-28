@@ -272,7 +272,7 @@ const SingleShift = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <DownTimeAction data={secoundDowntimeDetails} />
+          <DownTimeAction data={currentShift === "shiftA"?firstDowntimeDetails:secoundDowntimeDetails} />
         </Grid>
         <Grid
           item

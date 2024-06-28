@@ -342,7 +342,7 @@ const AppContainer = ({
                   }}
                 >
                   <Box style={{ flex: "4" }}>
-                    <FullShift
+                     <FullShift
                       handleSlidechange={handleSlidechange}
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
@@ -626,7 +626,7 @@ const AppContainer = ({
             firstDowntimeDetails={firstDowntimeDetails}
             secoundDowntimeDetails={secoundDowntimeDetails}
             ShiftCardDetailList={ShiftCardDetailList}
-            cardData={secoundCardData}
+            cardData={firstCardData}
             firstResponse={firstResponse}
             firstShiftTiming={firstShiftTiming}                
           />
