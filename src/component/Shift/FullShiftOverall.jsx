@@ -112,15 +112,13 @@ const FullShiftOverall = ({
               item
               xs={4}
               md={2}
-              onMouseEnter={() => setShowMenu(false)}
-              onMouseLeave={() => setShowMenu(true)}
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Box>
+              <Box onClick={() => setShowMenu(!showMenu)}>
                 {visibleQRCodeIndex === null ? (
                   <Box>
                     {showMenu ? (

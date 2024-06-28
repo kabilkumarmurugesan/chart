@@ -264,8 +264,6 @@ const SingleShift = ({
           item
           xs={4}
           md={2}
-          onMouseEnter={() => setShowMenu(false)}
-          onMouseLeave={() => setShowMenu(true)}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -274,7 +272,7 @@ const SingleShift = ({
         >
           <Box>
             {visibleQRCodeIndex === null ? (
-              <Box>
+              <Box onClick={() => setShowMenu(!showMenu)}>
                 {showMenu ? (
                   <img
                     style={{ width: "40%" }}
