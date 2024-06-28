@@ -74,14 +74,14 @@ const BarChartCopy = ({
       });
 
     let valuran = lastBarValue.timeRange;
-    let indexOf = categoriesList.indexOf(valuran);
-    indexOf > 0 && setBlinkingIndex(indexOf);
-    if (indexOf > 0 && valuran) {
+    if (valuran) {
+      let indexOf = categoriesList.indexOf(valuran);
+      setBlinkingIndex(indexOf);
+      debugger;
       emt[indexOf] = 5;
       temp[indexOf] = lastBarValue.totalCount;
     }
     setSeries(() => temp);
-
     setEmtSeries(emt);
     setSeriesLabel(seriesLabels);
 
@@ -94,7 +94,7 @@ const BarChartCopy = ({
   }, [
     response,
     ShowShiftDate,
-    lastBarValue,
+    lastBarValue.timeRange,
     lastBarValue.totalCount,
     ShowShift,
     categoriesList,

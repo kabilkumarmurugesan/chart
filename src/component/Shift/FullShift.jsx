@@ -21,6 +21,7 @@ const FullShift = ({
   setVisibleQRCodeIndex,
   todayDate,
   targetList,
+  currentShift,
   firstDowntimeDetails,
   secoundDowntimeDetails,
 }) => {
@@ -36,16 +37,28 @@ const FullShift = ({
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={firstShiftTiming}
             />
-            <BarChartCopy
-              height={"35vh"}
-              targetList={targetList}
-              lastBarValue={lastBarValue}
-              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-              handleSlidechange={handleSlidechanges}
-              visibleQRCodeIndex={visibleQRCodeIndex}
-              categories={categories}
-              response={firstResponse}
-            />
+            {currentShift === "shiftB" ? (
+              <BarChart
+                height={"33vh"}
+                targetList={targetList}
+                setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleSlidechange={handleSlidechanges}
+                visibleQRCodeIndex={visibleQRCodeIndex}
+                categories={categories}
+                response={firstResponse}
+              />
+            ) : (
+              <BarChartCopy
+                height={"35vh"}
+                targetList={targetList}
+                lastBarValue={currentShift === "shiftA" && lastBarValue}
+                setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleSlidechange={handleSlidechanges}
+                visibleQRCodeIndex={visibleQRCodeIndex}
+                categories={categories}
+                response={firstResponse}
+              />
+            )}
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -54,18 +67,31 @@ const FullShift = ({
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={secoundShiftTiming}
             />
-            <BarChartCopy
-              targetList={targetList}
-              height={"35vh"}
-              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-              handleSlidechange={handleSlidechanges}
-              lastBarValue={lastBarValue}
-              animations={false}
-              response={secoundResponse}
-              categories={categories}
-              visibleQRCodeIndex={visibleQRCodeIndex}
-              shiftHours={shiftHours}
-            />
+            {currentShift === "shiftA" ? (
+              <BarChart
+                height={"33vh"}
+                targetList={targetList}
+                setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleSlidechange={handleSlidechanges}
+                visibleQRCodeIndex={visibleQRCodeIndex}
+                categories={categories}
+                response={secoundResponse}
+                shiftHours={shiftHours}
+              />
+            ) : (
+              <BarChartCopy
+                height={"35vh"}
+                targetList={targetList}
+                lastBarValue={currentShift === "shiftB" && lastBarValue}
+                animations={false}
+                setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleSlidechange={handleSlidechanges}
+                visibleQRCodeIndex={visibleQRCodeIndex}
+                categories={categories}
+                response={secoundResponse}
+                shiftHours={shiftHours}
+              />
+            )}
           </Card>
         </Grid>
       </Grid>

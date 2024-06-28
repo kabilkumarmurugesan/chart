@@ -46,6 +46,7 @@ const AppContainer = ({
   const [secoundCardData, setSecoundCardData] = useState([]);
   const [firstDowntimeDetails, setFirstDowntimeDetails] = useState([]);
   const [secoundDowntimeDetails, setSecoundDowntimeDetails] = useState([]);
+  const [currentShift, setCurrentShift] = useState("shiftA");
   const [categories, setCategories] = useState(
     shiftHours
       ? [
@@ -193,6 +194,17 @@ const AppContainer = ({
     shiftType,
   ]);
 
+  const formatDates = (date) => {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  };
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
       ShowShiftDate === "Today"
@@ -215,16 +227,24 @@ const AppContainer = ({
     return `${month}/${day}/${year}`;
   };
 
-  const getProductData = async (line, categoriesList, date) => {
-    debugger;
-    let temp =
-      currentSlide === 0 && ShowShift === "Day"
-        ? !shiftHours
-          ? `&duration=9hrs&shift=1st`
-          : `&duration=6hrs&shift=${shiftType}`
-        : shiftHours
-        ? `&duration=12hrs&shift=1st`
-        : `&duration=9hrs&shift=${shiftType}`;
+  const getProductData = async (line, categoriesList, formattedDate) => {
+    let date = formatDates(formattedDate);
+    let temp = "";
+
+    if (currentSlide === 0 && ShowShift === "Day") {
+      if (shiftHours) {
+        temp = `&duration=6hrs&shift=${shiftType}`;
+      } else {
+        temp = `&duration=9hrs&shift=${shiftType}`;
+      }
+    } else {
+      if (shiftHours) {
+        temp = `&duration=12hrs&shift=1st`;
+      } else {
+        temp = `&duration=9hrs&shift=${shiftType}`;
+      }
+    }
+
     ENV.get(
       `productiondata?line=${line}${temp}&date=${date}&target=${targetList}`
     ).then((response) => {
@@ -254,7 +274,6 @@ const AppContainer = ({
           setSecoundResponse(dome);
         }
       });
-
       const overallData = [
         {
           label: "OVERALL TARGET",
@@ -278,6 +297,7 @@ const AppContainer = ({
         },
       ];
       setCardData(overallData);
+      setCurrentShift(result.data.currenyShift);
       setFirstCardData(result.data.shiftADetails);
       setSecoundCardData(result.data.shiftBDetails);
       setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
@@ -339,6 +359,7 @@ const AppContainer = ({
                       firstDowntimeDetails={firstDowntimeDetails}
                       secoundDowntimeDetails={secoundDowntimeDetails}
                       ShowShiftDate={ShowShiftDate}
+                      currentShift={currentShift}
                     />
                   </Box>
                   <Box
@@ -440,6 +461,7 @@ const AppContainer = ({
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     cardData={cardData}
                     firstShiftTiming={firstShiftTiming}
+                    currentShift={currentShift}
                     secoundShiftTiming={secoundShiftTiming}
                   />
                 </Box>
@@ -505,7 +527,8 @@ const AppContainer = ({
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     firstResponse={firstResponse}
-                    firstShiftTiming={firstShiftTiming}
+                    currentShift={currentShift}
+                    firstShiftTiming={firstShiftTiming}                
                     categories={categories}
                     formatDate={formatDate}
                     yesterdayDate={yesterdayDate}
@@ -562,6 +585,7 @@ const AppContainer = ({
                     cardData={secoundCardData}
                     yesterdayDate={yesterdayDate}
                     todayDate={todayDate}
+                    currentShift={currentShift}
                     targetList={targetList}
                     formatDate={formatDate}
                     firstDowntimeDetails={firstDowntimeDetails}
@@ -597,10 +621,12 @@ const AppContainer = ({
             formatDate={formatDate}
             yesterdayDate={yesterdayDate}
             todayDate={todayDate}
+            currentShift={currentShift}
             firstDowntimeDetails={firstDowntimeDetails}
             secoundDowntimeDetails={secoundDowntimeDetails}
             ShiftCardDetailList={ShiftCardDetailList}
             cardData={secoundCardData}
+            firstResponse={firstResponse}
           />
         </Box>
       )}
