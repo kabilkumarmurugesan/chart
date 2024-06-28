@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 
 export default function BasicTable({ response }) {
   const series = response;
-  return (
+   return (
     <TableContainer component={Paper}>
       <Table
         orientation="vertical"

@@ -32,6 +32,7 @@ const SingleShift = ({
   cardData,
   firstDowntimeDetails,
   secoundDowntimeDetails,
+  currentShift,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -239,12 +240,7 @@ const SingleShift = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          {secoundResponse !== undefined && (
-            <BasicTable response={secoundResponse} />
-          )}
-          {firstResponse !== undefined && (
-            <BasicTable response={firstResponse} />
-          )}
+          <BasicTable response={ secoundResponse ?secoundResponse :firstResponse} />
         </Grid>{" "}
         <Grid item xs={4} md={2}>
           <Card>

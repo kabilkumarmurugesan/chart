@@ -297,7 +297,7 @@ const AppContainer = ({
         },
       ];
       setCardData(overallData);
-      setCurrentShift(result.data.currenyShift);
+      setCurrentShift(result.data.currentShift);
       setFirstCardData(result.data.shiftADetails);
       setSecoundCardData(result.data.shiftBDetails);
       setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
