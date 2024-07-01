@@ -78,6 +78,13 @@ function Laoyout() {
           refreshRate={refreshRate}
         />
       </Box>
+      <Box style={{
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: '#fff',
+        
+      }}>V 1.0</Box>
     </>
   );
 }
