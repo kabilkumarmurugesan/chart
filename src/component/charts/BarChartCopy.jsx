@@ -235,6 +235,16 @@ const BarChartCopy = ({
       },
       annotation: {
         annotations: {
+          label1: {
+            type: "label",
+            xValue: categories.length / 2,
+            yValue: targetList + 5,
+            borderColor: "#241773",
+            color: "#fff",
+            backgroundColor: "#91a9f3",
+            borderWidth: 1,
+            content: [`Target: ${Math.round(targetList)}`],
+          },
           line1: {
             type: "line",
             yMin: targetList,

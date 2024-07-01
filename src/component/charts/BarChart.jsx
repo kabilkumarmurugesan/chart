@@ -37,29 +37,28 @@ const BarChart = ({
   height,
   targetList,
 }) => {
-  const theme = useTheme(); // Initial value for the last bar of PRODUCT A
+  const theme = useTheme();
   const { primary } = theme.palette;
   const [series, setSeries] = useState([]);
-  const [seriesLable, setSeriesLable] = useState();
+  const [seriesLabel, setSeriesLabel] = useState({});
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const tooltipRef = useRef(null);
 
   useEffect(() => {
-    let temp = [];
-    let seriesLables = {};
-    let terget = [];
+    const temp = [];
+    const seriesLabels = {};
+
     if (response) {
       response.forEach((item) => {
         temp.push(item.y);
-        seriesLables[item.x] = item.product_id;
-        item.target && terget.push(parseInt(item.target));
+        seriesLabels[item.x] = item.product_id;
       });
     }
 
     setSeries(temp);
-    setSeriesLable(seriesLables);
+    setSeriesLabel(seriesLabels);
   }, [response]);
 
   const showTooltip = (event, content) => {
@@ -110,13 +109,12 @@ const BarChart = ({
     responsive: true,
     plugins: {
       tooltip: {
-        enabled: true, // Enable tooltips
-        mode: "nearest", // Show tooltip for the nearest item
-        intersect: true, // Ensure tooltip shows only for the intersected item
+        enabled: true,
+        mode: "nearest",
+        intersect: true,
         callbacks: {
           label: function (tooltipItem) {
-            // Customize the tooltip label
-            let label = seriesLable[tooltipItem.label];
+            let label = seriesLabel[tooltipItem.label];
             if (label) {
               label += ": ";
             }
@@ -124,19 +122,29 @@ const BarChart = ({
             return label;
           },
         },
-        displayColors: false, // Disable the color box in tooltips
+        displayColors: false,
       },
       legend: {
-        display: false, // Disable legend
+        display: false,
       },
       annotation: {
         annotations: {
+          label1: {
+            type: "label",
+            xValue: categories.length / 2,
+            yValue: targetList + 5,
+            borderColor: "#241773",
+            color: "#fff",
+            backgroundColor: "#91a9f3",
+            borderWidth: 1,
+            content: [`Target: ${Math.round(targetList)}`],
+          },
           line1: {
             type: "line",
             yMin: targetList,
             yMax: targetList,
-            xMin: -1, // Start from the beginning of the chart
-            xMax: categories.length - 1, // End at the last index of the chart
+            xMin: -1,
+            xMax: categories.length - 1,
             borderColor: "#241773",
             borderWidth: 4,
             label: {
@@ -166,7 +174,7 @@ const BarChart = ({
         stacked: true,
         beginAtZero: true,
         ticks: {
-          stepSize: 20, // Set the step size for the y-axis labels and grid lines
+          stepSize: 20,
         },
       },
     },
@@ -189,7 +197,6 @@ const BarChart = ({
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            // paddingTop: "15px",
           }}
         >
           {data.labels.map((label, index) => (
