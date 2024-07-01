@@ -5,6 +5,7 @@ import BarChart from "../charts/BarChart";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
+import ArrowNavigation from "../Card/ArrowNavigation";
 
 const FullShift = ({
   ShowShiftDate,
@@ -24,6 +25,9 @@ const FullShift = ({
   currentShift,
   firstDowntimeDetails,
   secoundDowntimeDetails,
+  disabledOne,
+  disabledTwo,
+  handaleEvent,
 }) => {
   const handleSlidechanges = () => {
     handleSlidechange();
@@ -113,7 +117,21 @@ const FullShift = ({
           )}
         </Grid>
       </Grid>
-      <Grid container spacing={2} sx={{ mt: 1 }}>
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
+          <ArrowNavigation
+            disabledOne={disabledOne}
+            disabledTwo={disabledTwo}
+            handaleEvent={handaleEvent}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
         <Grid item xs={6} md={6}>
           <DownTimeAction data={firstDowntimeDetails} />
         </Grid>

@@ -8,7 +8,6 @@ import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
-import BarChart from "../charts/BarChart";
 import { CommonAPIService } from "../../utilities/CommonAPI";
 
 const SingleShift = ({
@@ -36,7 +35,7 @@ const SingleShift = ({
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     CommonAPIService.getEmojiStatus(

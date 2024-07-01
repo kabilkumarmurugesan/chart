@@ -3,7 +3,7 @@ import { Box, useTheme, IconButton } from "@mui/material";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import FullShift from "../Shift/FullShift";
 import SingleShift from "../Shift/SingleShift";
-import { socket } from "../socket";
+import { socket } from "../../utilities/socket";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullShiftOverall from "../Shift/FullShiftOverall";
@@ -170,19 +170,17 @@ const AppContainer = ({
       return categoriesList;
     });
     const dates = new Date();
-
-    if (ShowShiftDate === "Today" && targetList) {
-      date = formatDate(new Date());
-      const formattedDate = `${dates.getFullYear()}-${
-        dates.getMonth() + 1
-      }-${dates.getDate()}`;
-      getProductData("L1", categoriesList, formattedDate);
-    } else {
-      date = yesterdayDate;
-      const formattedDate = `${dates.getFullYear()}-${dates.getMonth() + 1}-${
-        dates.getDate() - 1
-      }`;
-      getProductData("L1", categoriesList, formattedDate);
+    if (targetList !== undefined) {
+      if (ShowShiftDate === "Today") {
+        date = formatDate(new Date());
+        const formattedDate = `${dates.getFullYear()}-${
+          dates.getMonth() + 1
+        }-${dates.getDate()}`;
+        getProductData("L1", categoriesList, formattedDate);
+      } else {
+        date = yesterdayDate;
+        getProductData("L1", categoriesList, yesterdayDate);
+      }
     }
     setTodayDate(date);
   }, [
@@ -360,50 +358,20 @@ const AppContainer = ({
                       secoundDowntimeDetails={secoundDowntimeDetails}
                       ShowShiftDate={ShowShiftDate}
                       currentShift={currentShift}
+                      disabledOne={true}
+                      disabledTwo={false}
+                      handaleEvent={() => {
+                        if (shiftHours) {
+                          if (shiftType === "2nd" && currentSlide === 0) {
+                            handleSlidechange();
+                          } else {
+                            setShiftType("2nd");
+                          }
+                        } else {
+                          handleSlidechange();
+                        }
+                      }}
                     />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "74%",
-                      right: "1%",
-                    }}
-                  >
-                    <IconButton
-                      disabled
-                      onClick={() => {
-                        if (shiftHours) {
-                          if (shiftType === "2nd" && currentSlide === 0) {
-                            handleSlidechange();
-                          } else {
-                            setShiftType("2nd");
-                          }
-                        } else {
-                          handleSlidechange();
-                        }
-                      }}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        if (shiftHours) {
-                          if (shiftType === "2nd" && currentSlide === 0) {
-                            handleSlidechange();
-                          } else {
-                            setShiftType("2nd");
-                          }
-                        } else {
-                          handleSlidechange();
-                        }
-                      }}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
                   </Box>
                 </Box>
               ) : (
@@ -413,37 +381,6 @@ const AppContainer = ({
                     flexDirection: "row",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "75%",
-                      right: "1%",
-                    }}
-                  >
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      onClick={() => {
-                        handleSlidechange();
-                        setShiftType("1st");
-                      }}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ background: "#fff" }}
-                      disabled
-                      onClick={() => {
-                        handleSlidechange();
-                        setShiftType("1st");
-                      }}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box>
                   <FullShiftOverall
                     ShowShiftDate={ShowShiftDate}
                     targetList={targetList}
@@ -463,6 +400,12 @@ const AppContainer = ({
                     firstShiftTiming={firstShiftTiming}
                     currentShift={currentShift}
                     secoundShiftTiming={secoundShiftTiming}
+                    disabledOne={false}
+                    disabledTwo={true}
+                    handaleEvent={() => {
+                      handleSlidechange();
+                      setShiftType("1st");
+                    }}
                   />
                 </Box>
               )}
