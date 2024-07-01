@@ -62,6 +62,7 @@ const SingleShift = ({
                   ? firstShiftTiming
                   : secoundShiftTiming
               }
+              isCurrentShift={currentShift === "shiftA"}
             />
             {firstResponse ? (
               <BarChartCopy
@@ -83,6 +84,8 @@ const SingleShift = ({
                 ShowShiftDate={ShowShiftDate}
                 lastBarValue={lastBarValue}
                 response={firstResponse}
+                currentShift={currentShift}
+                isCurrentShift={currentShift === "shiftA"}
               />
             ) : (
               <BarChartCopy
@@ -93,8 +96,10 @@ const SingleShift = ({
                 shiftHours={shiftHours}
                 ShowShiftDate={ShowShiftDate}
                 lastBarValue={lastBarValue}
+                isCurrentShift={currentShift === "shiftB"}
                 response={secoundResponse}
                 categories={categories}
+                currentShift={currentShift}
                 id={"single"}
                 animations={{
                   tension: {
@@ -249,6 +254,7 @@ const SingleShift = ({
         </Grid>
         <Grid item xs={6} md={10}>
           <BasicTable
+            categories={categories}
             response={
               ShowShiftDate === "Today"
                 ? currentShift === "shiftA"
@@ -272,7 +278,13 @@ const SingleShift = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <DownTimeAction data={currentShift === "shiftA"?firstDowntimeDetails:secoundDowntimeDetails} />
+          <DownTimeAction
+            data={
+              currentShift === "shiftA"
+                ? firstDowntimeDetails
+                : secoundDowntimeDetails
+            }
+          />
         </Grid>
         <Grid
           item
@@ -284,50 +296,70 @@ const SingleShift = ({
             justifyContent: "center",
           }}
         >
-          <Box>
+          <Card style={{ boxShadow: "none" }}>
             {visibleQRCodeIndex === null ? (
-              <Box onClick={() => setShowMenu(!showMenu)}>
-                {showMenu ? (
+              <>
+                <Typography
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  TARGET & ACTUAL STATUS
+                </Typography>
+                <Box
+                  onMouseOver={() => setShowMenu(true)}
+                  onMouseOut={() => setShowMenu(false)}
+                >
+                  <Box
+                    style={{
+                      height: "40px",
+                    }}
+                  >
+                    {showMenu && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "100%",
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            background: "#483456",
+                            marginRight: "1em",
+                            "&:hover": {
+                              background: "#483456",
+                            },
+                          }}
+                          onClick={() => setIsShift(true)}
+                        >
+                          Shift
+                        </Button>
+                        {ShowShiftDate === "Today" && (
+                          <Button
+                            sx={{
+                              background: "#483456",
+                              "&:hover": {
+                                background: "#483456",
+                              },
+                            }}
+                            onClick={() => setIsShift(false)}
+                          >
+                            Crt Hrs
+                          </Button>
+                        )}
+                      </Box>
+                    )}
+                  </Box>
                   <img
                     style={{ width: "40%" }}
                     alt="emoj"
                     src={isHappy ? smileEmoji : sadEmoji}
                   />
-                ) : (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100%",
-                    }}
-                  >
-                    <Button
-                      sx={{
-                        background: "#483456",
-                        marginRight: "1em",
-                        "&:hover": {
-                          background: "#483456",
-                        },
-                      }}
-                      onClick={() => setIsShift(true)}
-                    >
-                      Shift
-                    </Button>
-                    <Button
-                      sx={{
-                        background: "#483456",
-                        "&:hover": {
-                          background: "#483456",
-                        },
-                      }}
-                      onClick={() => setIsShift(false)}
-                    >
-                      Crt Hrs
-                    </Button>
-                  </Box>
-                )}
-              </Box>
+                </Box>
+              </>
             ) : (
               <Card>
                 <QRCodeCanvas
@@ -338,7 +370,7 @@ const SingleShift = ({
                 />
               </Card>
             )}
-          </Box>
+          </Card>
         </Grid>
       </Grid>
     </Box>

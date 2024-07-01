@@ -198,13 +198,13 @@ const BarChart = ({
                 className="btn-one"
                 style={{
                   background:
-                    visibleQRCodeIndex === index + 3
+                    visibleQRCodeIndex === index
                       ? "#4d5a81"
                       : "rgb(220, 223, 224)",
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() => handleButtonClick(index + 3)}
+                onClick={() => handleButtonClick(index)}
               ></button>
             </div>
           ))}

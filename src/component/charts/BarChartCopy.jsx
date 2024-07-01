@@ -43,6 +43,7 @@ const BarChartCopy = ({
   setVisibleQRCodeIndex,
   visibleQRCodeIndex,
   targetList,
+  isCurrentShift,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -78,7 +79,7 @@ const BarChartCopy = ({
     if (valuran) {
       let indexOf = categoriesList.indexOf(valuran);
       setBlinkingIndex(indexOf);
-       emt[indexOf] = 5;
+      emt[indexOf] = 5;
       temp[indexOf] = lastBarValue.totalCount;
     }
     setSeries(() => temp);
@@ -258,6 +259,14 @@ const BarChartCopy = ({
             },
             onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
             onLeave: hideTooltip,
+            datalabels: {
+              align: "end", // or any other alignment
+              anchor: "end", // or any other anchor position
+              color: "#000", // specify the color
+              formatter: (value, context) => {
+                return `Target: ${Math.round(targetList)}`; // custom label text
+              },
+            },
           },
         },
       },
@@ -296,13 +305,15 @@ const BarChartCopy = ({
                 className="btn-one"
                 style={{
                   background:
-                    visibleQRCodeIndex === index + 12
+                    visibleQRCodeIndex === index + (isCurrentShift ? 1 : 12)
                       ? "#4d5a81"
                       : "rgb(220, 223, 224)",
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() => handleButtonClick(index + 12)}
+                onClick={() =>
+                  handleButtonClick(index + (isCurrentShift ? 1 : 12))
+                }
               ></button>
             </div>
           ))}

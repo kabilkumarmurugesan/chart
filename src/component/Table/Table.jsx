@@ -5,9 +5,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-export default function BasicTable({ response }) {
-  const series = response;
-   return (
+export default function BasicTable(props) {
+  const series = props.response;
+  return (
     <TableContainer component={Paper}>
       <Table
         orientation="vertical"
@@ -16,12 +16,27 @@ export default function BasicTable({ response }) {
         className="uphTable"
       >
         <TableRow>
+          <TableCellHeader title={"Time"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              {item.x}
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableRow>
           <TableCellHeader title={"UPH"} />
           {series.map((item, i) => (
             <TableCell
               key={i}
               style={{
                 textAlign: "center",
+                padding: "10px",
               }}
             >
               {item.y}
@@ -35,6 +50,7 @@ export default function BasicTable({ response }) {
               key={i}
               style={{
                 textAlign: "center",
+                padding: "10px",
               }}
             >
               {item.y}
@@ -48,6 +64,7 @@ export default function BasicTable({ response }) {
               key={i}
               style={{
                 textAlign: "center",
+                padding: "10px",
               }}
             >
               {item.target}
@@ -60,6 +77,7 @@ export default function BasicTable({ response }) {
             <TableCell
               key={i}
               style={{
+                padding: "10px",
                 textAlign: "center",
               }}
             >

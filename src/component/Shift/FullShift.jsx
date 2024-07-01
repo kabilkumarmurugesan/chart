@@ -36,6 +36,7 @@ const FullShift = ({
             <ShiftHeader
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={firstShiftTiming}
+              isCurrentShift={currentShift === "shiftA"}
             />
             {currentShift === "shiftB" ? (
               <BarChart
@@ -57,6 +58,8 @@ const FullShift = ({
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
                 response={firstResponse}
+                currentShift={currentShift}
+                isCurrentShift={currentShift === "shiftA"}
               />
             )}
           </Card>
@@ -66,6 +69,7 @@ const FullShift = ({
             <ShiftHeader
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={secoundShiftTiming}
+              isCurrentShift={currentShift === "shiftB"}
             />
             {currentShift === "shiftA" ? (
               <BarChart
@@ -90,6 +94,8 @@ const FullShift = ({
                 categories={categories}
                 response={secoundResponse}
                 shiftHours={shiftHours}
+                currentShift={currentShift}
+                isCurrentShift={currentShift === "shiftB"}
               />
             )}
           </Card>
@@ -98,12 +104,12 @@ const FullShift = ({
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={12} md={6}>
           {firstResponse !== undefined && (
-            <BasicTable response={firstResponse} />
+            <BasicTable response={firstResponse} categories={categories} />
           )}
         </Grid>
         <Grid item xs={12} md={6}>
           {secoundResponse !== undefined && (
-            <BasicTable response={secoundResponse} />
+            <BasicTable response={secoundResponse} categories={categories} />
           )}
         </Grid>
       </Grid>

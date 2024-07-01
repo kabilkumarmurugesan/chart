@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, Grid } from "@mui/material";
+import { Box, Button, Card, Typography, Grid } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
-import BarChart from "../charts/BarChart";
 import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
@@ -58,6 +57,7 @@ const FullShiftOverall = ({
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
                   time={firstShiftTiming}
+                  isCurrentShift={currentShift === "shiftA"}
                 />
                 <BarChartCopy
                   height={"25vh"}
@@ -68,6 +68,8 @@ const FullShiftOverall = ({
                   categories={categories}
                   response={firstResponse}
                   targetList={targetList}
+                  currentShift={currentShift}
+                  isCurrentShift={currentShift === "shiftA"}
                 />
               </Card>
             </Grid>
@@ -83,9 +85,11 @@ const FullShiftOverall = ({
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
                   time={secoundShiftTiming}
+                  isCurrentShift={currentShift === "shiftB"}
                 />
                 <BarChartCopy
                   height={"24vh"}
+                  currentShift={currentShift}
                   targetList={targetList}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   handleSlidechange={handleSlidechanges}
@@ -95,6 +99,7 @@ const FullShiftOverall = ({
                   categories={categories}
                   visibleQRCodeIndex={visibleQRCodeIndex}
                   shiftHours={shiftHours}
+                  isCurrentShift={currentShift === "shiftB"}
                 />
               </Card>
             </Grid>
@@ -125,61 +130,81 @@ const FullShiftOverall = ({
                 justifyContent: "center",
               }}
             >
-              <Box onClick={() => setShowMenu(!showMenu)}>
+              <Card
+                style={{ boxShadow: "none" }}
+                onClick={() => setShowMenu(!showMenu)}
+              >
                 {visibleQRCodeIndex === null ? (
-                  <Box>
-                    {showMenu ? (
+                  <>
+                    <Typography
+                      style={{
+                        fontSize: "18px",
+                      }}
+                    >
+                      TARGET & ACTUAL STATUS
+                    </Typography>
+                    <Box
+                      onMouseOver={() => setShowMenu(true)}
+                      onMouseOut={() => setShowMenu(false)}
+                    >
+                      <Box
+                        style={{
+                          height: "40px",
+                        }}
+                      >
+                        {showMenu && (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                            }}
+                          >
+                            <Button
+                              sx={{
+                                background: "#483456",
+                                marginRight: "1em",
+                                "&:hover": {
+                                  background: "#483456",
+                                },
+                              }}
+                              onClick={() => setIsShift(true)}
+                            >
+                              Shift
+                            </Button>
+                            {ShowShiftDate === "Today" && (
+                              <Button
+                                sx={{
+                                  background: "#483456",
+                                  "&:hover": {
+                                    background: "#483456",
+                                  },
+                                }}
+                                onClick={() => setIsShift(false)}
+                              >
+                                Crt Hrs
+                              </Button>
+                            )}
+                          </Box>
+                        )}
+                      </Box>
                       <img
                         style={{ width: "40%" }}
                         alt="emoj"
                         src={isHappy ? smileEmoji : sadEmoji}
                       />
-                    ) : (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          height: "100%",
-                        }}
-                      >
-                        <Button
-                          sx={{
-                            background: "#483456",
-                            marginRight: "1em",
-                            "&:hover": {
-                              background: "#483456",
-                            },
-                          }}
-                          onClick={() => setIsShift(true)}
-                        >
-                          Shift
-                        </Button>
-                        <Button
-                          sx={{
-                            background: "#483456",
-                            "&:hover": {
-                              background: "#483456",
-                            },
-                          }}
-                          onClick={() => setIsShift(false)}
-                        >
-                          Crt Hrs
-                        </Button>
-                      </Box>
-                    )}
-                  </Box>
+                    </Box>
+                  </>
                 ) : (
-                  <Card>
-                    <QRCodeCanvas
-                      value={
-                        "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
-                      }
-                      size={150}
-                    />
-                  </Card>
+                  <QRCodeCanvas
+                    value={
+                      "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+                    }
+                    size={150}
+                  />
                 )}
-              </Box>
+              </Card>
             </Grid>
           </Grid>{" "}
         </Grid>

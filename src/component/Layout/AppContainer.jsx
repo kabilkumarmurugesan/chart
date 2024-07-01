@@ -253,10 +253,10 @@ const AppContainer = ({
       shift.forEach((item) => {
         let dome = [];
         let shiftData = result.data[item];
-        categoriesList.forEach((_element, i) => {
+        categoriesList.forEach((element, i) => {
           dome.push({
             id: shiftData[i] === undefined ? "-" : shiftData[i].id,
-            x: shiftData[i] === undefined ? "-" : shiftData[i].x,
+            x: shiftData[i] === undefined ? element : shiftData[i].x,
             y: shiftData[i] === undefined ? "-" : shiftData[i].y,
             z: shiftData[i] === undefined ? "-" : shiftData[i].z,
             product_id:
@@ -342,7 +342,7 @@ const AppContainer = ({
                   }}
                 >
                   <Box style={{ flex: "4" }}>
-                     <FullShift
+                    <FullShift
                       handleSlidechange={handleSlidechange}
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
@@ -528,7 +528,7 @@ const AppContainer = ({
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     firstResponse={firstResponse}
                     currentShift={currentShift}
-                    firstShiftTiming={firstShiftTiming}                
+                    firstShiftTiming={firstShiftTiming}
                     categories={categories}
                     formatDate={formatDate}
                     yesterdayDate={yesterdayDate}
@@ -591,7 +591,7 @@ const AppContainer = ({
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     ShiftCardDetailList={ShiftCardDetailList}
-                    firstShiftTiming={firstShiftTiming}                
+                    firstShiftTiming={firstShiftTiming}
                   />
                 </Box>
               )}
@@ -628,7 +628,7 @@ const AppContainer = ({
             ShiftCardDetailList={ShiftCardDetailList}
             cardData={firstCardData}
             firstResponse={firstResponse}
-            firstShiftTiming={firstShiftTiming}                
+            firstShiftTiming={firstShiftTiming}
           />
         </Box>
       )}
