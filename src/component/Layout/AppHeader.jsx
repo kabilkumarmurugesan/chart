@@ -63,13 +63,11 @@ export default function AppHeader({
   handleRefreshStatus,
   handleShiftUpdate,
   handleOnShift,
-  handleOnDownTime,
   refreshRate,
   ShowShift,
   ShowShiftDate,
   shiftHours,
   refreshStatus,
-  isDownTime,
   handleShiftTarget,
   isSystem,
 }) {
@@ -172,7 +170,6 @@ export default function AppHeader({
               <Box>45</Box>
             </Stack>
           </Box>
-       
           <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
             <Box
               sx={{

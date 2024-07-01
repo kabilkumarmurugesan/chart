@@ -462,7 +462,6 @@ const AppContainer = ({
                   </Box>
                   <SingleShift
                     shiftHours={shiftHours}
-                    isDownTime={isDownTime}
                     handleSlidechange={handleSlidechange}
                     targetList={targetList}
                     lastBarValue={lastBarValue}
@@ -475,6 +474,7 @@ const AppContainer = ({
                     categories={categories}
                     formatDate={formatDate}
                     yesterdayDate={yesterdayDate}
+                    currentSlide={currentSlide}
                     todayDate={todayDate}
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
@@ -516,7 +516,6 @@ const AppContainer = ({
                   </Box>
                   <SingleShift
                     shiftHours={shiftHours}
-                    isDownTime={isDownTime}
                     handleSlidechange={handleSlidechange}
                     lastBarValue={lastBarValue}
                     ShowShiftDate={ShowShiftDate}
@@ -552,7 +551,6 @@ const AppContainer = ({
         >
           <SingleShift
             shiftHours={shiftHours}
-            isDownTime={isDownTime}
             secoundShiftTiming={secoundShiftTiming}
             handleSlidechange={handleSlidechange}
             lastBarValue={lastBarValue}

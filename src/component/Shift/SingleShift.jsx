@@ -9,6 +9,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
 import { CommonAPIService } from "../../utilities/CommonAPI";
+import ArrowNavigation from "../Card/ArrowNavigation";
 
 const SingleShift = ({
   formatDate,
@@ -17,7 +18,6 @@ const SingleShift = ({
   ShiftCardDetailList,
   shiftHours,
   ShowShiftDate,
-  isDownTime,
   secoundShiftTiming,
   handleSlidechange,
   firstResponse,
@@ -32,6 +32,7 @@ const SingleShift = ({
   firstDowntimeDetails,
   secoundDowntimeDetails,
   currentShift,
+  currentSlide,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -298,6 +299,13 @@ const SingleShift = ({
           <Card style={{ boxShadow: "none" }}>
             {visibleQRCodeIndex === null ? (
               <>
+                {currentSlide && (
+                  <ArrowNavigation
+                    disabledOne={currentSlide === 0}
+                    disabledTwo={currentSlide > 0}
+                    handaleEvent={handleSlidechange}
+                  />
+                )}
                 <Typography
                   style={{
                     fontSize: "18px",
