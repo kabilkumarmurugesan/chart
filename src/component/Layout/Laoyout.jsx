@@ -11,7 +11,7 @@ function Laoyout() {
   const [shiftHours, setShiftHours] = useState(true);
   const [refreshStatus, setRefreshStatus] = useState(true);
   const [isSystem, setIsSystem] = useState(true);
-  const [targetList, setTargetList] = useState();
+  const [targetList, setTargetList] = useState([]);
 
   useEffect(() => {
     getShiftTarget();
@@ -45,7 +45,7 @@ function Laoyout() {
   const getShiftTarget = async () => {
     ENV.get(`/getTarget?isSystem=${isSystem}`)
       .then((res) => {
-        setTargetList(res.data.data.target);
+        setTargetList(res.data.data);
       })
       .catch((error) => {
         console.log(error);

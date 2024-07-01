@@ -36,6 +36,7 @@ const BarChart = ({
   response,
   height,
   targetList,
+  targetOne,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -81,8 +82,8 @@ const BarChart = ({
   };
 
   const getColor = (value) => {
-    if (value < targetList / 3) return primary.incomplete;
-    if (value < targetList / 2) return primary.pending;
+    if (value < targetOne / 3) return primary.incomplete;
+    if (value < targetOne / 2) return primary.pending;
     return primary.complete;
   };
 
@@ -132,30 +133,26 @@ const BarChart = ({
           label1: {
             type: "label",
             xValue: categories.length / 2,
-            yValue: targetList + 5,
-            borderColor: "#241773",
-            color: "#fff",
-            backgroundColor: "#91a9f3",
-            borderWidth: 1,
-            content: [`Target: ${Math.round(targetList)}`],
+            yValue: targetOne + 5,
+            content: [`Target: ${Math.round(targetOne)}`],
           },
           line1: {
             type: "line",
-            yMin: targetList,
-            yMax: targetList,
+            yMin: targetOne,
+            yMax: targetOne,
             xMin: -1,
-            xMax: categories.length - 1,
+            xMax: categories.length,
             borderColor: "#241773",
             borderWidth: 4,
             label: {
-              content: `Target: ${Math.round(targetList)}`, // Specify the label text
+              content: `Target: ${Math.round(targetOne)}`, // Specify the label text
               enabled: true,
               position: "start", // Change to 'start' or 'center'
               backgroundColor: "#241773",
               yAdjust: -15,
               xAdjust: -5,
             },
-            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
             onLeave: hideTooltip,
           },
         },

@@ -33,6 +33,7 @@ const SingleShift = ({
   secoundDowntimeDetails,
   currentShift,
   currentSlide,
+  targetOne,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -45,7 +46,6 @@ const SingleShift = ({
       setIsHappy
     );
   }, [isShift]);
-
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
@@ -81,6 +81,7 @@ const SingleShift = ({
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
                 shiftHours={shiftHours}
+                targetOne={targetOne}
                 ShowShiftDate={ShowShiftDate}
                 lastBarValue={lastBarValue}
                 response={firstResponse}
@@ -95,6 +96,7 @@ const SingleShift = ({
                 handleSlidechange={handleSlidechange}
                 shiftHours={shiftHours}
                 ShowShiftDate={ShowShiftDate}
+                targetOne={targetOne}
                 lastBarValue={lastBarValue}
                 isCurrentShift={currentShift === "shiftB"}
                 response={secoundResponse}
@@ -299,7 +301,7 @@ const SingleShift = ({
           <Card style={{ boxShadow: "none" }}>
             {visibleQRCodeIndex === null ? (
               <>
-                {currentSlide && (
+                {!isNaN(currentSlide) && (
                   <ArrowNavigation
                     disabledOne={currentSlide === 0}
                     disabledTwo={currentSlide > 0}

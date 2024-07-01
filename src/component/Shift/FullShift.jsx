@@ -28,6 +28,7 @@ const FullShift = ({
   disabledOne,
   disabledTwo,
   handaleEvent,
+  targetOne,
 }) => {
   const handleSlidechanges = () => {
     handleSlidechange();
@@ -45,6 +46,7 @@ const FullShift = ({
             {currentShift === "shiftB" ? (
               <BarChart
                 height={"33vh"}
+                targetOne={targetOne}
                 targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 handleSlidechange={handleSlidechanges}
@@ -55,6 +57,7 @@ const FullShift = ({
             ) : (
               <BarChartCopy
                 height={"35vh"}
+                targetOne={targetOne}
                 targetList={targetList}
                 lastBarValue={currentShift === "shiftA" && lastBarValue}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
@@ -85,11 +88,13 @@ const FullShift = ({
                 categories={categories}
                 response={secoundResponse}
                 shiftHours={shiftHours}
+                targetOne={targetOne}
               />
             ) : (
               <BarChartCopy
                 height={"35vh"}
                 targetList={targetList}
+                targetOne={targetOne}
                 lastBarValue={currentShift === "shiftB" && lastBarValue}
                 animations={false}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}

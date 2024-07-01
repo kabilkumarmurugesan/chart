@@ -32,6 +32,7 @@ const FullShiftOverall = ({
   disabledOne,
   disabledTwo,
   handaleEvent,
+  targetOne,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -65,6 +66,7 @@ const FullShiftOverall = ({
                 />
                 <BarChartCopy
                   height={"25vh"}
+                  targetOne={targetOne}
                   lastBarValue={currentShift === "shiftA" && lastBarValue}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   handleSlidechange={handleSlidechanges}
@@ -95,6 +97,7 @@ const FullShiftOverall = ({
                   height={"24vh"}
                   currentShift={currentShift}
                   targetList={targetList}
+                  targetOne={targetOne}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   handleSlidechange={handleSlidechanges}
                   lastBarValue={currentShift === "shiftB" && lastBarValue}
@@ -177,7 +180,7 @@ const FullShiftOverall = ({
                               height: "35px",
                             }}
                           >
-                             {showMenu && (
+                            {showMenu && (
                               <Button
                                 sx={{
                                   background: "#483456",

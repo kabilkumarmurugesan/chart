@@ -44,6 +44,7 @@ const BarChartCopy = ({
   visibleQRCodeIndex,
   targetList,
   isCurrentShift,
+  targetOne,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -65,13 +66,11 @@ const BarChartCopy = ({
   useEffect(() => {
     let temp = [];
     let emt = [];
-    let target = [];
     let seriesLabels = {};
     response &&
       response.forEach((item) => {
-        item.y !== "-" && temp.push(item.y);
+        temp.push(item.y !== "-" ? item.y : 0);
         seriesLabels[item.x] = item.product_id;
-        item.target && target.push(parseInt(item.target));
         emt.push(0);
       });
 
@@ -149,8 +148,8 @@ const BarChartCopy = ({
     if (blinkingIndex === index) {
       return primary.complete;
     } else {
-      if (value < targetList / 3) return primary.incomplete;
-      if (value < targetList / 2) return primary.pending;
+      if (value < targetOne / 3) return primary.incomplete;
+      if (value < targetOne / 2) return primary.pending;
       return primary.complete;
     }
   };
@@ -237,24 +236,20 @@ const BarChartCopy = ({
         annotations: {
           label1: {
             type: "label",
-            xValue: categories.length / 2,
-            yValue: targetList + 5,
-            borderColor: "#241773",
-            color: "#fff",
-            backgroundColor: "#91a9f3",
-            borderWidth: 1,
-            content: [`Target: ${Math.round(targetList)}`],
+            xValue: categories.length / 2 - 3,
+            yValue: targetOne + 5,
+            content: [`Target 1: ${Math.round(targetOne)}`],
           },
           line1: {
             type: "line",
-            yMin: targetList,
-            yMax: targetList,
+            yMin: targetOne,
+            yMax: targetOne,
             xMin: -1, // Start from the beginning of the chart
-            xMax: categories.length - 1, // End at the last index of the chart
+            xMax: categories.length / 2 - 1, // End at the last index of the chart
             borderColor: "#241773",
             borderWidth: 4,
             label: {
-              content: [`Target: ${Math.round(targetList)}`], // Specify the label text
+              content: [`Target: ${Math.round(targetOne)}`], // Specify the label text
               enabled: true,
               position: "start", // Change to 'start', 'center', or 'end'
               backgroundColor: "#241773",
@@ -267,14 +262,53 @@ const BarChartCopy = ({
                 family: "Arial",
               },
             },
-            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetList)}`),
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
             onLeave: hideTooltip,
             datalabels: {
               align: "end", // or any other alignment
               anchor: "end", // or any other anchor position
               color: "#000", // specify the color
               formatter: (value, context) => {
-                return `Target: ${Math.round(targetList)}`; // custom label text
+                return `Target: ${Math.round(targetOne)}`; // custom label text
+              },
+            },
+          },
+          label2: {
+            type: "label",
+            xValue: categories.length / 2,
+            yValue: targetOne - 5,
+            content: [`Target 2: ${Math.round(targetOne)}`],
+          },
+          line2: {
+            type: "line",
+            yMin: targetOne - 10,
+            yMax: targetOne - 10,
+            xMin: categories.length / 2 - 1, // Start from the beginning of the chart
+            xMax: categories.length, // End at the last index of the chart
+            borderColor: "#241773",
+            borderWidth: 4,
+            label: {
+              content: [`Target: ${Math.round(targetOne)}`], // Specify the label text
+              enabled: true,
+              position: "start", // Change to 'start', 'center', or 'end'
+              backgroundColor: "#241773",
+              yAdjust: -15,
+              xAdjust: 0,
+              padding: 6,
+              font: {
+                size: 14,
+                weight: "bold",
+                family: "Arial",
+              },
+            },
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
+            onLeave: hideTooltip,
+            datalabels: {
+              align: "end", // or any other alignment
+              anchor: "end", // or any other anchor position
+              color: "#000", // specify the color
+              formatter: (value, context) => {
+                return `Target: ${Math.round(targetOne)}`; // custom label text
               },
             },
           },

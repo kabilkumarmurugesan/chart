@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, useTheme, IconButton } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import FullShift from "../Shift/FullShift";
 import SingleShift from "../Shift/SingleShift";
 import { socket } from "../../utilities/socket";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 import ENV from "../../utilities/ENV";
 
@@ -28,15 +26,20 @@ const AppContainer = ({
   const theme = useTheme();
   const { primary } = theme.palette;
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [targetOne, setTargetOne] = useState(10);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
-  const [firstResponse, setFirstResponse] = useState();
+  const [firstResponse, setFirstResponse] = useState([]);
   const [firstShiftTiming, setFirstShiftTiming] = useState(
     "09:00 PM - 05:30 AM"
   );
   const [secoundShiftTiming, setSecoundShiftTiming] = useState(
     "09:00 AM - 05:30 PM"
   );
-  const [secoundResponse, setSecoundResponse] = useState();
+  useEffect(() => {
+    targetList[0] !== undefined && setTargetOne(targetList[0].target);
+  }, [targetList]);
+
+  const [secoundResponse, setSecoundResponse] = useState([]);
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
   const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
   const [shiftType, setShiftType] = useState("1st");
@@ -203,6 +206,7 @@ const AppContainer = ({
 
     return [year, month, day].join("-");
   };
+
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
       ShowShiftDate === "Today"
@@ -244,7 +248,7 @@ const AppContainer = ({
     }
 
     ENV.get(
-      `productiondata?line=${line}${temp}&date=${date}&target=${targetList}`
+      `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}`
     ).then((response) => {
       const result = response.data;
       let shift = ["shiftA", "shiftB"];
@@ -257,6 +261,9 @@ const AppContainer = ({
             x: shiftData[i] === undefined ? element : shiftData[i].x,
             y: shiftData[i] === undefined ? "-" : shiftData[i].y,
             z: shiftData[i] === undefined ? "-" : shiftData[i].z,
+            headcount:
+              shiftData[i] === undefined ? "-" : shiftData[i].headcount,
+            upph: shiftData[i] === undefined ? "-" : shiftData[i].upph,
             product_id:
               shiftData[i] === undefined ? "-" : shiftData[i].product_id,
             target: shiftData[i] === undefined ? "-" : shiftData[i].target,
@@ -266,6 +273,9 @@ const AppContainer = ({
             downtime: shiftData[i] === undefined ? "-" : shiftData[i].downtime,
           });
         });
+        ShiftCardDetailList[0].value = result.data.shiftBDetails.mfgOrderCount;
+        ShiftCardDetailList[1].value =
+          result.data.shiftBDetails.mfgProductCount;
         if (item === "shiftA") {
           setFirstResponse(dome);
         } else {
@@ -341,6 +351,7 @@ const AppContainer = ({
                 >
                   <Box style={{ flex: "4" }}>
                     <FullShift
+                      targetOne={targetOne}
                       handleSlidechange={handleSlidechange}
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
@@ -382,6 +393,7 @@ const AppContainer = ({
                   }}
                 >
                   <FullShiftOverall
+                    targetOne={targetOne}
                     ShowShiftDate={ShowShiftDate}
                     targetList={targetList}
                     handleSlidechange={handleSlidechange}
@@ -436,31 +448,8 @@ const AppContainer = ({
                     justifyContent: "space-between",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "75%",
-                      right: "1%",
-                    }}
-                  >
-                    <IconButton
-                      disabled={currentSlide === 0}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      disabled={currentSlide > 0}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box>
                   <SingleShift
+                    targetOne={targetOne}
                     shiftHours={shiftHours}
                     handleSlidechange={handleSlidechange}
                     targetList={targetList}
@@ -490,32 +479,10 @@ const AppContainer = ({
                     justifyContent: "space-between",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "75%",
-                      right: "1%",
-                    }}
-                  >
-                    <IconButton
-                      disabled={currentSlide === 0}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                    <IconButton
-                      disabled={currentSlide > 0}
-                      onClick={handleSlidechange}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Box>
                   <SingleShift
                     shiftHours={shiftHours}
+                    currentSlide={currentSlide}
+                    targetOne={targetOne}
                     handleSlidechange={handleSlidechange}
                     lastBarValue={lastBarValue}
                     ShowShiftDate={ShowShiftDate}
@@ -564,6 +531,7 @@ const AppContainer = ({
             yesterdayDate={yesterdayDate}
             todayDate={todayDate}
             currentShift={currentShift}
+            targetOne={targetOne}
             firstDowntimeDetails={firstDowntimeDetails}
             secoundDowntimeDetails={secoundDowntimeDetails}
             ShiftCardDetailList={ShiftCardDetailList}

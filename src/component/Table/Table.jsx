@@ -53,7 +53,7 @@ export default function BasicTable(props) {
                 padding: "10px",
               }}
             >
-              {item.y}
+              {item.headcount}
             </TableCell>
           ))}
         </TableRow>
@@ -67,7 +67,7 @@ export default function BasicTable(props) {
                 padding: "10px",
               }}
             >
-              {item.target}
+              {item.upph}
             </TableCell>
           ))}
         </TableRow>
