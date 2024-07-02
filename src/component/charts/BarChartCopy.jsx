@@ -16,6 +16,7 @@ import "../../asset/css/BarChartCopy.css";
 import { Card, useTheme } from "@mui/material";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import CommonService from "../../utilities/CommonService";
 
 ChartJS.register(
   CategoryScale,
@@ -58,6 +59,80 @@ const BarChartCopy = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [seriesLabel, setSeriesLabel] = useState({});
   const tooltipRef = useRef(null);
+
+  const [annotationsList, setAnnotationsList] = useState({
+    label1: {
+      type: "label",
+      xValue: categories.length / 2,
+      yValue: targetOne + 5,
+      content: [`Target: ${Math.round(targetOne)}`],
+    },
+    line1: {
+      type: "line",
+      yMin: targetOne,
+      yMax: targetOne,
+      xMin: -1,
+      xMax: categories.length,
+      borderColor: "#241773",
+      borderWidth: 4,
+      label: {
+        content: `Target: ${Math.round(targetOne)}`, // Specify the label text
+        enabled: true,
+        position: "start", // Change to 'start' or 'center'
+        backgroundColor: "#241773",
+        yAdjust: -15,
+        xAdjust: -5,
+      },
+    },
+  });
+
+  useEffect(() => {
+    let temp = {};
+    let annotations = {};
+    if (targetList) {
+      targetList.map((item, i) => {
+        temp[`model_${i}`] = item.model;
+        temp[`target_${i}`] = item.target;
+        let timeT = CommonService.timeDifferenceInHours(item.time);
+        temp[`time_${i}`] = timeT;
+        let xMin = i === 0 ? i - 1 : temp[`time_${i - 1}`];
+        let xMax = i === 0 ? timeT : temp[`time_${i - 1}`] + timeT;
+
+        annotations[`label${i}`] = {
+          type: "label",
+          xValue: categories.length / timeT,
+          yValue: item.target + 3,
+          content: [`${item.model}: ${Math.round(item.target)}`],
+        };
+
+        annotations[`line${i}`] = {
+          type: "line",
+          yMin: item.target,
+          yMax: item.target,
+          xMin: xMin,
+          xMax: xMax,
+          borderColor: "#241773",
+          borderWidth: 4,
+          label: {
+            content: `${item.model}: ${Math.round(item.target)}`, // Specify the label text
+            enabled: true,
+            position: "start", // Change to 'start' or 'center'
+            backgroundColor: "#241773",
+            yAdjust: -15,
+            xAdjust: -5,
+            font: {
+              size: 22,
+            },
+          },
+          onEnter: (e) =>
+            showTooltip(e, `${item.model}: ${Math.round(item.target)}`),
+          onLeave: hideTooltip,
+        };
+      });
+
+      setAnnotationsList(annotations);
+    }
+  }, [targetList]);
 
   useEffect(() => {
     setCategories(categories);
@@ -233,86 +308,7 @@ const BarChartCopy = ({
         display: false, // Disable legend
       },
       annotation: {
-        annotations: {
-          label1: {
-            type: "label",
-            xValue: categories.length / 2 - 3,
-            yValue: targetOne + 5,
-            content: [`Target 1: ${Math.round(targetOne)}`],
-          },
-          line1: {
-            type: "line",
-            yMin: targetOne,
-            yMax: targetOne,
-            xMin: -1, // Start from the beginning of the chart
-            xMax: categories.length / 2 - 1, // End at the last index of the chart
-            borderColor: "#241773",
-            borderWidth: 4,
-            label: {
-              content: [`Target: ${Math.round(targetOne)}`], // Specify the label text
-              enabled: true,
-              position: "start", // Change to 'start', 'center', or 'end'
-              backgroundColor: "#241773",
-              yAdjust: -15,
-              xAdjust: 0,
-              padding: 6,
-              font: {
-                size: 14,
-                weight: "bold",
-                family: "Arial",
-              },
-            },
-            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
-            onLeave: hideTooltip,
-            datalabels: {
-              align: "end", // or any other alignment
-              anchor: "end", // or any other anchor position
-              color: "#000", // specify the color
-              formatter: (value, context) => {
-                return `Target: ${Math.round(targetOne)}`; // custom label text
-              },
-            },
-          },
-          label2: {
-            type: "label",
-            xValue: categories.length / 2,
-            yValue: targetOne - 5,
-            content: [`Target 2: ${Math.round(targetOne)}`],
-          },
-          line2: {
-            type: "line",
-            yMin: targetOne - 10,
-            yMax: targetOne - 10,
-            xMin: categories.length / 2 - 1, // Start from the beginning of the chart
-            xMax: categories.length, // End at the last index of the chart
-            borderColor: "#241773",
-            borderWidth: 4,
-            label: {
-              content: [`Target: ${Math.round(targetOne)}`], // Specify the label text
-              enabled: true,
-              position: "start", // Change to 'start', 'center', or 'end'
-              backgroundColor: "#241773",
-              yAdjust: -15,
-              xAdjust: 0,
-              padding: 6,
-              font: {
-                size: 14,
-                weight: "bold",
-                family: "Arial",
-              },
-            },
-            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
-            onLeave: hideTooltip,
-            datalabels: {
-              align: "end", // or any other alignment
-              anchor: "end", // or any other anchor position
-              color: "#000", // specify the color
-              formatter: (value, context) => {
-                return `Target: ${Math.round(targetOne)}`; // custom label text
-              },
-            },
-          },
-        },
+        annotations: annotationsList,
       },
     },
     maintainAspectRatio: false,

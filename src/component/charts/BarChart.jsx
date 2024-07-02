@@ -15,6 +15,7 @@ import { Card, useTheme } from "@mui/material";
 import "../../asset/css/BarChartCopy.css";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import CommonService from "../../utilities/CommonService";
 
 ChartJS.register(
   CategoryScale,
@@ -46,14 +47,87 @@ const BarChart = ({
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const tooltipRef = useRef(null);
+  const [annotationsList, setAnnotationsList] = useState({
+    label1: {
+      type: "label",
+      xValue: categories.length / 2,
+      yValue: targetOne + 5,
+      content: [`Target: ${Math.round(targetOne)}`],
+    },
+    line1: {
+      type: "line",
+      yMin: targetOne,
+      yMax: targetOne,
+      xMin: -1,
+      xMax: categories.length,
+      borderColor: "#241773",
+      borderWidth: 4,
+      label: {
+        content: `Target: ${Math.round(targetOne)}`, // Specify the label text
+        enabled: true,
+        position: "start", // Change to 'start' or 'center'
+        backgroundColor: "#241773",
+        yAdjust: -15,
+        xAdjust: -5,
+      },
+    },
+  });
+
+  useEffect(() => {
+    let temp = {};
+    let annotations = {};
+    if (targetList) {
+      targetList.map((item, i) => {
+        temp[`model_${i}`] = item.model;
+        temp[`target_${i}`] = item.target;
+        let timeT = CommonService.timeDifferenceInHours(item.time);
+        temp[`time_${i}`] = timeT;
+        let xMin = i === 0 ? i - 1 : temp[`time_${i - 1}`];
+        let xMax = i === 0 ? timeT : temp[`time_${i - 1}`] + timeT;
+
+        annotations[`label${i}`] = {
+          type: "label",
+          xValue: categories.length / timeT,
+          yValue: item.target + 3,
+          content: [`${item.model}: ${Math.round(item.target)}`],
+        };
+
+        annotations[`line${i}`] = {
+          type: "line",
+          yMin: item.target,
+          yMax: item.target,
+          xMin: xMin,
+          xMax: xMax,
+          borderColor: "#241773",
+          borderWidth: 4,
+          label: {
+            content: `${item.model}: ${Math.round(item.target)}`, // Specify the label text
+            enabled: true,
+            position: "start", // Change to 'start' or 'center'
+            backgroundColor: "#241773",
+            yAdjust: -15,
+            xAdjust: -5,
+            font: {
+              size: 22,
+            },
+          },
+          onEnter: (e) =>
+            showTooltip(e, `${item.model}: ${Math.round(item.target)}`),
+          onLeave: hideTooltip,
+        };
+      });
+
+      setAnnotationsList(annotations);
+    }
+  }, [targetList]);
 
   useEffect(() => {
     const temp = [];
     const seriesLabels = {};
 
-    if (response) {
+    if (response !== undefined) {
       response.forEach((item) => {
-        temp.push(item.y);
+        temp.push(item.y !== "-" ? item.y : 0);
         seriesLabels[item.x] = item.product_id;
       });
     }
@@ -129,33 +203,7 @@ const BarChart = ({
         display: false,
       },
       annotation: {
-        annotations: {
-          label1: {
-            type: "label",
-            xValue: categories.length / 2,
-            yValue: targetOne + 5,
-            content: [`Target: ${Math.round(targetOne)}`],
-          },
-          line1: {
-            type: "line",
-            yMin: targetOne,
-            yMax: targetOne,
-            xMin: -1,
-            xMax: categories.length,
-            borderColor: "#241773",
-            borderWidth: 4,
-            label: {
-              content: `Target: ${Math.round(targetOne)}`, // Specify the label text
-              enabled: true,
-              position: "start", // Change to 'start' or 'center'
-              backgroundColor: "#241773",
-              yAdjust: -15,
-              xAdjust: -5,
-            },
-            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
-            onLeave: hideTooltip,
-          },
-        },
+        annotations: annotationsList,
       },
     },
     animations: animations,

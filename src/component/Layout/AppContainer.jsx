@@ -6,6 +6,7 @@ import SingleShift from "../Shift/SingleShift";
 import { socket } from "../../utilities/socket";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 import ENV from "../../utilities/ENV";
+import CommonService from "../../utilities/CommonService";
 
 const ShiftCardDetailList = [
   { title: "MFG ORDER", value: 155 },
@@ -19,7 +20,6 @@ const AppContainer = ({
   ShowShiftDate,
   refreshRate,
   shiftHours,
-  isDownTime,
   refreshStatus,
   targetList,
 }) => {
@@ -195,18 +195,6 @@ const AppContainer = ({
     shiftType,
   ]);
 
-  const formatDates = (date) => {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
-  };
-
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
       ShowShiftDate === "Today"
@@ -230,7 +218,7 @@ const AppContainer = ({
   };
 
   const getProductData = async (line, categoriesList, formattedDate) => {
-    let date = formatDates(formattedDate);
+    let date = CommonService.formatDates(formattedDate);
     let temp = "";
 
     if (currentSlide === 0 && ShowShift === "Day") {
@@ -461,7 +449,6 @@ const AppContainer = ({
                     currentShift={currentShift}
                     firstShiftTiming={firstShiftTiming}
                     categories={categories}
-                    formatDate={formatDate}
                     yesterdayDate={yesterdayDate}
                     currentSlide={currentSlide}
                     todayDate={todayDate}
@@ -496,7 +483,6 @@ const AppContainer = ({
                     todayDate={todayDate}
                     currentShift={currentShift}
                     targetList={targetList}
-                    formatDate={formatDate}
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     ShiftCardDetailList={ShiftCardDetailList}
@@ -527,7 +513,6 @@ const AppContainer = ({
             setVisibleQRCodeIndex={setVisibleQRCodeIndex}
             secoundResponse={secoundResponse}
             categories={categories}
-            formatDate={formatDate}
             yesterdayDate={yesterdayDate}
             todayDate={todayDate}
             currentShift={currentShift}

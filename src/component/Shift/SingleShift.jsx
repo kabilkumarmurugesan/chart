@@ -12,7 +12,6 @@ import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
 
 const SingleShift = ({
-  formatDate,
   categories,
   secoundResponse,
   ShiftCardDetailList,

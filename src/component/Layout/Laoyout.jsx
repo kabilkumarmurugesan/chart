@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import ENV from "../../utilities/ENV";
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
+import CommonService from "../../utilities/CommonService";
 
 function Laoyout() {
   const [refreshRate, setRefreshRate] = useState(30000);
@@ -14,8 +15,20 @@ function Laoyout() {
   const [targetList, setTargetList] = useState([]);
 
   useEffect(() => {
-    getShiftTarget();
-  }, [isSystem]);
+    const dates = new Date();
+    if (ShowShiftDate === "Today") {
+      const formattedDate = `${dates.getFullYear()}-${
+        dates.getMonth() + 1
+      }-${dates.getDate()}`;
+      getShiftTarget(formattedDate);
+    } else {
+      const formattedDate = `${dates.getFullYear()}-${dates.getMonth() + 1}-${
+        dates.getDate() - 1
+      }`;
+      getShiftTarget(formattedDate);
+    }
+  }, [isSystem, ShowShiftDate]);
+
   const handleOnShift = (e) => {
     setShiftHours((pre) => e.target.checked);
   };
@@ -42,8 +55,9 @@ function Laoyout() {
     setIsSystem((pre) => e.target.checked);
   };
 
-  const getShiftTarget = async () => {
-    ENV.get(`/getTarget?isSystem=${isSystem}`)
+  const getShiftTarget = async (formattedDate) => {
+    let date = CommonService.formatDates(formattedDate);
+    ENV.get(`/getTarget?isSystem=${isSystem}&date=${date}`)
       .then((res) => {
         setTargetList(res.data.data);
       })
@@ -78,13 +92,16 @@ function Laoyout() {
           refreshRate={refreshRate}
         />
       </Box>
-      <Box style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        backgroundColor: '#fff',
-        
-      }}>V 1.0</Box>
+      <Box
+        style={{
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          backgroundColor: "#fff",
+        }}
+      >
+        V 1.0
+      </Box>
     </>
   );
 }
