@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import ENV from "../../utilities/ENV";
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
+import ShiftContext from "./shiftContext";
 
-function Laoyout() {
+function Layout() {
   const [refreshRate, setRefreshRate] = useState(30000);
   const [ShowShift, setShowShift] = useState("Day");
   const [ShowShiftDate, setShowShiftDate] = useState("Today");
@@ -16,6 +17,7 @@ function Laoyout() {
   useEffect(() => {
     getShiftTarget();
   }, [isSystem]);
+
   const handleOnShift = (e) => {
     setShiftHours((pre) => e.target.checked);
   };
@@ -43,50 +45,39 @@ function Laoyout() {
   };
 
   const getShiftTarget = async () => {
-    ENV.get(`/getTarget?isSystem=${isSystem}`)
-      .then((res) => {
-        setTargetList(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await ENV.get(`/getTarget?isSystem=${isSystem}`);
+      setTargetList(response.data.data); // Assuming `data` contains the array you need
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
+
+  const contextValue = {
+    handleShiftUpdate,
+    handleRefresh,
+    handleShiftDateUpdate,
+    handleOnShift,
+    handleShiftTarget,
+    handleRefreshStatus,
+    isSystem,
+    refreshRate,
+    ShowShift,
+    ShowShiftDate,
+    refreshStatus,
+    shiftHours,
+    targetList,
   };
 
   return (
-    <>
-      <AppHeader
-        handleShiftUpdate={handleShiftUpdate}
-        handleRefresh={handleRefresh}
-        handleShiftDateUpdate={handleShiftDateUpdate}
-        handleOnShift={handleOnShift}
-        handleShiftTarget={handleShiftTarget}
-        handleRefreshStatus={handleRefreshStatus}
-        isSystem={isSystem}
-        refreshRate={refreshRate}
-        ShowShift={ShowShift}
-        ShowShiftDate={ShowShiftDate}
-        refreshStatus={refreshStatus}
-        shiftHours={shiftHours}
-      />
+    <ShiftContext.Provider value={contextValue}>
+      <AppHeader />
       <Box>
-        <AppContainer
-          targetList={targetList}
-          shiftHours={shiftHours}
-          refreshStatus={refreshStatus}
-          ShowShiftDate={ShowShiftDate}
-          ShowShift={ShowShift}
-          refreshRate={refreshRate}
-        />
+        <AppContainer targetList={targetList} />
       </Box>
-      <Box style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        backgroundColor: '#fff',
-        
-      }}>V 1.0</Box>
-    </>
+      <Box style={{ position: 'fixed', bottom: 0, width: '100%', backgroundColor: '#fff' }}>V 1.0</Box>
+    </ShiftContext.Provider>
   );
 }
 
-export default Laoyout;
+export default Layout;

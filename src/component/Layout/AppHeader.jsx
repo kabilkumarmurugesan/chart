@@ -15,6 +15,7 @@ import SyncDisabledIcon from "@mui/icons-material/SyncDisabled";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import logo from "../../asset/img/Logo.png";
+import ShiftContext from "./shiftContext";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -57,20 +58,21 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function AppHeader({
-  handleRefresh,
-  handleShiftDateUpdate,
-  handleRefreshStatus,
-  handleShiftUpdate,
-  handleOnShift,
-  refreshRate,
-  ShowShift,
-  ShowShiftDate,
-  shiftHours,
-  refreshStatus,
-  handleShiftTarget,
-  isSystem,
-}) {
+export default function AppHeader() {
+  const {
+    handleShiftUpdate,
+    handleRefresh,
+    handleShiftDateUpdate,
+    handleOnShift,
+    handleShiftTarget,
+    handleRefreshStatus,
+    isSystem,
+    refreshRate,
+    ShowShift,
+    ShowShiftDate,
+    refreshStatus,
+    shiftHours,
+  } = useContext(ShiftContext);
   const theme = useTheme();
   const { toggleColorMode } = useContext(MUIWrapperContext);
   const [showMenu, setShowMenu] = useState(true);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Box, useTheme } from "@mui/material";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import FullShift from "../Shift/FullShift";
@@ -6,6 +6,7 @@ import SingleShift from "../Shift/SingleShift";
 import { socket } from "../../utilities/socket";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 import ENV from "../../utilities/ENV";
+import ShiftContext from "./shiftContext.jsx";
 
 const ShiftCardDetailList = [
   { title: "MFG ORDER", value: 155 },
@@ -14,15 +15,7 @@ const ShiftCardDetailList = [
   { title: "MONTH ACTUAL", value: 8150 },
 ];
 
-const AppContainer = ({
-  ShowShift,
-  ShowShiftDate,
-  refreshRate,
-  shiftHours,
-  isDownTime,
-  refreshStatus,
-  targetList,
-}) => {
+const AppContainer = () => {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -35,6 +28,17 @@ const AppContainer = ({
   const [secoundShiftTiming, setSecoundShiftTiming] = useState(
     "09:00 AM - 05:30 PM"
   );
+
+  const {
+    ShowShift,
+    ShowShiftDate,
+    refreshRate,
+    shiftHours,
+    isDownTime,
+    refreshStatus,
+    targetList,
+  } = useContext(ShiftContext);
+
   useEffect(() => {
     targetList[0] !== undefined && setTargetOne(targetList[0].target);
   }, [targetList]);
