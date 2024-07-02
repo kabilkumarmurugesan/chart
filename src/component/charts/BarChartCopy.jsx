@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
-import { QRCodeCanvas } from "qrcode.react";
-import { socket } from "../socket";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,11 +8,14 @@ import {
   Title,
   Tooltip,
   Legend,
+  registerables,
 } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
-import "./BarChartCopy.css";
-import { Card } from "@mui/material";
+import "../../asset/css/BarChartCopy.css";
+import { Card, useTheme } from "@mui/material";
+import "chartjs-plugin-datalabels";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(
   CategoryScale,
@@ -23,62 +24,110 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin
+  annotationPlugin,
+  ChartDataLabels
 );
+ChartJS.register(...registerables);
 
-const BarChartCopy = (props) => {
+const BarChartCopy = ({
+  categories,
+  lastBarValue,
+  handleSlidechange,
+  response,
+  animations,
+  id,
+  height,
+  shiftHours,
+  ShowShift,
+  ShowShiftDate,
+  setVisibleQRCodeIndex,
+  visibleQRCodeIndex,
+  targetList,
+  isCurrentShift,
+  targetOne,
+}) => {
+  const theme = useTheme();
+  const { primary } = theme.palette;
   const [isBlinking, setIsBlinking] = useState(true);
-  const [lastBarValue, setLastBarValue] = useState(20); // Initial value for the last bar of PRODUCT A
-  const [categories, setCategories] = useState([
-    "09-10",
-    "10-11",
-    "11-12",
-    "12-01",
-    "01-02",
-    "02-03",
-    "03-04",
-  ]);
-
-  const [series, setSeries] = useState([87, 87, 90, 95, 95, 95, lastBarValue]);
-  const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
+  const [blinkingIndex, setBlinkingIndex] = useState(0);
+  const [categoriesList, setCategories] = useState(categories);
+  const [emtSeries, setEmtSeries] = useState([]);
+  const [series, setSeries] = useState([]);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [seriesLabel, setSeriesLabel] = useState({});
   const tooltipRef = useRef(null);
 
   useEffect(() => {
-    socket.on("dataUpdate", (data) => {
-      let Tcategories = [...categories];
-      let temp = Object.keys(data);
-      let dataT = data[temp[0]];
-      if (temp[0] !== Tcategories[Tcategories.length - 1]) {
-        Tcategories.push(temp[0]);
-        setCategories(Tcategories);
-      }
-      setLastBarValue(dataT[0].total_count);
-    });
-
-    const blinkInterval = setInterval(() => {
-      setIsBlinking((prevState) => !prevState);
-    }, 1000);
-
-    // Increase the last bar value for PRODUCT A every 10 seconds
-    const increaseValuesInterval = setInterval(() => {
-      setLastBarValue((prev) => prev + 1); // Increase PRODUCT A's last bar value
-    }, 10000);
-
-    return () => {
-      clearInterval(blinkInterval);
-      clearInterval(increaseValuesInterval);
-    };
+    setCategories(categories);
   }, [categories]);
 
   useEffect(() => {
-    setSeries([87, 87, 90, 95, 95, 95, lastBarValue]);
-  }, [lastBarValue]);
+    let temp = [];
+    let emt = [];
+    let seriesLabels = {};
+    response &&
+      response.forEach((item) => {
+        temp.push(item.y !== "-" ? item.y : 0);
+        seriesLabels[item.x] = item.product_id;
+        emt.push(0);
+      });
+
+    let valuran = lastBarValue.timeRange;
+    if (valuran) {
+      let indexOf = categoriesList.indexOf(valuran);
+      setBlinkingIndex(indexOf);
+      emt[indexOf] = 5;
+      temp[indexOf] = lastBarValue.totalCount;
+    }
+    setSeries(() => temp);
+    setEmtSeries(emt);
+    setSeriesLabel(seriesLabels);
+
+    const blinkInterval = setInterval(() => {
+      setIsBlinking((prevState) => !prevState);
+    }, 500);
+    return () => {
+      clearInterval(blinkInterval);
+    };
+  }, [
+    response,
+    ShowShiftDate,
+    lastBarValue.timeRange,
+    lastBarValue.totalCount,
+    ShowShift,
+    categoriesList,
+    shiftHours,
+  ]);
 
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+    getUpdateData();
+    id !== "single" && handleSlidechange();
+  };
+
+  const getUpdateData = async () => {
+    const url = "http://localhost:8001/api/v1/general/1";
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((updatedData) => {
+        console.log("Data updated:", updatedData);
+      })
+      .catch((error) => {
+        console.error("Error updating data:", error);
+      });
   };
 
   const showTooltip = (event, content) => {
@@ -95,34 +144,52 @@ const BarChartCopy = (props) => {
     setTooltipVisible(false);
   };
 
+  const getColor = (value, index) => {
+    if (blinkingIndex === index) {
+      return primary.complete;
+    } else {
+      if (value < targetOne / 3) return primary.incomplete;
+      if (value < targetOne / 2) return primary.pending;
+      return primary.complete;
+    }
+  };
+
   const data = {
-    labels: categories,
+    labels: categoriesList,
     datasets: [
       {
         label: "PRODUCT A",
         data: series,
-        backgroundColor: "#3D860B", // Change color here
-        borderColor: "#3D860B",
-        borderWidth: 1,
-        barThickness: 20,
+        backgroundColor: series.map(getColor),
+        borderColor: series.map(getColor),
+        borderWidth: 35,
+        barThickness: 34,
+        datalabels: {
+          display: true,
+          align: "center",
+          color: "white",
+        },
       },
       {
         label: "PRODUCT B",
-        data: [0, 0, 0, 0, 0, 0, 10],
+        data: emtSeries,
         backgroundColor: (context) => {
           const index = context.dataIndex;
-          return index === 6 && isBlinking
-            ? "rgba(255, 127, 14, 0.6)"
-            : "#FFFFFF";
+          return index === blinkingIndex && isBlinking
+            ? "#fff"
+            : primary.complete;
         },
         borderColor: (context) => {
           const index = context.dataIndex;
-          return index === 6 && isBlinking
-            ? "rgba(255, 127, 14, 0.6)"
-            : "#FFFFFF";
+          return index === blinkingIndex && isBlinking
+            ? "#fff"
+            : primary.complete;
         },
-        borderWidth: 1,
-        barThickness: 20,
+        borderWidth: 35,
+        barThickness: 34,
+        datalabels: {
+          display: false,
+        },
       },
     ],
   };
@@ -131,95 +198,167 @@ const BarChartCopy = (props) => {
     responsive: true,
     scales: {
       x: {
+        grid: {
+          display: false,
+        },
         stacked: true,
       },
       y: {
+        ticks: {
+          stepSize: 20, // Set the step size for the y-axis labels and grid lines
+        },
         stacked: true,
         beginAtZero: true,
       },
     },
-    animations: false,
+    animations: animations,
     plugins: {
+      tooltip: {
+        enabled: true,
+        mode: "nearest", // Show tooltip for the nearest item
+        intersect: true, // Ensure tooltip shows only for the intersected item
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = seriesLabel[tooltipItem.label];
+            if (label) {
+              label += ": ";
+            }
+            label += tooltipItem.raw;
+            return label;
+          },
+        },
+        displayColors: false, // Disable the color box in tooltips
+      },
       legend: {
         display: false, // Disable legend
       },
       annotation: {
         annotations: {
+          label1: {
+            type: "label",
+            xValue: categories.length / 2 - 3,
+            yValue: targetOne + 5,
+            content: [`Target 1: ${Math.round(targetOne)}`],
+          },
           line1: {
             type: "line",
-            yMin: 85,
-            yMax: 85,
+            yMin: targetOne,
+            yMax: targetOne,
             xMin: -1, // Start from the beginning of the chart
-            xMax: 2, // End at the index of "10-11"
-            borderColor: "rgb(4, 142, 254)",
-            borderWidth: 3,
+            xMax: categories.length / 2 - 1, // End at the last index of the chart
+            borderColor: "#241773",
+            borderWidth: 4,
             label: {
-              content: "Target: 85", // This is where you specify the label text
+              content: [`Target: ${Math.round(targetOne)}`], // Specify the label text
               enabled: true,
-              position: "start", // Change to 'start' or 'center'
-              backgroundColor: "rgb(4, 142, 254)",
+              position: "start", // Change to 'start', 'center', or 'end'
+              backgroundColor: "#241773",
               yAdjust: -15,
-              xAdjust: -5,
+              xAdjust: 0,
+              padding: 6,
+              font: {
+                size: 14,
+                weight: "bold",
+                family: "Arial",
+              },
             },
-            onEnter: (e) => showTooltip(e, "Target: 85"),
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
             onLeave: hideTooltip,
+            datalabels: {
+              align: "end", // or any other alignment
+              anchor: "end", // or any other anchor position
+              color: "#000", // specify the color
+              formatter: (value, context) => {
+                return `Target: ${Math.round(targetOne)}`; // custom label text
+              },
+            },
+          },
+          label2: {
+            type: "label",
+            xValue: categories.length / 2,
+            yValue: targetOne - 5,
+            content: [`Target 2: ${Math.round(targetOne)}`],
           },
           line2: {
             type: "line",
-            yMin: 100,
-            yMax: 100,
-            xMin: 2, // Start at the index of "11-12"
-            xMax: 6, // End at the index of "03-04"
-            borderColor: "rgb(30, 239, 44)",
-            borderWidth: 7,
+            yMin: targetOne - 10,
+            yMax: targetOne - 10,
+            xMin: categories.length / 2 - 1, // Start from the beginning of the chart
+            xMax: categories.length, // End at the last index of the chart
+            borderColor: "#241773",
+            borderWidth: 4,
             label: {
-              content: "Target: 100", // This is where you specify the label text
+              content: [`Target: ${Math.round(targetOne)}`], // Specify the label text
               enabled: true,
-              position: "start", // Change to 'start' or 'center'
-              backgroundColor: "rgb(30, 239, 44)",
+              position: "start", // Change to 'start', 'center', or 'end'
+              backgroundColor: "#241773",
               yAdjust: -15,
-              xAdjust: -5,
+              xAdjust: 0,
+              padding: 6,
+              font: {
+                size: 14,
+                weight: "bold",
+                family: "Arial",
+              },
             },
-            onEnter: (e) => showTooltip(e, "Target: 100"),
+            onEnter: (e) => showTooltip(e, `Target: ${Math.round(targetOne)}`),
             onLeave: hideTooltip,
+            datalabels: {
+              align: "end", // or any other alignment
+              anchor: "end", // or any other anchor position
+              color: "#000", // specify the color
+              formatter: (value, context) => {
+                return `Target: ${Math.round(targetOne)}`; // custom label text
+              },
+            },
           },
         },
       },
     },
+    maintainAspectRatio: false,
   };
 
   return (
     <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
-      <div id="chart">
-        <Bar
-          data={data}
-          options={options}
-          height={90}
-          style={{ width: "100%" }}
-        />
+      <div
+        id={id === "single" ? "single" : "chart"}
+        style={{
+          position: "relative",
+          width: "100%",
+          height: height,
+        }}
+      >
+        {data && (
+          <Bar
+            data={data}
+            options={options}
+            style={{ width: "100%", height: "100%" }}
+          />
+        )}
         <div
           className="qr-code-container"
           style={{
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            paddingTop: "15px",
           }}
         >
           {data.labels.map((label, index) => (
-            <div key={index} style={{ padding: "10px" }}>
-              {/*   <div key={index} className="qr-code-item"> */}
-              {visibleQRCodeIndex === index ? (
-                <QRCodeCanvas value={`Bar ${index + 1}`} size={50} />
-              ) : (
-                <button
-                  className="btn-orange"
-                  style={{ width: "50px" }}
-                  onClick={() => handleButtonClick(index)}
-                >
-                  QR
-                </button>
-              )}
+            <div key={index} style={{ padding: "5px" }}>
+              <button
+                className="btn-one"
+                style={{
+                  background:
+                    visibleQRCodeIndex === index + (isCurrentShift ? 1 : 12)
+                      ? "#4d5a81"
+                      : "rgb(220, 223, 224)",
+                  width: "10px",
+                  height: "5px",
+                }}
+                onClick={() =>
+                  handleButtonClick(index + (isCurrentShift ? 1 : 12))
+                }
+              ></button>
             </div>
           ))}
         </div>

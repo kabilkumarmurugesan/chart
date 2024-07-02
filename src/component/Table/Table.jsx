@@ -5,102 +5,84 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const series = [
-  { line: 1, x: "09-10", y: 1292, goals: 5600, dn: "DT" },
-  {
-    x: "10-11",
-    line: 1,
-    y: 432,
-    goals: 560,
-    dn: "DT",
-  },
-  {
-    x: "11-12",
-    y: 423,
-    line: 1,
-    goals: 520,
-    dn: "DT",
-  },
-  {
-    x: "12-01",
-    line: 1,
-    y: 653,
-    goals: 520,
-    dn: "DT",
-  },
-  {
-    x: "01-02",
-    y: 133,
-    line: 1,
-    goals: 520,
-    dn: "DT",
-  },
-  { line: 1, x: "02-03", y: 7132, goals: 5200, dn: "NB" },
-  {
-    x: "03-04",
-    line: 1,
-    y: 332,
-    goals: 520,
-    dn: "NB",
-  },
-  {
-    x: "04-05",
-    line: 1,
-    y: 553,
-    goals: 520,
-    dn: "NB",
-  },
-  {
-    x: "05-06",
-    line: 1,
-    y: 753,
-    goals: 520,
-    dn: "NB",
-  },
-];
-
-export default function BasicTable() {
+export default function BasicTable(props) {
+  const series = props.response;
   return (
     <TableContainer component={Paper}>
       <Table
         orientation="vertical"
         sx={{ minWidth: 650 }}
         aria-label="simple table"
+        className="uphTable"
       >
         <TableRow>
-          <TableCellHeader title={"Shift"} />
-          {series.map((item) => (
-            <TableCell> {item.x}</TableCell>
+          <TableCellHeader title={"Time"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              {item.x}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"Actual"} />
-          {series.map((item) => (
-            <TableCell> {item.y}</TableCell>
+          <TableCellHeader title={"UPH"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              {item.y}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"Target"} />
-          {series.map((item) => (
-            <TableCell> {item.goals}</TableCell>
+          <TableCellHeader title={"Operator"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              {item.headcount}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"DT/NB"} />
-          {series.map((item) => (
-            <TableCell> {item.dn}</TableCell>
-          ))}
-        </TableRow>
-        <TableRow>
-          <TableCellHeader title={"Line"} />
-          {series.map((item) => (
-            <TableCell> {item.line}</TableCell>
+          <TableCellHeader title={"UPPH"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              {item.upph}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
           <TableCellHeader title={"Down Time"} />
-          {series.map((item) => (
-            <TableCell> -</TableCell>
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              {item.downtime}
+            </TableCell>
           ))}
         </TableRow>
       </Table>
@@ -113,9 +95,11 @@ function TableCellHeader(props) {
     <TableCell
       style={{
         fontWeight: "bold",
-        fontSize: "1rem",
+        fontSize: "15px",
         color: "#fff",
-        background: "rgb(4, 142, 254)",
+        padding: "8px",
+        width: "88px",
+        background: "#4d5a81",
       }}
     >
       {props.title}

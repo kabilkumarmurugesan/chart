@@ -2,7 +2,6 @@
 .App {
   text-align: center;
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -13,11 +12,16 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+header {
+  background-color: #eeaa0a !important;
+  color: white !important;
+}
 .App-link {
   color: #61dafb;
 }
-
+.MuiToolbar-root {
+  padding: 0px 10px 0px 0px !important;
+}
 /* Keyframes for animation */
 @keyframes App-logo-spin {
   from {
@@ -29,8 +33,26 @@
 }
 
 /* Button styles */
+.btn-one {
+  border: none;
+  color: rgb(158, 157, 157);
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn-one:hover {
+  background-color: rgb(220, 223, 224);
+}
+/* Button styles */
 .btn-orange {
-  background-color: rgb(4, 142, 254);
+  background-color: rgb(117, 119, 120);
   border: none;
   color: white;
   padding: 5px 10px;
@@ -45,7 +67,7 @@
 }
 
 .btn-orange:hover {
-  background-color: rgb(43, 0, 255);
+  background-color: rgb(129, 128, 131);
 }
 
 /* Tooltip styles */
@@ -76,6 +98,49 @@
   position: relative;
 }
 
+@media (max-width: 576px) {
+  #chart {
+    height: 200px;
+  }
+  .custom-tooltip {
+    font-size: 10px;
+    padding: 3px;
+  }
+}
+
+@media (max-width: 768px) {
+  #chart {
+    height: 250px;
+  }
+  .custom-tooltip {
+    font-size: 12px;
+    padding: 4px;
+  }
+}
+
+@media (min-width: 769px) {
+  #chart {
+    height: 300px;
+  }
+  .custom-tooltip {
+    font-size: 14px;
+    padding: 5px;
+  }
+}
+@media (min-width: 1024px) {
+  #chart {
+    height: 320px;
+  }
+  .custom-tooltip {
+    font-size: 14px;
+    padding: 5px;
+  }
+}
+
+#chart-live {
+  height: 300px !important;
+}
+
 /* Annotation tooltip styles */
 .annotation-tooltip {
   position: absolute;
@@ -91,7 +156,7 @@
   .qr-code-container {
     display: flex;
     justify-content: space-around;
-    margin-top: 10px;
+    /* margin-top: 2px; */
   }
   .qr-code-item {
     display: flex;
@@ -119,4 +184,54 @@
   .qr-code-item {
     width: 20%;
   }
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto;
+  /* background-color: #2196f3; */
+  /* padding: 10px; */
+}
+
+  .grid-item {
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    /* border: 1px solid rgba(0, 0, 0, 0.8); */
+    /* padding: 32px 20px; */
+    font-size: 30px;
+    text-align: center;
+    height: 123px;
+    justify-content: center;
+    display: flex;
+  }
+  .grid-items {
+    padding: 36px 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+
+/* .table-container {
+  border: 2px solid #4d5a81;
+  border-radius: 10px;
+  overflow: hidden;
+} */
+
+.table-cell-border {
+  border: 1px solid #ddd;
+}
+
+.card-border {
+  border: 2px solid #4d5a81;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+.overalltarget {
+  height: 179px;
+}
+.dateChart {
+  padding-top: 22px !important;
+}
+.timeChart {
+  padding-top: 22px !important;
+}
+.uphTable {
+  height: 230px;
 }

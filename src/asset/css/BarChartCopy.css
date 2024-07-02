@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -32,14 +28,10 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
-}
-
-/* src/App.css */
-.App {
-  text-align: center;
 }
 
 .App-header {
@@ -75,19 +67,27 @@
 
 .td {
   border: "1px solid rgba(224, 224, 224, 1)";
+  padding: 8px 14px;
 }
-.qr-code-flow{
-  
+
+.qr-code-flow {
   position: absolute;
   right: 2rem;
 }
+
 div#chart canvas {
   width: 100% !important;
+  height: 95% !important;
 }
-.close-qr-code-flow{
+
+div#single canvas {
+  width: 100% !important;
+  height: 90% !important;
+}
+
+.close-qr-code-flow {
   position: absolute;
   right: 5rem;
-
 }
 
 .zoom-fade-container {
@@ -98,15 +98,18 @@ div#chart canvas {
   opacity: 0;
   transform: scale(0.9);
 }
+
 .zoom-fade-enter-active {
   opacity: 1;
   transform: scale(1);
   transition: opacity 500ms, transform 500ms;
 }
+
 .zoom-fade-exit {
   opacity: 1;
   transform: scale(1);
 }
+
 .zoom-fade-exit-active {
   opacity: 0;
   transform: scale(0.9);
@@ -124,7 +127,7 @@ div#chart canvas {
   flex-wrap: wrap;
   justify-content: center;
   padding-left: 20px;
-  padding-top: 15px;
+  /* padding-top: 15px; */
 }
 
 .qr-code-item {
@@ -139,6 +142,7 @@ div#chart canvas {
     flex-direction: column;
     align-items: center;
   }
+
   .qr-code-item {
     margin-bottom: 10px;
   }
@@ -151,6 +155,7 @@ div#chart canvas {
     flex-wrap: wrap;
     justify-content: space-around;
   }
+
   .qr-code-item {
     width: 45%;
   }
@@ -163,6 +168,7 @@ div#chart canvas {
     flex-wrap: nowrap;
     justify-content: space-around;
   }
+
   .qr-code-item {
     width: 30%;
   }
@@ -175,11 +181,49 @@ div#chart canvas {
     flex-wrap: nowrap;
     justify-content: space-around;
   }
+
+  .qr-code-item {
+    width: 20%;
+  }
+
+}
+
+@media (min-width: 1800px) {
+  .qr-code-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
+  .qr-code-item {
+    width: 20%;
+  }
+
+}
+@media (max-width: 2000px) {
+  .qr-code-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
   .qr-code-item {
     width: 20%;
   }
 }
 
+@media only screen and (min-width: 1950px) {
+  .qr-code-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
+  .qr-code-item {
+    width: 20%;
+  }
+
+}
 /* Additional styles */
 .custom-tooltip {
   position: absolute;
@@ -191,10 +235,8 @@ div#chart canvas {
   transform: translate(-50%, -50%);
 }
 
-
-
 .btn-orange {
-  background-color: rgb(4, 142, 254);
+  background-color: rgb(121, 123, 124);
   color: white;
   border: none;
   padding: 10px;
@@ -203,4 +245,7 @@ div#chart canvas {
 
 .btn-orange:hover {
   background-color: rgb(43, 0, 255);
+}
+#single {
+  height: 40vh !important;
 }
