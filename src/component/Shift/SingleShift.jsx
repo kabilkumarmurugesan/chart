@@ -330,7 +330,7 @@ const SingleShift = ({
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          height: "100%",
+                          height: "90%",
                         }}
                       >
                         <Button
@@ -340,6 +340,7 @@ const SingleShift = ({
                             "&:hover": {
                               background: "#483456",
                             },
+                            height: "35px",
                           }}
                           onClick={() => setIsShift(true)}
                         >

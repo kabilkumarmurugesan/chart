@@ -46,6 +46,7 @@ const BarChartCopy = ({
   targetList,
   isCurrentShift,
   targetOne,
+  shiftType,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -89,8 +90,13 @@ const BarChartCopy = ({
   useEffect(() => {
     let temp = {};
     let annotations = {};
-    if (targetList) {
-      targetList.map((item, i) => {
+    let targetListMap =
+      shiftType === "1st" || shiftType === undefined
+        ? targetList
+        : targetList.slice(1);
+
+    if (targetListMap) {
+      targetListMap.map((item, i) => {
         temp[`model_${i}`] = item.model;
         temp[`target_${i}`] = item.target;
         let timeT = CommonService.timeDifferenceInHours(item.time);
@@ -100,9 +106,12 @@ const BarChartCopy = ({
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: categories.length / timeT,
+          xValue: i === 0 ? timeT / 2 : temp[`time_${i - 1}`] + timeT / 2,
           yValue: item.target + 3,
           content: [`${item.model}: ${Math.round(item.target)}`],
+          font: {
+            size: 13,
+          },
         };
 
         annotations[`line${i}`] = {
@@ -113,17 +122,6 @@ const BarChartCopy = ({
           xMax: xMax,
           borderColor: "#241773",
           borderWidth: 4,
-          label: {
-            content: `${item.model}: ${Math.round(item.target)}`, // Specify the label text
-            enabled: true,
-            position: "start", // Change to 'start' or 'center'
-            backgroundColor: "#241773",
-            yAdjust: -15,
-            xAdjust: -5,
-            font: {
-              size: 22,
-            },
-          },
           onEnter: (e) =>
             showTooltip(e, `${item.model}: ${Math.round(item.target)}`),
           onLeave: hideTooltip,
@@ -132,7 +130,7 @@ const BarChartCopy = ({
 
       setAnnotationsList(annotations);
     }
-  }, [targetList]);
+  }, [targetList, shiftType]);
 
   useEffect(() => {
     setCategories(categories);
@@ -240,7 +238,9 @@ const BarChartCopy = ({
         borderWidth: 35,
         barThickness: 34,
         datalabels: {
-          display: true,
+          display: (con) => {
+            return con.dataset.data[con.dataIndex] > 0;
+          },
           align: "center",
           color: "white",
         },

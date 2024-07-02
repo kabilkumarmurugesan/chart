@@ -28,7 +28,7 @@ const FullShift = ({
   disabledOne,
   disabledTwo,
   handaleEvent,
-  targetOne,
+  targetOne,shiftType
 }) => {
   const handleSlidechanges = () => {
     handleSlidechange();
@@ -53,6 +53,7 @@ const FullShift = ({
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
                 response={firstResponse}
+                shiftType={shiftType}
               />
             ) : (
               <BarChartCopy
@@ -66,6 +67,7 @@ const FullShift = ({
                 categories={categories}
                 response={firstResponse}
                 currentShift={currentShift}
+                shiftType={shiftType}
                 isCurrentShift={currentShift === "shiftA"}
               />
             )}

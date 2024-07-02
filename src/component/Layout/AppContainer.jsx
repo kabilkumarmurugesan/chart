@@ -357,10 +357,12 @@ const AppContainer = ({
                       currentShift={currentShift}
                       disabledOne={true}
                       disabledTwo={false}
+                      shiftType={shiftType}
                       handaleEvent={() => {
                         if (shiftHours) {
                           if (shiftType === "2nd" && currentSlide === 0) {
                             handleSlidechange();
+                            setShiftType(() => "1st");
                           } else {
                             setShiftType("2nd");
                           }

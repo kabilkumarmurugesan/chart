@@ -36,6 +36,7 @@ const BarChart = ({
   handleSlidechange,
   response,
   height,
+  shiftType,
   targetList,
   targetOne,
 }) => {
@@ -76,8 +77,13 @@ const BarChart = ({
   useEffect(() => {
     let temp = {};
     let annotations = {};
-    if (targetList) {
-      targetList.map((item, i) => {
+    let targetListMap =
+      shiftType === "1st" || shiftType === undefined
+        ? targetList
+        : targetList.slice(1);
+
+    if (targetListMap) {
+      targetListMap.map((item, i) => {
         temp[`model_${i}`] = item.model;
         temp[`target_${i}`] = item.target;
         let timeT = CommonService.timeDifferenceInHours(item.time);
@@ -87,9 +93,12 @@ const BarChart = ({
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: categories.length / timeT,
+          xValue: i === 0 ? timeT - 3 : timeT,
           yValue: item.target + 3,
           content: [`${item.model}: ${Math.round(item.target)}`],
+          font: {
+            size: 13,
+          },
         };
 
         annotations[`line${i}`] = {
@@ -100,17 +109,6 @@ const BarChart = ({
           xMax: xMax,
           borderColor: "#241773",
           borderWidth: 4,
-          label: {
-            content: `${item.model}: ${Math.round(item.target)}`, // Specify the label text
-            enabled: true,
-            position: "start", // Change to 'start' or 'center'
-            backgroundColor: "#241773",
-            yAdjust: -15,
-            xAdjust: -5,
-            font: {
-              size: 22,
-            },
-          },
           onEnter: (e) =>
             showTooltip(e, `${item.model}: ${Math.round(item.target)}`),
           onLeave: hideTooltip,
@@ -119,7 +117,7 @@ const BarChart = ({
 
       setAnnotationsList(annotations);
     }
-  }, [targetList]);
+  }, [targetList, shiftType]);
 
   useEffect(() => {
     const temp = [];
@@ -172,7 +170,9 @@ const BarChart = ({
         borderWidth: 34,
         barThickness: 35,
         datalabels: {
-          display: true,
+          display: (con) => {
+            return con.dataset.data[con.dataIndex] > 0;
+          },
           align: "center",
           color: "white",
         },
@@ -244,7 +244,7 @@ const BarChart = ({
             justifyContent: "center",
           }}
         >
-          {data.labels.map((label, index) => (
+          {data.labels.map((_label, index) => (
             <div key={index} style={{ padding: "10px" }}>
               <button
                 className="btn-one"
