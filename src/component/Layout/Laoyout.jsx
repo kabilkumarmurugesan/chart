@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import ENV from "../../utilities/ENV";
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
 import CommonService from "../../utilities/CommonService";
+import ShiftContext from '../Context/shiftContext'
 
-function Laoyout() {
+function Layout() {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [refreshRate, setRefreshRate] = useState(30000);
@@ -68,31 +69,27 @@ function Laoyout() {
       });
   };
 
+  const contextValue = {
+    handleShiftUpdate,
+    handleRefresh,
+    handleShiftDateUpdate,
+    handleOnShift,
+    handleShiftTarget,
+    handleRefreshStatus,
+    isSystem,
+    refreshRate,
+    ShowShift,
+    ShowShiftDate,
+    refreshStatus,
+    shiftHours,
+    targetList,
+  };
+
   return (
-    <>
-      <AppHeader
-        handleShiftUpdate={handleShiftUpdate}
-        handleRefresh={handleRefresh}
-        handleShiftDateUpdate={handleShiftDateUpdate}
-        handleOnShift={handleOnShift}
-        handleShiftTarget={handleShiftTarget}
-        handleRefreshStatus={handleRefreshStatus}
-        isSystem={isSystem}
-        refreshRate={refreshRate}
-        ShowShift={ShowShift}
-        ShowShiftDate={ShowShiftDate}
-        refreshStatus={refreshStatus}
-        shiftHours={shiftHours}
-      />
+    <ShiftContext.Provider value={contextValue}>
+      <AppHeader />
       <Box>
-        <AppContainer
-          targetList={targetList}
-          shiftHours={shiftHours}
-          refreshStatus={refreshStatus}
-          ShowShiftDate={ShowShiftDate}
-          ShowShift={ShowShift}
-          refreshRate={refreshRate}
-        />
+        <AppContainer />
       </Box>
       <Box
         style={{
@@ -105,8 +102,8 @@ function Laoyout() {
       >
         V 1.1
       </Box>
-    </>
+    </ShiftContext.Provider>
   );
 }
 
-export default Laoyout;
+export default Layout;

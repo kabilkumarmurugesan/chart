@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Box, useTheme } from "@mui/material";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import FullShift from "../Shift/FullShift";
@@ -7,6 +7,7 @@ import { socket } from "../../utilities/socket";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 import ENV from "../../utilities/ENV";
 import CommonService from "../../utilities/CommonService";
+import ShiftContext from "../Context/shiftContext";
 
 const ShiftCardDetailList = [
   { title: "MFG ORDER", value: 155 },
@@ -15,14 +16,16 @@ const ShiftCardDetailList = [
   { title: "MONTH ACTUAL", value: 8150 },
 ];
 
-const AppContainer = ({
-  ShowShift,
-  ShowShiftDate,
-  refreshRate,
-  shiftHours,
-  refreshStatus,
-  targetList,
-}) => {
+const AppContainer = () => {
+  const {
+    ShowShift,
+    ShowShiftDate,
+    refreshRate,
+    shiftHours,
+    refreshStatus,
+    targetList,
+  } = useContext(ShiftContext);
+
   const theme = useTheme();
   const { primary } = theme.palette;
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -87,6 +90,17 @@ const AppContainer = ({
     } else {
       clearInterval(interval);
       clearInterval(intervalshiftHours);
+      interval = setInterval(() => {
+        const dates = new Date();
+        if (ShowShiftDate === "Today") {
+          const formattedDate = `${dates.getFullYear()}-${
+            dates.getMonth() + 1
+          }-${dates.getDate()}`;
+          getProductData("L1", categories, formattedDate);
+        } else {
+          getProductData("L1", categories, yesterdayDate);
+        }
+      }, refreshRate);
     }
     return () => {
       clearInterval(interval);
@@ -438,11 +452,8 @@ const AppContainer = ({
                 >
                   <SingleShift
                     targetOne={targetOne}
-                    shiftHours={shiftHours}
                     handleSlidechange={handleSlidechange}
-                    targetList={targetList}
                     lastBarValue={lastBarValue}
-                    ShowShiftDate={ShowShiftDate}
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     firstResponse={firstResponse}
@@ -467,12 +478,10 @@ const AppContainer = ({
                   }}
                 >
                   <SingleShift
-                    shiftHours={shiftHours}
                     currentSlide={currentSlide}
                     targetOne={targetOne}
                     handleSlidechange={handleSlidechange}
                     lastBarValue={lastBarValue}
-                    ShowShiftDate={ShowShiftDate}
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     secoundResponse={secoundResponse}
@@ -482,7 +491,6 @@ const AppContainer = ({
                     yesterdayDate={yesterdayDate}
                     todayDate={todayDate}
                     currentShift={currentShift}
-                    targetList={targetList}
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     ShiftCardDetailList={ShiftCardDetailList}
@@ -503,13 +511,10 @@ const AppContainer = ({
           }}
         >
           <SingleShift
-            shiftHours={shiftHours}
             secoundShiftTiming={secoundShiftTiming}
             handleSlidechange={handleSlidechange}
             lastBarValue={lastBarValue}
-            ShowShiftDate={ShowShiftDate}
             visibleQRCodeIndex={visibleQRCodeIndex}
-            targetList={targetList}
             setVisibleQRCodeIndex={setVisibleQRCodeIndex}
             secoundResponse={secoundResponse}
             categories={categories}

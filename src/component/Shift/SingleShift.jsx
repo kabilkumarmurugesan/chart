@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
 import BasicTable from "../Table/Table";
 import DownTimeAction from "../Table/DownTimeAction";
@@ -10,13 +10,12 @@ import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
 import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
+import ShiftContext from "../Context/shiftContext";
 
 const SingleShift = ({
   categories,
   secoundResponse,
   ShiftCardDetailList,
-  shiftHours,
-  ShowShiftDate,
   secoundShiftTiming,
   handleSlidechange,
   firstResponse,
@@ -24,7 +23,6 @@ const SingleShift = ({
   firstShiftTiming,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
-  targetList,
   yesterdayDate,
   todayDate,
   cardData,
@@ -34,6 +32,7 @@ const SingleShift = ({
   currentSlide,
   targetOne,
 }) => {
+  const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
