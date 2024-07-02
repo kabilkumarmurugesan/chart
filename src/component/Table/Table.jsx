@@ -1,102 +1,108 @@
 import * as React from "react";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const series = [
-  { line: 1, x: "09-10", y: 1292, goals: 5600 },
-  {
-    x: "10-11",
-    line: 1,
-    y: 4432,
-    goals: 5600,
-  },
-  {
-    x: "11-12",
-    y: 5423,
-    line: 1,
-    goals: 5200,
-  },
-  {
-    x: "12-01",
-    line: 1,
-    y: 6653,
-    goals: 5200,
-  },
-  {
-    x: "01-02",
-    y: 8133,
-    line: 1,
-    goals: 5200,
-  },
-  { line: 1, x: "02-03", y: 7132, goals: 5200 },
-  {
-    x: "03-04",
-    line: 1,
-    y: 7332,
-    goals: 5200,
-  },
-  {
-    x: "04-05",
-    line: 1,
-    y: 6553,
-    goals: 5200,
-  },
-  {
-    x: "05-06",
-    line: 1,
-    y: 6753,
-    goals: 5200,
-  },
-];
-
-export default function BasicTable() {
+export default function BasicTable(props) {
+  const series = props.response;
   return (
     <TableContainer component={Paper}>
       <Table
         orientation="vertical"
         sx={{ minWidth: 650 }}
         aria-label="simple table"
+        className="uphTable"
       >
         <TableRow>
-          <TableCell>Shift</TableCell>
-          {series.map((item) => (
-            <TableCell> {item.x}</TableCell>
+          <TableCellHeader title={"Time"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              {item.x}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Actual</TableCell>
-          {series.map((item) => (
-            <TableCell> {item.y}</TableCell>
+          <TableCellHeader title={"UPH"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              {item.y}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Targat</TableCell>
-          {series.map((item) => (
-            <TableCell> {item.goals}</TableCell>
+          <TableCellHeader title={"Operator"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              {item.headcount}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Line</TableCell>
-          {series.map((item) => (
-            <TableCell> {item.line}</TableCell>
+          <TableCellHeader title={"UPPH"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              {item.upph}
+            </TableCell>
           ))}
         </TableRow>
         <TableRow>
-          <TableCell>Down Time</TableCell>
-          {series.map((item) => (
-            <TableCell> -</TableCell>
+          <TableCellHeader title={"Down Time"} />
+          {series.map((item, i) => (
+            <TableCell
+              key={i}
+              style={{
+                padding: "10px",
+                textAlign: "center",
+              }}
+            >
+              {item.downtime}
+            </TableCell>
           ))}
         </TableRow>
       </Table>
     </TableContainer>
+  );
+}
+
+function TableCellHeader(props) {
+  return (
+    <TableCell
+      style={{
+        fontWeight: "bold",
+        fontSize: "15px",
+        color: "#fff",
+        padding: "8px",
+        width: "88px",
+        background: "#4d5a81",
+      }}
+    >
+      {props.title}
+    </TableCell>
   );
 }

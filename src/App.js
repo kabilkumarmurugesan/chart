@@ -1,11 +1,13 @@
-import { useEffect } from "react";
 import "./App.css";
-import MainLayout from "./component/layout";
+import Laoyout from "./component/Layout/Laoyout";
+import MUIWrapper from "./component/MUIWrapper";
 
 function App() {
   return (
     <div className="App">
-      <MainLayout />
+      <MUIWrapper>
+        <Laoyout />
+      </MUIWrapper>
     </div>
   );
 }
