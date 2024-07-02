@@ -49,7 +49,10 @@ const ShiftHeader = (props) => {
             fontSize: "15px",
           }}
         >
-          <b> OT:</b> {formatAMPM(new Date())}
+          <b> OT:</b>{" "}
+          {props.cardData?.overTime !== undefined
+            ? props.cardData?.overTime
+            : formatAMPM(new Date())}{" "}
         </Typography>
       </Box>
     </Box>

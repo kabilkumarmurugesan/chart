@@ -61,8 +61,9 @@ const SingleShift = ({
                   : secoundShiftTiming
               }
               isCurrentShift={currentShift === "shiftA"}
+              cardData={cardData}
             />
-            {firstResponse ? (
+            {currentShift === "shiftA" ? (
               <BarChartCopy
                 height={"40vh"}
                 animations={{
@@ -312,7 +313,7 @@ const SingleShift = ({
                     fontWeight: "bold",
                   }}
                 >
-                  TARGET & ACTUAL STATUS
+                  TARGET - ACTUAL STATUS
                 </Typography>
                 <Box
                   onMouseOver={() => setShowMenu(true)}
@@ -343,7 +344,7 @@ const SingleShift = ({
                           }}
                           onClick={() => setIsShift(true)}
                         >
-                          Shift
+                          Shift Hrs
                         </Button>
                         {ShowShiftDate === "Today" && (
                           <Button
@@ -355,7 +356,7 @@ const SingleShift = ({
                             }}
                             onClick={() => setIsShift(false)}
                           >
-                            Crt Hrs
+                            Current Hrs
                           </Button>
                         )}
                       </Box>

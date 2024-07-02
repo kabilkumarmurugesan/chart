@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -55,11 +55,7 @@ const BarChartCopy = ({
   const [categoriesList, setCategories] = useState(categories);
   const [emtSeries, setEmtSeries] = useState([]);
   const [series, setSeries] = useState([]);
-  const [tooltipContent, setTooltipContent] = useState("");
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
   const [seriesLabel, setSeriesLabel] = useState({});
-  const tooltipRef = useRef(null);
 
   const [annotationsList, setAnnotationsList] = useState({
     label1: {
@@ -76,14 +72,6 @@ const BarChartCopy = ({
       xMax: categories.length,
       borderColor: "#241773",
       borderWidth: 4,
-      label: {
-        content: `Target: ${Math.round(targetOne)}`, // Specify the label text
-        enabled: true,
-        position: "start", // Change to 'start' or 'center'
-        backgroundColor: "#241773",
-        yAdjust: -15,
-        xAdjust: -5,
-      },
     },
   });
 
@@ -94,20 +82,21 @@ const BarChartCopy = ({
       shiftType === "1st" || shiftType === undefined
         ? targetList
         : targetList.slice(1);
-
+    let preT = 0;
     if (targetListMap) {
-      targetListMap.map((item, i) => {
+      targetListMap.forEach((item, i) => {
         temp[`model_${i}`] = item.model;
         temp[`target_${i}`] = item.target;
         let timeT = CommonService.timeDifferenceInHours(item.time);
         temp[`time_${i}`] = timeT;
-        let xMin = i === 0 ? i - 1 : temp[`time_${i - 1}`];
-        let xMax = i === 0 ? timeT : temp[`time_${i - 1}`] + timeT;
+        let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
+        let xMax = i === 0 ? timeT : preT + timeT;
+        preT = xMax;
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: i === 0 ? timeT / 2 : temp[`time_${i - 1}`] + timeT / 2,
-          yValue: item.target + 3,
+          xValue: i === 0 ? timeT - 4 : timeT - 3,
+          yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
             size: 13,
@@ -122,9 +111,6 @@ const BarChartCopy = ({
           xMax: xMax,
           borderColor: "#241773",
           borderWidth: 4,
-          onEnter: (e) =>
-            showTooltip(e, `${item.model}: ${Math.round(item.target)}`),
-          onLeave: hideTooltip,
         };
       });
 
@@ -202,20 +188,6 @@ const BarChartCopy = ({
   //       console.error("Error updating data:", error);
   //     });
   // };
-
-  const showTooltip = (event, content) => {
-    const rect = event.chart.canvas.getBoundingClientRect();
-    setTooltipContent(content);
-    setTooltipPosition({
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    });
-    setTooltipVisible(true);
-  };
-
-  const hideTooltip = () => {
-    setTooltipVisible(false);
-  };
 
   const getColor = (value, index) => {
     if (blinkingIndex === index) {
@@ -358,25 +330,6 @@ const BarChartCopy = ({
             </div>
           ))}
         </div>
-        {tooltipVisible && (
-          <div
-            ref={tooltipRef}
-            className="custom-tooltip"
-            style={{
-              position: "absolute",
-              left: tooltipPosition.x,
-              top: tooltipPosition.y,
-              backgroundColor: "rgba(0, 0, 0, 0.7)",
-              color: "#fff",
-              padding: "5px",
-              borderRadius: "5px",
-              pointerEvents: "none",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            {tooltipContent}
-          </div>
-        )}
       </div>
     </Card>
   );

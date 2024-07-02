@@ -83,7 +83,7 @@ const FullShiftOverall = ({
               item
               xs={12}
               md={12}
-              sx={{ height: "34vh", marginTop: "20px" }}
+              sx={{ height: "34vh", marginTop: "16px" }}
             >
               <Card sx={{ minWidth: 275 }}>
                 <ShiftHeader
@@ -112,126 +112,109 @@ const FullShiftOverall = ({
             </Grid>
           </Grid>
         </Grid>
-
         <Grid item xs={4} md={2}>
           <MetricsCard data={cardData} />
+          <ArrowNavigation
+            disabledOne={disabledOne}
+            disabledTwo={disabledTwo}
+            handaleEvent={handaleEvent}
+          />
+        </Grid>{" "}
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={6} md={10}>
+          <DownTimeAction
+            data={
+              currentShift === "shiftB"
+                ? secoundDowntimeDetails
+                : firstDowntimeDetails
+            }
+          />
         </Grid>
-        <Grid item xs={6} md={12} className="timeChart">
-          <Grid container spacing={4}>
-            <Grid item xs={6} md={10}>
-              <DownTimeAction
-                data={
-                  currentShift === "shiftB"
-                    ? secoundDowntimeDetails
-                    : firstDowntimeDetails
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              md={2}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Grid container>
-                <Grid
-                  item
-                  xs={12}
-                  md={12}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+        <Grid
+          item
+          xs={4}
+          md={2}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {" "}
+          <Card
+            style={{ boxShadow: "none" }}
+            onClick={() => setShowMenu(!showMenu)}
+          >
+            {visibleQRCodeIndex === null ? (
+              <>
+                <Typography
+                  style={{
+                    fontSize: "18px",
                   }}
                 >
-                  {" "}
-                  <ArrowNavigation
-                    disabledOne={disabledOne}
-                    disabledTwo={disabledTwo}
-                    handaleEvent={handaleEvent}
-                  />
-                  <Card
-                    style={{ boxShadow: "none" }}
-                    onClick={() => setShowMenu(!showMenu)}
+                  TARGET - ACTUAL STATUS
+                </Typography>
+                <Box
+                  onMouseOver={() => setShowMenu(true)}
+                  onMouseOut={() => setShowMenu(false)}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "35px",
+                    }}
                   >
-                    {visibleQRCodeIndex === null ? (
-                      <>
-                        <Typography
-                          style={{
-                            fontSize: "18px",
-                          }}
-                        >
-                          TARGET & ACTUAL STATUS
-                        </Typography>
-                        <Box
-                          onMouseOver={() => setShowMenu(true)}
-                          onMouseOut={() => setShowMenu(false)}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "35px",
-                            }}
-                          >
-                            {showMenu && (
-                              <Button
-                                sx={{
-                                  background: "#483456",
-                                  marginRight: "1em",
-                                  "&:hover": {
-                                    background: "#483456",
-                                  },
-                                  height: "32px",
-                                }}
-                                onClick={() => setIsShift(true)}
-                              >
-                                Shift
-                              </Button>
-                            )}
-                            {ShowShiftDate === "Today" && showMenu && (
-                              <Button
-                                sx={{
-                                  background: "#483456",
-                                  "&:hover": {
-                                    background: "#483456",
-                                  },
-                                  height: "32px",
-                                }}
-                                onClick={() => setIsShift(false)}
-                              >
-                                Crt Hrs
-                              </Button>
-                            )}
-                          </Box>
-                          <img
-                            style={{ width: "40%" }}
-                            alt="emoj"
-                            src={isHappy ? smileEmoji : sadEmoji}
-                          />
-                        </Box>
-                      </>
-                    ) : (
-                      <QRCodeCanvas
-                        value={
-                          "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
-                        }
-                        size={150}
-                      />
+                    {showMenu && (
+                      <Button
+                        sx={{
+                          background: "#483456",
+                          marginRight: "1em",
+                          "&:hover": {
+                            background: "#483456",
+                          },
+                          height: "32px",
+                        }}
+                        onClick={() => setIsShift(true)}
+                      >
+                        Shift hrs
+                      </Button>
                     )}
-                  </Card>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>{" "}
+                    {ShowShiftDate === "Today" && showMenu && (
+                      <Button
+                        sx={{
+                          background: "#483456",
+                          "&:hover": {
+                            background: "#483456",
+                          },
+                          height: "32px",
+                        }}
+                        onClick={() => setIsShift(false)}
+                      >
+                        Current Hrs
+                      </Button>
+                    )}
+                  </Box>
+                  <img
+                    style={{ width: "40%" }}
+                    alt="emoj"
+                    src={isHappy ? smileEmoji : sadEmoji}
+                  />
+                </Box>
+              </>
+            ) : (
+              <QRCodeCanvas
+                value={
+                  "MES~LEMES MM~S0V MT~11T3 MO~L9N023103009 SN~PG03MQD5 INS~ ID~1S11T3S0V900PG03MQD5"
+                }
+                size={150}
+              />
+            )}
+          </Card>
         </Grid>
-      </Grid>
+      </Grid>{" "}
     </Box>
   );
 };

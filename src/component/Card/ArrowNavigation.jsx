@@ -10,7 +10,7 @@ const ArrowNavigation = (props) => {
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "end",
       }}
     >
       <IconButton

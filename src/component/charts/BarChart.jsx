@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -44,10 +44,6 @@ const BarChart = ({
   const { primary } = theme.palette;
   const [series, setSeries] = useState([]);
   const [seriesLabel, setSeriesLabel] = useState({});
-  const [tooltipContent, setTooltipContent] = useState("");
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const tooltipRef = useRef(null);
   const [annotationsList, setAnnotationsList] = useState({
     label1: {
       type: "label",
@@ -81,20 +77,21 @@ const BarChart = ({
       shiftType === "1st" || shiftType === undefined
         ? targetList
         : targetList.slice(1);
-
+    let preT = 0;
     if (targetListMap) {
-      targetListMap.map((item, i) => {
+      targetListMap.forEach((item, i) => {
         temp[`model_${i}`] = item.model;
         temp[`target_${i}`] = item.target;
         let timeT = CommonService.timeDifferenceInHours(item.time);
         temp[`time_${i}`] = timeT;
-        let xMin = i === 0 ? i - 1 : temp[`time_${i - 1}`];
-        let xMax = i === 0 ? timeT : temp[`time_${i - 1}`] + timeT;
+        let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
+        let xMax = i === 0 ? timeT : preT + timeT;
+        preT = xMax;
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: i === 0 ? timeT - 3 : timeT,
-          yValue: item.target + 3,
+          xValue: i === 0 ? timeT - 4 : timeT - 3,
+          yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
             size: 13,
@@ -109,9 +106,6 @@ const BarChart = ({
           xMax: xMax,
           borderColor: "#241773",
           borderWidth: 4,
-          onEnter: (e) =>
-            showTooltip(e, `${item.model}: ${Math.round(item.target)}`),
-          onLeave: hideTooltip,
         };
       });
 
@@ -133,20 +127,6 @@ const BarChart = ({
     setSeries(temp);
     setSeriesLabel(seriesLabels);
   }, [response]);
-
-  const showTooltip = (event, content) => {
-    const rect = event.chart.canvas.getBoundingClientRect();
-    setTooltipContent(content);
-    setTooltipPosition({
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    });
-    setTooltipVisible(true);
-  };
-
-  const hideTooltip = () => {
-    setTooltipVisible(false);
-  };
 
   const handleButtonClick = (index) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -261,25 +241,6 @@ const BarChart = ({
             </div>
           ))}
         </div>
-        {tooltipVisible && (
-          <div
-            ref={tooltipRef}
-            className="custom-tooltip"
-            style={{
-              position: "absolute",
-              left: tooltipPosition.x,
-              top: tooltipPosition.y,
-              backgroundColor: "rgba(0, 0, 0, 0.7)",
-              color: "#fff",
-              padding: "5px",
-              borderRadius: "5px",
-              pointerEvents: "none",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            {tooltipContent}
-          </div>
-        )}
       </div>
       <div
         style={{

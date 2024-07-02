@@ -224,13 +224,13 @@ header {
   margin: 20px 0;
 }
 .overalltarget {
-  height: 179px;
+  height: 177px;
 }
 .dateChart {
   padding-top: 22px !important;
 }
 .timeChart {
-  padding-top: 22px !important;
+  padding-top: 2px !important;
 }
 .uphTable {
   height: 230px;

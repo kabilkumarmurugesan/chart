@@ -24,6 +24,7 @@ const AppContainer = () => {
     shiftHours,
     refreshStatus,
     targetList,
+    isSystem,
   } = useContext(ShiftContext);
 
   const theme = useTheme();
@@ -100,13 +101,13 @@ const AppContainer = () => {
         } else {
           getProductData("L1", categories, yesterdayDate);
         }
-      }, refreshRate);
+      }, refreshRate / 2);
     }
     return () => {
       clearInterval(interval);
       clearInterval(intervalshiftHours);
     };
-  }, [refreshRate, refreshStatus, shiftHours]);
+  }, [refreshRate, isSystem, refreshStatus, shiftHours]);
 
   useEffect(() => {
     let date = "";
@@ -247,7 +248,7 @@ const AppContainer = () => {
 
     try {
       const response = await ENV.get(
-        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}`
+        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}&isSystem=${isSystem}`
       );
       const result = response.data;
       const shifts = ["shiftA", "shiftB"];
