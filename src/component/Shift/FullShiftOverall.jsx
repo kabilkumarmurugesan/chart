@@ -33,6 +33,9 @@ const FullShiftOverall = ({
   disabledTwo,
   handaleEvent,
   targetOne,
+  handleButtonClick,
+  secoundCardData,
+  firstCardData,
 }) => {
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -42,7 +45,7 @@ const FullShiftOverall = ({
     CommonAPIService.getEmojiStatus(
       isShift,
       lastBarValue.totalCount,
-      setIsHappy
+      setIsHappy,
     );
   }, [isShift]);
 
@@ -63,6 +66,7 @@ const FullShiftOverall = ({
                   }
                   time={firstShiftTiming}
                   isCurrentShift={currentShift === "shiftA"}
+                  cardData={firstCardData}
                 />
                 <BarChartCopy
                   height={"25vh"}
@@ -74,6 +78,7 @@ const FullShiftOverall = ({
                   categories={categories}
                   response={firstResponse}
                   targetList={targetList}
+                  handleButtonClick={handleButtonClick}
                   currentShift={currentShift}
                   isCurrentShift={currentShift === "shiftA"}
                 />
@@ -91,6 +96,7 @@ const FullShiftOverall = ({
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
                   time={secoundShiftTiming}
+                  cardData={secoundCardData}
                   isCurrentShift={currentShift === "shiftB"}
                 />
                 <BarChartCopy
@@ -106,6 +112,7 @@ const FullShiftOverall = ({
                   categories={categories}
                   visibleQRCodeIndex={visibleQRCodeIndex}
                   shiftHours={shiftHours}
+                  handleButtonClick={handleButtonClick}
                   isCurrentShift={currentShift === "shiftB"}
                 />
               </Card>

@@ -34,10 +34,10 @@ const AppContainer = () => {
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
   const [firstResponse, setFirstResponse] = useState([]);
   const [firstShiftTiming, setFirstShiftTiming] = useState(
-    "09:00 PM - 05:30 AM"
+    "09:00 PM - 05:30 AM",
   );
   const [secoundShiftTiming, setSecoundShiftTiming] = useState(
-    "09:00 AM - 05:30 PM"
+    "09:00 AM - 05:30 PM",
   );
 
   const [secoundResponse, setSecoundResponse] = useState([]);
@@ -64,7 +64,7 @@ const AppContainer = () => {
           "04 - 05",
           "05 - 06",
         ]
-      : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
+      : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"],
   );
 
   useEffect(() => {
@@ -91,17 +91,6 @@ const AppContainer = () => {
     } else {
       clearInterval(interval);
       clearInterval(intervalshiftHours);
-      interval = setInterval(() => {
-        const dates = new Date();
-        if (ShowShiftDate === "Today") {
-          const formattedDate = `${dates.getFullYear()}-${
-            dates.getMonth() + 1
-          }-${dates.getDate()}`;
-          getProductData("L1", categories, formattedDate);
-        } else {
-          getProductData("L1", categories, yesterdayDate);
-        }
-      }, refreshRate / 2);
     }
     return () => {
       clearInterval(interval);
@@ -248,7 +237,7 @@ const AppContainer = () => {
 
     try {
       const response = await ENV.get(
-        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}&isSystem=${isSystem}`
+        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}&isSystem=${isSystem}`,
       );
       const result = response.data;
       const shifts = ["shiftA", "shiftB"];
@@ -256,7 +245,7 @@ const AppContainer = () => {
         const dome = categoriesList.map((element, i) => {
           const res = result.data[shift].find((item) => item.x === element);
           return {
-            id: res ? res.id : "-",
+            id: res ? res.id : shift === "shiftA" ? i : i + 12,
             x: res ? res.x : element,
             y: res ? res.y : "-",
             z: res ? res.z : "-",
@@ -309,8 +298,10 @@ const AppContainer = () => {
       setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
       setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
 
-      ShiftCardDetailList[0].value = result.data.shiftBDetails.mfgOrderCount;
-      ShiftCardDetailList[1].value = result.data.shiftBDetails.mfgProductCount;
+      ShiftCardDetailList[0].value =
+        result.data[`${result.data.currentShift}Details`].mfgOrderCount;
+      ShiftCardDetailList[1].value =
+        result.data[`${result.data.currentShift}Details`].mfgProductCount;
     } catch (error) {
       console.error("Error fetching production data:", error);
     }
@@ -323,6 +314,13 @@ const AppContainer = () => {
   };
 
   const [todayDate, setTodayDate] = useState(formatDate(new Date()));
+
+  const handleButtonClick = (index, id) => {
+    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+    if (id !== "single" || currentSlide % 2 === 0) {
+      handleSlidechange();
+    }
+  };
 
   return (
     <>
@@ -357,6 +355,7 @@ const AppContainer = () => {
                       firstResponse={firstResponse}
                       visibleQRCodeIndex={visibleQRCodeIndex}
                       setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                      handleButtonClick={handleButtonClick}
                       secoundResponse={secoundResponse}
                       secoundShiftTiming={secoundShiftTiming}
                       firstShiftTiming={firstShiftTiming}
@@ -366,6 +365,8 @@ const AppContainer = () => {
                       todayDate={todayDate}
                       lastBarValue={lastBarValue}
                       shiftHours={shiftHours}
+                      firstCardData={firstCardData}
+                      secoundCardData={secoundCardData}
                       firstDowntimeDetails={firstDowntimeDetails}
                       secoundDowntimeDetails={secoundDowntimeDetails}
                       ShowShiftDate={ShowShiftDate}
@@ -377,7 +378,6 @@ const AppContainer = () => {
                         if (shiftHours) {
                           if (shiftType === "2nd" && currentSlide === 0) {
                             handleSlidechange();
-                            setShiftType(() => "1st");
                           } else {
                             setShiftType("2nd");
                           }
@@ -402,6 +402,7 @@ const AppContainer = () => {
                     handleSlidechange={handleSlidechange}
                     firstResponse={firstResponse}
                     visibleQRCodeIndex={visibleQRCodeIndex}
+                    handleButtonClick={handleButtonClick}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     secoundResponse={secoundResponse}
                     categories={categories}
@@ -414,6 +415,8 @@ const AppContainer = () => {
                     cardData={cardData}
                     firstShiftTiming={firstShiftTiming}
                     currentShift={currentShift}
+                    secoundCardData={secoundCardData}
+                    firstCardData={firstCardData}
                     secoundShiftTiming={secoundShiftTiming}
                     disabledOne={false}
                     disabledTwo={true}
@@ -457,6 +460,7 @@ const AppContainer = () => {
                     lastBarValue={lastBarValue}
                     visibleQRCodeIndex={visibleQRCodeIndex}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                    handleButtonClick={handleButtonClick}
                     firstResponse={firstResponse}
                     currentShift={currentShift}
                     firstShiftTiming={firstShiftTiming}
@@ -484,6 +488,7 @@ const AppContainer = () => {
                     handleSlidechange={handleSlidechange}
                     lastBarValue={lastBarValue}
                     visibleQRCodeIndex={visibleQRCodeIndex}
+                    handleButtonClick={handleButtonClick}
                     setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                     secoundResponse={secoundResponse}
                     secoundShiftTiming={secoundShiftTiming}
@@ -495,7 +500,6 @@ const AppContainer = () => {
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     ShiftCardDetailList={ShiftCardDetailList}
-                    firstShiftTiming={firstShiftTiming}
                   />
                 </Box>
               )}
@@ -512,11 +516,11 @@ const AppContainer = () => {
           }}
         >
           <SingleShift
-            secoundShiftTiming={secoundShiftTiming}
             handleSlidechange={handleSlidechange}
             lastBarValue={lastBarValue}
             visibleQRCodeIndex={visibleQRCodeIndex}
             setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+            handleButtonClick={handleButtonClick}
             secoundResponse={secoundResponse}
             categories={categories}
             yesterdayDate={yesterdayDate}
@@ -526,9 +530,14 @@ const AppContainer = () => {
             firstDowntimeDetails={firstDowntimeDetails}
             secoundDowntimeDetails={secoundDowntimeDetails}
             ShiftCardDetailList={ShiftCardDetailList}
-            cardData={firstCardData}
-            firstResponse={firstResponse}
+            cardData={
+              currentShift === "shiftA" ? firstCardData : secoundCardData
+            }
+            firstResponse={
+              currentShift === "shiftA" ? firstResponse : undefined
+            }
             firstShiftTiming={firstShiftTiming}
+            secoundShiftTiming={secoundShiftTiming}
           />
         </Box>
       )}

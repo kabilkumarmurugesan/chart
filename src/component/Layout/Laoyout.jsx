@@ -4,7 +4,7 @@ import ENV from "../../utilities/ENV";
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
 import CommonService from "../../utilities/CommonService";
-import ShiftContext from '../Context/shiftContext'
+import ShiftContext from "../Context/shiftContext";
 
 function Layout() {
   const theme = useTheme();
@@ -59,7 +59,8 @@ function Layout() {
   };
 
   const getShiftTarget = async (formattedDate) => {
-    let date = CommonService.formatDates(formattedDate);
+    let currentDateString = new Date(formattedDate);
+    let date = currentDateString.toISOString().split("T")[0];
     ENV.get(`/getTarget?isSystem=${isSystem}&date=${date}`)
       .then((res) => {
         setTargetList(res.data.data);

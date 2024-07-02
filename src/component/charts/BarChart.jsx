@@ -25,7 +25,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   annotationPlugin,
-  ChartDataLabels
+  ChartDataLabels,
 );
 
 const BarChart = ({
@@ -39,6 +39,7 @@ const BarChart = ({
   shiftType,
   targetList,
   targetOne,
+  handleButtonClick,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
@@ -90,7 +91,7 @@ const BarChart = ({
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: i === 0 ? timeT - 4 : timeT - 3,
+          xValue: i === 0 ? timeT - 3 : timeT - 2,
           yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
@@ -128,10 +129,10 @@ const BarChart = ({
     setSeriesLabel(seriesLabels);
   }, [response]);
 
-  const handleButtonClick = (index) => {
-    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-    handleSlidechange();
-  };
+  // const handleButtonClick = (index) => {
+  //   setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+  //   handleSlidechange();
+  // };
 
   const getColor = (value) => {
     if (value < targetOne / 3) return primary.incomplete;
@@ -236,7 +237,7 @@ const BarChart = ({
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() => handleButtonClick(index)}
+                onClick={() => handleButtonClick(index, "charts")}
               ></button>
             </div>
           ))}

@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
 const ShiftHeader = (props) => {
-  const { date, time } = props;
+  const { date, cardData, time } = props;
+
+  const [overTime, setOverTime] = useState(cardData.overTime);
+
+  useEffect(() => {
+    setOverTime(
+      cardData?.overTime !== undefined
+        ? cardData?.overTime
+        : formatAMPM(new Date()),
+    );
+  }, [cardData]);
 
   const formatAMPM = (date) => {
     var hours = date.getHours();
@@ -24,7 +34,6 @@ const ShiftHeader = (props) => {
         justifyContent: "space-between",
       }}
     >
-      {" "}
       <Typography
         sx={{ p: 1 }}
         style={{
@@ -49,10 +58,7 @@ const ShiftHeader = (props) => {
             fontSize: "15px",
           }}
         >
-          <b> OT:</b>{" "}
-          {props.cardData?.overTime !== undefined
-            ? props.cardData?.overTime
-            : formatAMPM(new Date())}{" "}
+          <b> OT:</b> {overTime}{" "}
         </Typography>
       </Box>
     </Box>

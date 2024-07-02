@@ -31,6 +31,7 @@ const SingleShift = ({
   currentShift,
   currentSlide,
   targetOne,
+  handleButtonClick,
 }) => {
   const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
   const [isHappy, setIsHappy] = useState();
@@ -41,7 +42,7 @@ const SingleShift = ({
     CommonAPIService.getEmojiStatus(
       isShift,
       lastBarValue.totalCount,
-      setIsHappy
+      setIsHappy,
     );
   }, [isShift]);
   return (
@@ -63,7 +64,7 @@ const SingleShift = ({
               isCurrentShift={currentShift === "shiftA"}
               cardData={cardData}
             />
-            {currentShift === "shiftA" ? (
+            {firstResponse ? (
               <BarChartCopy
                 height={"40vh"}
                 animations={{
@@ -79,6 +80,7 @@ const SingleShift = ({
                 handleSlidechange={handleSlidechange}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
+                handleButtonClick={handleButtonClick}
                 shiftHours={shiftHours}
                 targetOne={targetOne}
                 ShowShiftDate={ShowShiftDate}
@@ -100,6 +102,7 @@ const SingleShift = ({
                 isCurrentShift={currentShift === "shiftB"}
                 response={secoundResponse}
                 categories={categories}
+                handleButtonClick={handleButtonClick}
                 currentShift={currentShift}
                 id={"single"}
                 animations={{

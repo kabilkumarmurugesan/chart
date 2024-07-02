@@ -26,7 +26,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   annotationPlugin,
-  ChartDataLabels
+  ChartDataLabels,
 );
 ChartJS.register(...registerables);
 
@@ -42,6 +42,7 @@ const BarChartCopy = ({
   ShowShift,
   ShowShiftDate,
   setVisibleQRCodeIndex,
+  handleButtonClick,
   visibleQRCodeIndex,
   targetList,
   isCurrentShift,
@@ -95,7 +96,7 @@ const BarChartCopy = ({
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: i === 0 ? timeT - 4 : timeT - 3,
+          xValue: i === 0 ? timeT - 3 : timeT - 4,
           yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
@@ -160,11 +161,11 @@ const BarChartCopy = ({
     shiftHours,
   ]);
 
-  const handleButtonClick = (index) => {
-    setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-    // getUpdateData();
-    id !== "single" && handleSlidechange();
-  };
+  // const handleButtonClick = (index) => {
+  //   setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
+  //   // getUpdateData();
+  //   id !== "single" && handleSlidechange();
+  // };
 
   // const getUpdateData = async () => {
   //   const url = "http://localhost:8001/api/v1/general/1";
@@ -311,21 +312,20 @@ const BarChartCopy = ({
             justifyContent: "center",
           }}
         >
-          {data.labels.map((label, index) => (
+          {/* {JSON.stringify(response)} */}
+          {response.map((label, index) => (
             <div key={index} style={{ padding: "5px" }}>
               <button
                 className="btn-one"
                 style={{
                   background:
-                    visibleQRCodeIndex === index + (isCurrentShift ? 1 : 12)
+                    visibleQRCodeIndex === label.id
                       ? "#4d5a81"
                       : "rgb(220, 223, 224)",
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() =>
-                  handleButtonClick(index + (isCurrentShift ? 1 : 12))
-                }
+                onClick={() => handleButtonClick(label.id, id)}
               ></button>
             </div>
           ))}

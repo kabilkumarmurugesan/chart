@@ -20,15 +20,19 @@ const FullShift = ({
   handleSlidechange,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
+  handleButtonClick,
   todayDate,
   targetList,
   currentShift,
   firstDowntimeDetails,
   secoundDowntimeDetails,
+  secoundCardData,
+  firstCardData,
   disabledOne,
   disabledTwo,
   handaleEvent,
-  targetOne,shiftType
+  targetOne,
+  shiftType,
 }) => {
   const handleSlidechanges = () => {
     handleSlidechange();
@@ -42,6 +46,7 @@ const FullShift = ({
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={firstShiftTiming}
               isCurrentShift={currentShift === "shiftA"}
+              cardData={firstCardData}
             />
             {currentShift === "shiftB" ? (
               <BarChart
@@ -49,6 +54,7 @@ const FullShift = ({
                 targetOne={targetOne}
                 targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleButtonClick={handleButtonClick}
                 handleSlidechange={handleSlidechanges}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
@@ -62,6 +68,7 @@ const FullShift = ({
                 targetList={targetList}
                 lastBarValue={currentShift === "shiftA" && lastBarValue}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleButtonClick={handleButtonClick}
                 handleSlidechange={handleSlidechanges}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
@@ -79,12 +86,14 @@ const FullShift = ({
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
               time={secoundShiftTiming}
               isCurrentShift={currentShift === "shiftB"}
+              cardData={secoundCardData}
             />
             {currentShift === "shiftA" ? (
               <BarChart
                 height={"33vh"}
                 targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleButtonClick={handleButtonClick}
                 handleSlidechange={handleSlidechanges}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
@@ -100,6 +109,7 @@ const FullShift = ({
                 lastBarValue={currentShift === "shiftB" && lastBarValue}
                 animations={false}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+                handleButtonClick={handleButtonClick}
                 handleSlidechange={handleSlidechanges}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 categories={categories}
