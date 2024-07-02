@@ -10,6 +10,10 @@ const ENV = {
     let api = await AxiosInstances.post(path, payload);
     return api;
   },
+  async put(path, payload) {
+    let api = await AxiosInstances.put(path, payload);
+    return api;
+  },
 };
 
 export default ENV;

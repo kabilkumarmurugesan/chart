@@ -35,9 +35,6 @@ const AppContainer = ({
   const [secoundShiftTiming, setSecoundShiftTiming] = useState(
     "09:00 AM - 05:30 PM"
   );
-  useEffect(() => {
-    targetList[0] !== undefined && setTargetOne(targetList[0].target);
-  }, [targetList]);
 
   const [secoundResponse, setSecoundResponse] = useState([]);
   let Dates = new Date(new Date().setDate(new Date().getDate() - 1));
@@ -65,6 +62,10 @@ const AppContainer = ({
         ]
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
+
+  useEffect(() => {
+    targetList[0] !== undefined && setTargetOne(targetList[0].target);
+  }, [targetList]);
 
   useEffect(() => {
     let intervalshiftHours = 0;
@@ -187,12 +188,12 @@ const AppContainer = ({
     }
     setTodayDate(date);
   }, [
-    shiftHours,
+    ShowShiftDate,
+    shiftType,
     currentSlide,
     targetList,
     ShowShift,
-    ShowShiftDate,
-    shiftType,
+    shiftHours,
   ]);
 
   useEffect(() => {
@@ -218,58 +219,50 @@ const AppContainer = ({
   };
 
   const getProductData = async (line, categoriesList, formattedDate) => {
-    let date = CommonService.formatDates(formattedDate);
+    const date = CommonService.formatDates(formattedDate);
     let temp = "";
-
     if (currentSlide === 0 && ShowShift === "Day") {
-      if (shiftHours) {
-        temp = `&duration=6hrs&shift=${shiftType}`;
-      } else {
-        temp = `&duration=9hrs&shift=${shiftType}`;
-      }
+      temp = shiftHours
+        ? `&duration=6hrs&shift=${shiftType}`
+        : `&duration=9hrs&shift=${shiftType}`;
     } else {
-      if (shiftHours) {
-        temp = `&duration=12hrs&shift=1st`;
-      } else {
-        temp = `&duration=9hrs&shift=${shiftType}`;
-      }
+      temp = shiftHours
+        ? `&duration=12hrs&shift=1st`
+        : `&duration=9hrs&shift=${shiftType}`;
     }
 
-    ENV.get(
-      `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}`
-    ).then((response) => {
+    try {
+      const response = await ENV.get(
+        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}`
+      );
       const result = response.data;
-      let shift = ["shiftA", "shiftB"];
-      shift.forEach((item) => {
-        let dome = [];
-        let shiftData = result.data[item];
-        categoriesList.forEach((element, i) => {
-          dome.push({
-            id: shiftData[i] === undefined ? "-" : shiftData[i].id,
-            x: shiftData[i] === undefined ? element : shiftData[i].x,
-            y: shiftData[i] === undefined ? "-" : shiftData[i].y,
-            z: shiftData[i] === undefined ? "-" : shiftData[i].z,
-            headcount:
-              shiftData[i] === undefined ? "-" : shiftData[i].headcount,
-            upph: shiftData[i] === undefined ? "-" : shiftData[i].upph,
-            product_id:
-              shiftData[i] === undefined ? "-" : shiftData[i].product_id,
-            target: shiftData[i] === undefined ? "-" : shiftData[i].target,
-            comments: shiftData[i] === undefined ? "-" : shiftData[i].comments,
-            op_date: shiftData[i] === undefined ? "-" : shiftData[i].op_date,
-            line: shiftData[i] === undefined ? "-" : shiftData[i].line,
-            downtime: shiftData[i] === undefined ? "-" : shiftData[i].downtime,
-          });
+      const shifts = ["shiftA", "shiftB"];
+      shifts.forEach((shift) => {
+        const dome = categoriesList.map((element, i) => {
+          const res = result.data[shift].find((item) => item.x === element);
+          return {
+            id: res ? res.id : "-",
+            x: res ? res.x : element,
+            y: res ? res.y : "-",
+            z: res ? res.z : "-",
+            headcount: res ? res.headcount : "-",
+            upph: res ? res.upph : "-",
+            product_id: res ? res.product_id : "-",
+            target: res ? res.target : "-",
+            comments: res ? res.comments : "-",
+            op_date: res ? res.op_date : "-",
+            line: res ? res.line : "-",
+            downtime: res ? res.downtime : "-",
+          };
         });
-        ShiftCardDetailList[0].value = result.data.shiftBDetails.mfgOrderCount;
-        ShiftCardDetailList[1].value =
-          result.data.shiftBDetails.mfgProductCount;
-        if (item === "shiftA") {
+
+        if (shift === "shiftA") {
           setFirstResponse(dome);
         } else {
           setSecoundResponse(dome);
         }
       });
+
       const overallData = [
         {
           label: "OVERALL TARGET",
@@ -296,11 +289,16 @@ const AppContainer = ({
       setCurrentShift(result.data.currentShift);
       setFirstCardData(result.data.shiftADetails);
       setSecoundCardData(result.data.shiftBDetails);
-      setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
       setFirstShiftTiming(result.data.shiftADetails.shiftTiming);
+      setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
       setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
       setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
-    });
+
+      ShiftCardDetailList[0].value = result.data.shiftBDetails.mfgOrderCount;
+      ShiftCardDetailList[1].value = result.data.shiftBDetails.mfgProductCount;
+    } catch (error) {
+      console.error("Error fetching production data:", error);
+    }
   };
 
   const handleSlidechange = (type) => {

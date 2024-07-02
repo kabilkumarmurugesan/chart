@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import ENV from "../../utilities/ENV";
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
 import CommonService from "../../utilities/CommonService";
 
 function Laoyout() {
+  const theme = useTheme();
+  const { primary } = theme.palette;
   const [refreshRate, setRefreshRate] = useState(30000);
   const [ShowShift, setShowShift] = useState("Day");
   const [ShowShiftDate, setShowShiftDate] = useState("Today");
@@ -97,10 +99,11 @@ function Laoyout() {
           position: "fixed",
           bottom: 0,
           width: "100%",
-          backgroundColor: "#fff",
+          background: primary.main,
+          color: primary.main,
         }}
       >
-        V 1.0
+        V 1.1
       </Box>
     </>
   );
