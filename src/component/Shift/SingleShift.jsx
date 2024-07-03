@@ -11,6 +11,8 @@ import sadEmoji from "../../asset/gif/SadEmoji.png";
 import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
 import ShiftContext from "../Context/shiftContext";
+import { useTheme } from "@emotion/react";
+import Divider from "@mui/material/Divider";
 
 const SingleShift = ({
   categories,
@@ -33,6 +35,7 @@ const SingleShift = ({
   targetOne,
   handleButtonClick,
 }) => {
+  const theme = useTheme();
   const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
@@ -42,7 +45,7 @@ const SingleShift = ({
     CommonAPIService.getEmojiStatus(
       isShift,
       lastBarValue.totalCount,
-      setIsHappy,
+      setIsHappy
     );
   }, [isShift]);
   return (
@@ -336,7 +339,7 @@ const SingleShift = ({
                           height: "90%",
                         }}
                       >
-                        <Button
+                        {/* <Button
                           sx={{
                             background: "#483456",
                             marginRight: "1em",
@@ -361,6 +364,64 @@ const SingleShift = ({
                           >
                             Current Hrs
                           </Button>
+                        )} */}
+                        {showMenu && (
+                          <Box
+                            sx={{
+                              cursor: "pointer",
+                              display: "flex",
+                              fontFamily:
+                                '"Roboto", "Helvetica", "Arial", sans-serif',
+                              alignItems: "center",
+                              border: "1px solid",
+                              borderColor: "divider",
+                              justifyContent: "center",
+                              borderRadius: 2,
+                              bgcolor: "#5a0497e8",
+                              color: "text.secondary",
+                              "& span": {
+                                m: 0.8,
+                              },
+                            }}
+                          >
+                            {" "}
+                            <span
+                              onClick={(e) => {
+                                setIsShift(() => true);
+                              }}
+                              style={{
+                                color: isShift
+                                  ? "#eeaa0a"
+                                  : theme.palette.mode === "dark"
+                                  ? "white"
+                                  : "#ddd",
+                              }}
+                            >
+                              Shift hrs
+                            </span>
+                            <Divider
+                              orientation="vertical"
+                              color="#fff"
+                              variant="middle"
+                              flexItem
+                            />
+                            {ShowShiftDate === "Today" && (
+                              <span
+                                onClick={(e) => {
+                                  setIsShift(false);
+                                }}
+                                style={{
+                                  color: !isShift
+                                    ? "#eeaa0a"
+                                    : theme.palette.mode === "dark"
+                                    ? "white"
+                                    : "#ddd",
+                                }}
+                              >
+                                Current Hrs
+                              </span>
+                            )}
+                          </Box>
                         )}
                       </Box>
                     )}

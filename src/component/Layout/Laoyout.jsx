@@ -101,7 +101,7 @@ function Layout() {
           color: primary.main,
         }}
       >
-        V 1.1
+        V 1.3
       </Box>
     </ShiftContext.Provider>
   );

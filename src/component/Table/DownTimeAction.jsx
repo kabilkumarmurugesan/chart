@@ -43,7 +43,7 @@ export default function DownTimeAction({ data }) {
   }, [data]);
 
   const handlePageChange = (pageNo) => {
-     if (data.length > 0) {
+    if (data.length > 0) {
       let temp = data.reduce((acc, val, i) => {
         let idx = Math.floor(i / 2);
         let page = acc[idx] || (acc[idx] = []);
@@ -56,9 +56,13 @@ export default function DownTimeAction({ data }) {
   };
 
   return (
-    <Grid container spacing={2} sx={{mt:0.5}}>
+    <Grid container spacing={2} sx={{ mt: 0.5 }}>
       <Grid item xs={12}>
-        <TableContainer component={Paper} sx={{height:'15.2vh'}} className="table-container">
+        <TableContainer
+          component={Paper}
+          sx={{ height: "15.2vh" }}
+          className="table-container"
+        >
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -105,19 +109,19 @@ export default function DownTimeAction({ data }) {
           }}
         >
           <IconButton
-            disabled={pageNo < 1}
+            disabled={pageNo >= Math.floor(data.length / 2)}
             onClick={() => {
-              handlePageChange(pageNo - 1);
-              setPageNo(pageNo - 1);
+              handlePageChange(pageNo + 1);
+              setPageNo(pageNo + 1);
             }}
           >
             <ArrowBackIosIcon />
           </IconButton>
           <IconButton
-            disabled={pageNo >= Math.floor(data.length / 2)}
+            disabled={pageNo < 1}
             onClick={() => {
-              handlePageChange(pageNo + 1);
-              setPageNo(pageNo + 1);
+              handlePageChange(pageNo - 1);
+              setPageNo(pageNo - 1);
             }}
           >
             <ArrowForwardIosIcon />

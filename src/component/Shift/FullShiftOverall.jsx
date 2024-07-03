@@ -9,6 +9,8 @@ import DownTimeAction from "../Table/DownTimeAction";
 import MetricsCard from "../Card/MetricsCard";
 import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
+import { useTheme } from "@emotion/react";
+import Divider from "@mui/material/Divider";
 
 const FullShiftOverall = ({
   yesterdayDate,
@@ -40,6 +42,7 @@ const FullShiftOverall = ({
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     CommonAPIService.getEmojiStatus(
@@ -48,6 +51,9 @@ const FullShiftOverall = ({
       setIsHappy
     );
   }, [isShift]);
+  useEffect(() => {
+    setIsShift(ShowShiftDate !== "Yesterday");
+  }, [ShowShiftDate]);
 
   const handleSlidechanges = (index) => {
     // handleSlidechange("Full");
@@ -176,33 +182,62 @@ const FullShiftOverall = ({
                     }}
                   >
                     {showMenu && (
-                      <Button
+                      <Box
                         sx={{
-                          background: "#483456",
-                          marginRight: "1em",
-                          "&:hover": {
-                            background: "#483456",
+                          cursor: "pointer",
+                          display: "flex",
+                          fontFamily:
+                            '"Roboto", "Helvetica", "Arial", sans-serif',
+                          alignItems: "center",
+                          border: "1px solid",
+                          borderColor: "divider",
+                          justifyContent: "center",
+                          borderRadius: 2,
+                          bgcolor: "#5a0497e8",
+                          color: "text.secondary",
+                          "& span": {
+                            m: 0.8,
                           },
-                          height: "32px",
                         }}
-                        onClick={() => setIsShift(true)}
                       >
-                        Shift hrs
-                      </Button>
-                    )}
-                    {ShowShiftDate === "Today" && showMenu && (
-                      <Button
-                        sx={{
-                          background: "#483456",
-                          "&:hover": {
-                            background: "#483456",
-                          },
-                          height: "32px",
-                        }}
-                        onClick={() => setIsShift(false)}
-                      >
-                        Current Hrs
-                      </Button>
+                        {" "}
+                        <span
+                          onClick={(e) => {
+                            setIsShift(() => true);
+                          }}
+                          style={{
+                            color: isShift
+                              ? "#eeaa0a"
+                              : theme.palette.mode === "dark"
+                              ? "white"
+                              : "#ddd",
+                          }}
+                        >
+                          Shift hrs
+                        </span>
+                        <Divider
+                          orientation="vertical"
+                          color="#fff"
+                          variant="middle"
+                          flexItem
+                        />
+                        {ShowShiftDate === "Today" && (
+                          <span
+                            onClick={(e) => {
+                              setIsShift(false);
+                            }}
+                            style={{
+                              color: !isShift
+                                ? "#eeaa0a"
+                                : theme.palette.mode === "dark"
+                                ? "white"
+                                : "#ddd",
+                            }}
+                          >
+                            Current Hrs
+                          </span>
+                        )}
+                      </Box>
                     )}
                   </Box>
                   <img
