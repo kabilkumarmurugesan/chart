@@ -34,10 +34,10 @@ const AppContainer = () => {
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
   const [firstResponse, setFirstResponse] = useState([]);
   const [firstShiftTiming, setFirstShiftTiming] = useState(
-    "09:00 PM - 05:30 AM",
+    "09:00 PM - 05:30 AM"
   );
   const [secoundShiftTiming, setSecoundShiftTiming] = useState(
-    "09:00 AM - 05:30 PM",
+    "09:00 AM - 05:30 PM"
   );
 
   const [secoundResponse, setSecoundResponse] = useState([]);
@@ -64,7 +64,7 @@ const AppContainer = () => {
           "04 - 05",
           "05 - 06",
         ]
-      : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"],
+      : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
 
   useEffect(() => {
@@ -237,15 +237,27 @@ const AppContainer = () => {
 
     try {
       const response = await ENV.get(
-        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}&isSystem=${isSystem}`,
+        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}&isSystem=${isSystem}`
       );
       const result = response.data;
       const shifts = ["shiftA", "shiftB"];
-      shifts.forEach((shift) => {
+      shifts.forEach((shift, index) => {
         const dome = categoriesList.map((element, i) => {
           const res = result.data[shift].find((item) => item.x === element);
           return {
-            id: res ? res.id : shift === "shiftA" ? i : i + 12,
+            id: res
+              ? res.id
+              : shift === "shiftA"
+              ? i + index
+              : i +
+                (index === 0
+                  ? shiftType === "1st"
+                    ? 12
+                    : 13
+                  : shiftType === "1st"
+                  ? 24
+                  : 25),
+
             x: res ? res.x : element,
             y: res ? res.y : "-",
             z: res ? res.z : "-",
@@ -317,7 +329,12 @@ const AppContainer = () => {
 
   const handleButtonClick = (index, id) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-    if (id !== "single" || currentSlide % 2 === 0) {
+    if (id === "Full" && index !== null) {
+      handleSlidechange("Full");
+    } else if (
+      (id !== "single" && index !== null) ||
+      (currentSlide % 2 === 0 && index !== null)
+    ) {
       handleSlidechange();
     }
   };

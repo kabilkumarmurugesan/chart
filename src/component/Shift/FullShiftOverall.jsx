@@ -45,12 +45,13 @@ const FullShiftOverall = ({
     CommonAPIService.getEmojiStatus(
       isShift,
       lastBarValue.totalCount,
-      setIsHappy,
+      setIsHappy
     );
   }, [isShift]);
 
-  const handleSlidechanges = () => {
-    handleSlidechange("Full");
+  const handleSlidechanges = (index) => {
+    // handleSlidechange("Full");
+    handleButtonClick(index, "Full");
   };
 
   return (
@@ -78,7 +79,7 @@ const FullShiftOverall = ({
                   categories={categories}
                   response={firstResponse}
                   targetList={targetList}
-                  handleButtonClick={handleButtonClick}
+                  handleButtonClick={handleSlidechanges}
                   currentShift={currentShift}
                   isCurrentShift={currentShift === "shiftA"}
                 />
@@ -112,7 +113,7 @@ const FullShiftOverall = ({
                   categories={categories}
                   visibleQRCodeIndex={visibleQRCodeIndex}
                   shiftHours={shiftHours}
-                  handleButtonClick={handleButtonClick}
+                  handleButtonClick={handleSlidechanges}
                   isCurrentShift={currentShift === "shiftB"}
                 />
               </Card>

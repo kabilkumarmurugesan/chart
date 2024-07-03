@@ -25,7 +25,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   annotationPlugin,
-  ChartDataLabels,
+  ChartDataLabels
 );
 
 const BarChart = ({
@@ -88,10 +88,9 @@ const BarChart = ({
         let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
         let xMax = i === 0 ? timeT : preT + timeT;
         preT = xMax;
-
         annotations[`label${i}`] = {
           type: "label",
-          xValue: i === 0 ? timeT - 3 : timeT - 2,
+          xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
           yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
@@ -225,19 +224,24 @@ const BarChart = ({
             justifyContent: "center",
           }}
         >
-          {data.labels.map((_label, index) => (
+          {response.map((label, index) => (
             <div key={index} style={{ padding: "10px" }}>
               <button
                 className="btn-one"
                 style={{
                   background:
-                    visibleQRCodeIndex === index
+                    visibleQRCodeIndex === label.id
                       ? "#4d5a81"
                       : "rgb(220, 223, 224)",
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() => handleButtonClick(index, "charts")}
+                onClick={() =>
+                  handleButtonClick(
+                    visibleQRCodeIndex === label.id ? null : label.id,
+                    "charts"
+                  )
+                }
               ></button>
             </div>
           ))}

@@ -26,7 +26,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   annotationPlugin,
-  ChartDataLabels,
+  ChartDataLabels
 );
 ChartJS.register(...registerables);
 
@@ -96,7 +96,7 @@ const BarChartCopy = ({
 
         annotations[`label${i}`] = {
           type: "label",
-          xValue: i === 0 ? timeT - 3 : timeT - 4,
+          xValue: i === 0 ? i : timeT - xMax / 3,
           yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
@@ -325,7 +325,12 @@ const BarChartCopy = ({
                   width: "10px",
                   height: "5px",
                 }}
-                onClick={() => handleButtonClick(label.id, id)}
+                onClick={() =>
+                  handleButtonClick(
+                    visibleQRCodeIndex === label.id ? null : label.id,
+                    id
+                  )
+                }
               ></button>
             </div>
           ))}
