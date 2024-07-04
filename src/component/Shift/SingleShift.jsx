@@ -59,14 +59,15 @@ const SingleShift = ({
               time={
                 ShowShiftDate === "Today"
                   ? currentShift === "shiftA"
-                    ? firstShiftTiming
-                    : secoundShiftTiming
+                    ? "09:00 AM - 05:30 PM"
+                    : "09:00 PM - 05:30 AM"
                   : firstResponse
-                  ? firstShiftTiming
-                  : secoundShiftTiming
+                  ? "09:00 AM - 05:30 PM"
+                  : "09:00 PM - 05:30 AM"
               }
               isCurrentShift={currentShift === "shiftA"}
               cardData={cardData}
+              overTimeRange={lastBarValue.overTime.overTimeRange}
             />
             {firstResponse ? (
               <BarChartCopy
@@ -188,7 +189,9 @@ const SingleShift = ({
                         }}
                       >
                         {CommonService.convertIntoKiloPrefix(
-                          cardData.shiftActual
+                          ShowShiftDate === "Yesterday"
+                            ? cardData.shiftActual
+                            : lastBarValue.shiftActual
                         )}
                       </b>
                     </Typography>
@@ -324,6 +327,7 @@ const SingleShift = ({
                   style={{
                     fontSize: "18px",
                     fontWeight: "bold",
+                    color: "#4d5a81",
                   }}
                 >
                   TARGET - ACTUAL STATUS
@@ -346,64 +350,72 @@ const SingleShift = ({
                           height: "90%",
                         }}
                       >
-                        {showMenu && (
-                          <Box
-                            sx={{
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: "24px",
+                            background: "#d3cccc4f",
+                            boxShadow:
+                              "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+                          }}
+                        >
+                          <span
+                            onClick={(e) => {
+                              setIsShift(() => true);
+                            }}
+                            style={{
                               cursor: "pointer",
                               display: "flex",
                               fontFamily:
                                 '"Roboto", "Helvetica", "Arial", sans-serif',
                               alignItems: "center",
-                              border: "1px solid",
-                              borderColor: "divider",
+                              // borderColor: "divider",
                               justifyContent: "center",
-                              borderRadius: 2,
-                              bgcolor: "#5a0497e8",
-                              color: "text.secondary",
-                              "& span": {
-                                m: 0.8,
-                              },
+                              padding: 8,
+                              // bgcolor: "#5a0497e8",
+                              // color: "text.secondary",
+                              color: isShift
+                                ? "#eeaa0a"
+                                : theme.palette.mode === "dark"
+                                ? "white"
+                                : "#c9c7c7",
                             }}
                           >
-                            {" "}
+                            Shift hrs
+                          </span>
+                          <Divider
+                            orientation="vertical"
+                            color="#fff"
+                            variant="middle"
+                            flexItem
+                          />
+                          {ShowShiftDate === "Today" && (
                             <span
                               onClick={(e) => {
-                                setIsShift(() => true);
+                                setIsShift(false);
                               }}
                               style={{
-                                color: isShift
+                                cursor: "pointer",
+                                display: "flex",
+                                fontFamily:
+                                  '"Roboto", "Helvetica", "Arial", sans-serif',
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: "0px 40px 40px 0px",
+                                padding: 8,
+                                color: !isShift
                                   ? "#eeaa0a"
                                   : theme.palette.mode === "dark"
                                   ? "white"
-                                  : "#ddd",
+                                  : "#c9c7c7",
                               }}
                             >
-                              Shift hrs
+                              Current Hrs
                             </span>
-                            <Divider
-                              orientation="vertical"
-                              color="#fff"
-                              variant="middle"
-                              flexItem
-                            />
-                            {ShowShiftDate === "Today" && (
-                              <span
-                                onClick={(e) => {
-                                  setIsShift(false);
-                                }}
-                                style={{
-                                  color: !isShift
-                                    ? "#eeaa0a"
-                                    : theme.palette.mode === "dark"
-                                    ? "white"
-                                    : "#ddd",
-                                }}
-                              >
-                                Current Hrs
-                              </span>
-                            )}
-                          </Box>
-                        )}
+                          )}
+                        </Box>
                       </Box>
                     )}
                   </Box>

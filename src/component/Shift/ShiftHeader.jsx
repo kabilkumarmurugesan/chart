@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
 const ShiftHeader = (props) => {
-  const { date, cardData, time } = props;
+  const { date, cardData, time, overTimeRange } = props;
 
   const [overTime, setOverTime] = useState(cardData.overTime);
 
   useEffect(() => {
     setOverTime(
-      cardData?.overTime !== undefined
+      overTimeRange
+        ? overTimeRange
+        : cardData?.overTime !== undefined
         ? cardData?.overTime
         : formatAMPM(new Date())
     );
@@ -58,7 +60,7 @@ const ShiftHeader = (props) => {
             fontSize: "15px",
           }}
         >
-          <b> OT:</b> {overTime}{" "}
+          <b> OT:</b> {overTimeRange}{" "}
         </Typography>
       </Box>
     </Box>

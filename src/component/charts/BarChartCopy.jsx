@@ -100,6 +100,7 @@ const BarChartCopy = ({
           yValue: item.target + 5,
           content: [`${item.model}: ${Math.round(item.target)}`],
           font: {
+            weight: "bold",
             size: 13,
           },
         };
@@ -208,7 +209,7 @@ const BarChartCopy = ({
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
-        borderWidth: 35,
+        borderWidth: 1,
         barThickness: 34,
         datalabels: {
           display: (con) => {
@@ -216,11 +217,11 @@ const BarChartCopy = ({
           },
           align: "center",
           color: "white",
-          borderColor: "#45c1dd",
+          borderColor: "#F46306",
           borderWidth: 1,
           borderRadius: 2,
           padding: 4,
-          backgroundColor: "#45c1dd",
+          backgroundColor: "#F46306",
           formatter: (value) => {
             // CommonService.convertIntoKiloPrefix(value)
             return value;
@@ -246,7 +247,7 @@ const BarChartCopy = ({
             ? "#fff"
             : primary.complete;
         },
-        borderWidth: 35,
+        borderWidth: 1,
         barThickness: 34,
         datalabels: {
           display: false,

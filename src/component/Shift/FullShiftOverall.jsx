@@ -72,7 +72,7 @@ const FullShiftOverall = ({
                   date={
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
-                  time={firstShiftTiming}
+                  time={'09:00 AM - 05:30 PM'}
                   isCurrentShift={currentShift === "shiftA"}
                   cardData={firstCardData}
                 />
@@ -103,7 +103,7 @@ const FullShiftOverall = ({
                   date={
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
-                  time={secoundShiftTiming}
+                  time={'09:00 PM - 05:30 AM'}
                   cardData={secoundCardData}
                   isCurrentShift={currentShift === "shiftB"}
                 />

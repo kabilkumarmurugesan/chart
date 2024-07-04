@@ -128,11 +128,6 @@ const BarChart = ({
     setSeriesLabel(seriesLabels);
   }, [response]);
 
-  // const handleButtonClick = (index) => {
-  //   setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
-  //   handleSlidechange();
-  // };
-
   const getColor = (value) => {
     if (value < targetOne / 3) return primary.incomplete;
     if (value < targetOne / 2) return primary.pending;
@@ -147,7 +142,7 @@ const BarChart = ({
         data: series,
         backgroundColor: series.map(getColor),
         borderColor: series.map(getColor),
-        borderWidth: 34,
+        borderWidth: 1, // Reduced borderWidth to avoid white line
         barThickness: 35,
         datalabels: {
           display: (con) => {
@@ -155,12 +150,11 @@ const BarChart = ({
           },
           align: "center",
           color: "white",
-          borderColor: "#45c1dd",
+          borderColor: "#F4C402",
           borderWidth: 1,
           borderRadius: 2,
-          backgroundColor: "#45c1dd",
+          backgroundColor: "#F4C402",
           formatter: (value) => {
-            // CommonService.convertIntoKiloPrefix(value)
             return value;
           },
           font: {

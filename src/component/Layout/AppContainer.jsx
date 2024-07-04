@@ -68,7 +68,11 @@ const AppContainer = () => {
   );
 
   useEffect(() => {
-    targetList[0] !== undefined && setTargetOne(targetList[0].target);
+    let temp = targetList.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.target,
+      0
+    );
+    targetList[0] !== undefined && setTargetOne(temp / targetList.length);
   }, [targetList]);
 
   useEffect(() => {
@@ -198,6 +202,7 @@ const AppContainer = () => {
     targetList,
     ShowShift,
     shiftHours,
+    refreshRate,
   ]);
 
   useEffect(() => {
