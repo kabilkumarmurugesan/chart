@@ -68,7 +68,7 @@ export default function DownTimeAction({ data }) {
               <TableRow>
                 <StyledTableCell sx={{ width: "20%" }}>Time</StyledTableCell>
                 <StyledTableCell sx={{ width: "15%" }} align="left">
-                  Down Time
+                  Down Time(Mins)
                 </StyledTableCell>
                 <StyledTableCell sx={{ width: "65%" }} align="left">
                   Down Time Details

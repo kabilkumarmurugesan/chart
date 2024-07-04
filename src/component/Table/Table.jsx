@@ -72,7 +72,7 @@ export default function BasicTable(props) {
           ))}
         </TableRow>
         <TableRow>
-          <TableCellHeader title={"Down Time (Min)"} />
+          <TableCellHeader title={"Down Time (Mins)"} />
           {series.map((item, i) => (
             <TableCell
               key={i}
