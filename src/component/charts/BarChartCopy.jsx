@@ -216,6 +216,19 @@ const BarChartCopy = ({
           },
           align: "center",
           color: "white",
+          borderColor: "#45c1dd",
+          borderWidth: 1,
+          borderRadius: 2,
+          padding: 4,
+          backgroundColor: "#45c1dd",
+          formatter: (value) => {
+            // CommonService.convertIntoKiloPrefix(value)
+            return value;
+          },
+          font: {
+            weight: "bold",
+            size: 14,
+          },
         },
       },
       {
@@ -252,6 +265,7 @@ const BarChartCopy = ({
         stacked: true,
       },
       y: {
+        suggestedMax: 140,
         ticks: {
           stepSize: 20, // Set the step size for the y-axis labels and grid lines
         },

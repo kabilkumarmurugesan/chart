@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { Box, Card, Grid, Typography } from "@mui/material";
 import BasicTable from "../Table/Table";
 import DownTimeAction from "../Table/DownTimeAction";
 import BarChartCopy from "../charts/BarChartCopy";
@@ -13,6 +13,7 @@ import ArrowNavigation from "../Card/ArrowNavigation";
 import ShiftContext from "../Context/shiftContext";
 import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
+import CommonService from "../../utilities/CommonService";
 
 const SingleShift = ({
   categories,
@@ -151,7 +152,9 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {cardData.shiftTarget}
+                        {CommonService.convertIntoKiloPrefix(
+                          cardData.shiftTarget
+                        )}
                       </b>
                     </Typography>
                   </Box>
@@ -184,7 +187,9 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {cardData.shiftActual}
+                        {CommonService.convertIntoKiloPrefix(
+                          cardData.shiftActual
+                        )}
                       </b>
                     </Typography>
                   </Box>
@@ -218,7 +223,7 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {cardData.shiftUPH}
+                        {CommonService.convertIntoKiloPrefix(cardData.shiftUPH)}
                       </b>
                     </Typography>
                   </Box>
@@ -250,7 +255,9 @@ const SingleShift = ({
                           fontSize: "30px",
                         }}
                       >
-                        {cardData.shiftdownTime}
+                        {CommonService.convertIntoKiloPrefix(
+                          cardData.shiftdownTime
+                        )}
                       </b>
                     </Typography>
                   </Box>
@@ -339,32 +346,6 @@ const SingleShift = ({
                           height: "90%",
                         }}
                       >
-                        {/* <Button
-                          sx={{
-                            background: "#483456",
-                            marginRight: "1em",
-                            "&:hover": {
-                              background: "#483456",
-                            },
-                            height: "35px",
-                          }}
-                          onClick={() => setIsShift(true)}
-                        >
-                          Shift Hrs
-                        </Button>
-                        {ShowShiftDate === "Today" && (
-                          <Button
-                            sx={{
-                              background: "#483456",
-                              "&:hover": {
-                                background: "#483456",
-                              },
-                            }}
-                            onClick={() => setIsShift(false)}
-                          >
-                            Current Hrs
-                          </Button>
-                        )} */}
                         {showMenu && (
                           <Box
                             sx={{

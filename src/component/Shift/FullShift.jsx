@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Card, Grid } from "@mui/material";
 import BasicTable from "../Table/Table";
 import BarChart from "../charts/BarChart";
@@ -6,23 +6,21 @@ import BarChartCopy from "../charts/BarChartCopy";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 import ArrowNavigation from "../Card/ArrowNavigation";
+import ShiftContext from "../Context/shiftContext";
 
 const FullShift = ({
-  ShowShiftDate,
   yesterdayDate,
   secoundResponse,
   secoundShiftTiming,
   firstShiftTiming,
   firstResponse,
   categories,
-  shiftHours,
   lastBarValue,
   handleSlidechange,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   handleButtonClick,
   todayDate,
-  targetList,
   currentShift,
   firstDowntimeDetails,
   secoundDowntimeDetails,
@@ -34,6 +32,9 @@ const FullShift = ({
   targetOne,
   shiftType,
 }) => {
+  
+  const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
+
   const handleSlidechanges = () => {
     handleSlidechange();
   };

@@ -155,6 +155,18 @@ const BarChart = ({
           },
           align: "center",
           color: "white",
+          borderColor: "#45c1dd",
+          borderWidth: 1,
+          borderRadius: 2,
+          backgroundColor: "#45c1dd",
+          formatter: (value) => {
+            // CommonService.convertIntoKiloPrefix(value)
+            return value;
+          },
+          font: {
+            weight: "bold",
+            size: 14,
+          },
         },
       },
     ],
@@ -198,6 +210,7 @@ const BarChart = ({
       y: {
         stacked: true,
         beginAtZero: true,
+        suggestedMax: 140,
         ticks: {
           stepSize: 20,
         },

@@ -19,5 +19,31 @@ const CommonService = {
     const totalHours = endHour - startHour;
     return totalHours;
   },
+  convertIntoKiloPrefix(count) {
+    if (count && count !== 0) {
+      let countString = count.toString();
+      // if (countString.length === 7) {
+      //   countString = count / 100000;
+      //   countString = countString.toFixed(2);
+      //   return countString + " M";
+      // } else if (countString.length === 6) {
+      //   countString = count / 1000;
+      //   countString = countString.toFixed(2);
+      //   return countString + " K";
+      // } else if (countString.length === 5) {
+      //   countString = count / 1000;
+      //   countString = countString.toFixed(1);
+      //   return countString + " K";
+      // } else if (countString.length === 4) {
+      //   countString = count / 1000;
+      //   countString = countString.toFixed(1);
+      //   return countString + " K";
+      // } else {
+      return count;
+      // }
+    } else {
+      return 0;
+    }
+  },
 };
 export default CommonService;

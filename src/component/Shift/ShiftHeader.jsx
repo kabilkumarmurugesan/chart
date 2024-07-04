@@ -10,7 +10,7 @@ const ShiftHeader = (props) => {
     setOverTime(
       cardData?.overTime !== undefined
         ? cardData?.overTime
-        : formatAMPM(new Date()),
+        : formatAMPM(new Date())
     );
   }, [cardData]);
 
@@ -48,7 +48,7 @@ const ShiftHeader = (props) => {
           fontSize: "15px",
         }}
       >
-        <b>Time:</b>
+        <b>Shift Time: </b>
         {time}
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "row" }}>

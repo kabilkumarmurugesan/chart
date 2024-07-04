@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Box, Typography } from "@mui/material";
+import CommonService from "../../utilities/CommonService";
 
 const MetricsCard = ({ data }) => {
   return (
@@ -27,7 +28,9 @@ const MetricsCard = ({ data }) => {
             <Typography sx={{ fontSize: "15px" }}>
               {metric.label}
               <br />
-              <b style={{ fontSize: "30px" }}>{metric.value}</b>
+              <b style={{ fontSize: "30px" }}>
+                {CommonService.convertIntoKiloPrefix(metric.value)}
+              </b>
             </Typography>
           </Box>
         ))}

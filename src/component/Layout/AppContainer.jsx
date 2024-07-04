@@ -309,7 +309,6 @@ const AppContainer = () => {
       setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
       setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
       setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
-
       ShiftCardDetailList[0].value =
         result.data[`${result.data.currentShift}Details`].mfgOrderCount;
       ShiftCardDetailList[1].value =
@@ -386,7 +385,6 @@ const AppContainer = () => {
                       secoundCardData={secoundCardData}
                       firstDowntimeDetails={firstDowntimeDetails}
                       secoundDowntimeDetails={secoundDowntimeDetails}
-                      ShowShiftDate={ShowShiftDate}
                       currentShift={currentShift}
                       disabledOne={true}
                       disabledTwo={false}

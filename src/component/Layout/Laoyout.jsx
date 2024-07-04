@@ -3,7 +3,6 @@ import { Box, useTheme } from "@mui/material";
 import ENV from "../../utilities/ENV";
 import AppContainer from "./AppContainer";
 import AppHeader from "./AppHeader";
-import CommonService from "../../utilities/CommonService";
 import ShiftContext from "../Context/shiftContext";
 
 function Layout() {
@@ -20,15 +19,15 @@ function Layout() {
   useEffect(() => {
     const dates = new Date();
     if (ShowShiftDate === "Today") {
+      let formattedDate = dates.toISOString().split("T")[0];
+      getShiftTarget(formattedDate);
+    } else {
       const formattedDate = `${dates.getFullYear()}-${
         dates.getMonth() + 1
       }-${dates.getDate()}`;
-      getShiftTarget(formattedDate);
-    } else {
-      const formattedDate = `${dates.getFullYear()}-${dates.getMonth() + 1}-${
-        dates.getDate() - 1
-      }`;
-      getShiftTarget(formattedDate);
+      let currentDateString = new Date(formattedDate);
+      let date = currentDateString.toISOString().split("T")[0];
+      getShiftTarget(date);
     }
   }, [isSystem, ShowShiftDate]);
 
@@ -58,9 +57,7 @@ function Layout() {
     setIsSystem((pre) => e.target.checked);
   };
 
-  const getShiftTarget = async (formattedDate) => {
-    let currentDateString = new Date(formattedDate);
-    let date = currentDateString.toISOString().split("T")[0];
+  const getShiftTarget = async (date) => {
     ENV.get(`/getTarget?isSystem=${isSystem}&date=${date}`)
       .then((res) => {
         setTargetList(res.data.data);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Card, Typography, Grid } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
@@ -11,21 +11,19 @@ import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
 import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
+import ShiftContext from "../Context/shiftContext";
 
 const FullShiftOverall = ({
   yesterdayDate,
   secoundResponse,
   firstResponse,
   categories,
-  shiftHours,
   lastBarValue,
   handleSlidechange,
   visibleQRCodeIndex,
   setVisibleQRCodeIndex,
   todayDate,
-  targetList,
   secoundShiftTiming,
-  ShowShiftDate,
   cardData,
   firstDowntimeDetails,
   secoundDowntimeDetails,
@@ -39,6 +37,9 @@ const FullShiftOverall = ({
   secoundCardData,
   firstCardData,
 }) => {
+  
+  const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
+
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
