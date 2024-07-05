@@ -93,6 +93,7 @@ const BarChart = ({
           xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
           yValue: item.target + 8,
           content: [`${item.model}: ${Math.round(item.target)}`],
+          padding:3,
           borderColor: "#423595f0",
           backgroundColor: "#423595f0",
           color: "#fff",
@@ -154,10 +155,10 @@ const BarChart = ({
           },
           align: "center",
           color: "white",
-          borderColor: "#423595f0",
+          borderColor:"rgb(0,0,0,0.4)",
           borderWidth: 1,
           borderRadius: 2,
-          backgroundColor: "#423595f0",
+          backgroundColor: "rgb(0,0,0,0.4)",
           formatter: (value) => {
             return value;
           },

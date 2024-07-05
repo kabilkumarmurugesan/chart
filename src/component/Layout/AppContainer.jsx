@@ -74,7 +74,7 @@ const AppContainer = () => {
       (accumulator, currentValue) => accumulator + currentValue.target,
       0
     );
-    targetList[0] !== undefined && setTargetOne(temp / targetList.length);
+    targetList.length > 0 && setTargetOne(temp / targetList.length);
   }, [targetList]);
 
   useEffect(() => {
@@ -580,7 +580,7 @@ const AppContainer = () => {
             targetOne={targetOne}
             firstDowntimeDetails={firstDowntimeDetails}
             secoundDowntimeDetails={secoundDowntimeDetails}
-            ShiftCardDetailList={mfgcardData['shiftA']}
+            ShiftCardDetailList={mfgcardData["shiftA"]}
             cardData={
               currentShift === "shiftA" ? firstCardData : secoundCardData
             }

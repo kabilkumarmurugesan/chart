@@ -195,11 +195,9 @@ const FullShiftOverall = ({
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            borderRadius: "24px",
-                            background: "#d3cccc4f",
-                            boxShadow:
-                              "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-                          }}
+                            borderRadius: "5px",
+                            // background: "#d3cccc4f",
+                            boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px 0px,rgba(0, 0, 0, 0.1) 0px 1px 2px 0px,rgba(0, 0, 0, 0.1) 0px 1px 2px 0px',                           }}
                         >
                           <span
                             onClick={(e) => {

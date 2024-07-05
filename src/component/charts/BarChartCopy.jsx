@@ -97,10 +97,11 @@ const BarChartCopy = ({
         annotations[`label${i}`] = {
           type: "label",
           xValue: i === 0 ? i : timeT - xMax / 3,
-          yValue: item.target + 7,
+          yValue: item.target + 8,
           content: [`${item.model}: ${Math.round(item.target)}`],
           borderColor: "#423595f0",
           backgroundColor: "#423595f0",
+          padding:3,
           color: "#fff",
           font: {
             weight: "bold",
@@ -224,11 +225,11 @@ const BarChartCopy = ({
           },
           align: "center",
           color: "white",
-          borderColor: "#F46306",
+          borderColor:"rgb(0,0,0,0.4)",
           borderWidth: 1,
           borderRadius: 2,
           padding: 4,
-          backgroundColor: "#F46306",
+          backgroundColor:"rgb(0,0,0,0.4)",
           formatter: (value) => {
             // CommonService.convertIntoKiloPrefix(value)
             return value;
