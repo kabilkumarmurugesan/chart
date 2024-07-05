@@ -199,11 +199,9 @@ const BarChartCopy = ({
       return primary.complete;
     } else {
       if (value < targetOne / 3) {
-        console.log(value);
         return primary.incomplete;
       }
       if (value < targetOne / 2) {
-        console.log(value);
         return primary.pending;
       }
       return primary.complete;

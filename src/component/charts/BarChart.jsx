@@ -91,10 +91,10 @@ const BarChart = ({
         annotations[`label${i}`] = {
           type: "label",
           xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
-          yValue: item.target + 7,
+          yValue: item.target + 8,
           content: [`${item.model}: ${Math.round(item.target)}`],
-          borderColor: "#F46306",
-          backgroundColor: "#F46306",
+          borderColor: "#423595f0",
+          backgroundColor: "#423595f0",
           color: "#fff",
           font: {
             weight: "bold",

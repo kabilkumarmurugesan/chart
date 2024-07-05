@@ -63,7 +63,7 @@ function Layout() {
         setTargetList(res.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 

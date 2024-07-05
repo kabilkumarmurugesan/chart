@@ -10,8 +10,8 @@ import CommonService from "../../utilities/CommonService";
 import ShiftContext from "../Context/shiftContext";
 
 const ShiftCardDetailList = [
-  { title: "MFG ORDER", value: 155 },
-  { title: "MTM", value: 135 },
+  { title: "MFG ORDER", value: 2 },
+  { title: "MTM", value: 2 },
   { title: "MONTH TARGET", value: 11200 },
   { title: "MONTH ACTUAL", value: 8150 },
 ];
@@ -45,6 +45,8 @@ const AppContainer = () => {
   const yesterdayDate = Dates.toLocaleDateString("en-US"); // MM/DD/YYYY in US English
   const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
+  const [mfgcardData, setMFGCardData] = useState([]);
+
   const [cardData, setCardData] = useState([]);
   const [firstCardData, setFirstCardData] = useState([]);
   const [secoundCardData, setSecoundCardData] = useState([]);
@@ -258,9 +260,17 @@ const AppContainer = () => {
       );
       const result = response.data;
       const shifts = ["shiftA", "shiftB"];
+      let ShiftCardDetailListMFG = ShiftCardDetailList;
+      let shiftACardDetailListMFG = [];
+      let shiftBCardDetailListMFG = [];
+
       shifts.forEach((shift, index) => {
         const dome = categoriesList.map((element, i) => {
           const res = result.data[shift].find((item) => item.x === element);
+          ShiftCardDetailListMFG[0].value =
+            result.data[`${shift}Details`].mfgOrderCount;
+          ShiftCardDetailListMFG[1].value =
+            result.data[`${shift}Details`].mfgProductCount;
           return {
             id: res
               ? res.id
@@ -290,11 +300,18 @@ const AppContainer = () => {
         });
 
         if (shift === "shiftA") {
+          shiftACardDetailListMFG = ShiftCardDetailListMFG;
           setFirstResponse(dome);
         } else {
+          shiftBCardDetailListMFG = ShiftCardDetailListMFG;
           setSecoundResponse(dome);
         }
       });
+
+      ShiftCardDetailListMFG = {
+        shiftA: shiftACardDetailListMFG,
+        shiftB: shiftBCardDetailListMFG,
+      };
 
       const overallData = [
         {
@@ -326,10 +343,12 @@ const AppContainer = () => {
       setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
       setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
       setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
-      ShiftCardDetailList[0].value =
-        result.data[`${result.data.currentShift}Details`].mfgOrderCount;
-      ShiftCardDetailList[1].value =
-        result.data[`${result.data.currentShift}Details`].mfgProductCount;
+      // ShiftCardDetailList[0].value =
+      //   result.data[`${result.data.currentShift}Details`].mfgOrderCount;
+      // ShiftCardDetailList[1].value =
+      //   result.data[`${result.data.currentShift}Details`].mfgProductCount;
+
+      setMFGCardData(ShiftCardDetailListMFG);
     } catch (error) {
       console.error("Error fetching production data:", error);
     }
@@ -503,7 +522,7 @@ const AppContainer = () => {
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
                     cardData={firstCardData}
-                    ShiftCardDetailList={ShiftCardDetailList}
+                    ShiftCardDetailList={mfgcardData.shiftB}
                   />
                 </Box>
               ) : (
@@ -531,7 +550,7 @@ const AppContainer = () => {
                     currentShift={currentShift}
                     firstDowntimeDetails={firstDowntimeDetails}
                     secoundDowntimeDetails={secoundDowntimeDetails}
-                    ShiftCardDetailList={ShiftCardDetailList}
+                    ShiftCardDetailList={mfgcardData.shiftB}
                   />
                 </Box>
               )}
@@ -561,7 +580,7 @@ const AppContainer = () => {
             targetOne={targetOne}
             firstDowntimeDetails={firstDowntimeDetails}
             secoundDowntimeDetails={secoundDowntimeDetails}
-            ShiftCardDetailList={ShiftCardDetailList}
+            ShiftCardDetailList={mfgcardData['shiftA']}
             cardData={
               currentShift === "shiftA" ? firstCardData : secoundCardData
             }

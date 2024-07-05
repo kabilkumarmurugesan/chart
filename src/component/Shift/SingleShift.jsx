@@ -49,6 +49,7 @@ const SingleShift = ({
       setIsHappy
     );
   }, [isShift]);
+  
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>

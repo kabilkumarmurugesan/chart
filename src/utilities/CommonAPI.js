@@ -7,7 +7,7 @@ export const CommonAPIService = {
         setIsHappy(res.data.data.isHappy);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   },
 };
