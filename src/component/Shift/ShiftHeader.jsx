@@ -60,7 +60,7 @@ const ShiftHeader = (props) => {
             fontSize: "15px",
           }}
         >
-          <b> OT:</b> {overTimeRange}{" "}
+          <b> OT:</b> {overTime}{" "}
         </Typography>
       </Box>
     </Box>

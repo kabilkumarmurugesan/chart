@@ -207,9 +207,11 @@ const AppContainer = () => {
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
-      ShowShiftDate === "Today"
-        ? setLastBarValue(() => data)
-        : setLastBarValue({});
+      if (ShowShiftDate === "Today") {
+        setLastBarValue(() => data);
+      } else {
+        setLastBarValue({});
+      }
     });
   }, [
     ShowShiftDate,
@@ -219,6 +221,16 @@ const AppContainer = () => {
     ShowShift,
     shiftHours,
   ]);
+  useEffect(() => {
+    let cardDatalist = cardData;
+    if (lastBarValue.overAllActual !== undefined) {
+      if (cardData.length > 0) {
+        cardDatalist[1].value = lastBarValue.overAllActual;
+        cardDatalist[2].value = lastBarValue.overAllUph;
+        setCardData(() => cardDatalist);
+      }
+    }
+  }, [lastBarValue]);
 
   const formatDate = (date) => {
     const day = String(date.getDate());

@@ -97,11 +97,14 @@ const BarChartCopy = ({
         annotations[`label${i}`] = {
           type: "label",
           xValue: i === 0 ? i : timeT - xMax / 3,
-          yValue: item.target + 5,
+          yValue: item.target + 7,
           content: [`${item.model}: ${Math.round(item.target)}`],
+          borderColor: "#423595f0",
+          backgroundColor: "#423595f0",
+          color: "#fff",
           font: {
             weight: "bold",
-            size: 13,
+            size: 15,
           },
         };
 
@@ -195,8 +198,14 @@ const BarChartCopy = ({
     if (blinkingIndex === index) {
       return primary.complete;
     } else {
-      if (value < targetOne / 3) return primary.incomplete;
-      if (value < targetOne / 2) return primary.pending;
+      if (value < targetOne / 3) {
+        console.log(value);
+        return primary.incomplete;
+      }
+      if (value < targetOne / 2) {
+        console.log(value);
+        return primary.pending;
+      }
       return primary.complete;
     }
   };
@@ -228,7 +237,7 @@ const BarChartCopy = ({
           },
           font: {
             weight: "bold",
-            size: 14,
+            size: 15,
           },
         },
       },

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Card, Typography, Grid } from "@mui/material";
+import { Box, Card, Typography, Grid } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
@@ -37,11 +37,10 @@ const FullShiftOverall = ({
   secoundCardData,
   firstCardData,
 }) => {
-  
   const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
 
   const [isHappy, setIsHappy] = useState();
-  const [isShift, setIsShift] = useState(true);
+  const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const theme = useTheme();
 
@@ -51,13 +50,13 @@ const FullShiftOverall = ({
       lastBarValue.totalCount,
       setIsHappy
     );
-  }, [isShift]);
+  }, [isShift, lastBarValue.totalCount]);
+
   useEffect(() => {
-    setIsShift(ShowShiftDate !== "Yesterday");
+    ShowShiftDate === "Yesterday" && setIsShift(true);
   }, [ShowShiftDate]);
 
   const handleSlidechanges = (index) => {
-    // handleSlidechange("Full");
     handleButtonClick(index, "Full");
   };
 
@@ -72,7 +71,7 @@ const FullShiftOverall = ({
                   date={
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
-                  time={'09:00 AM - 05:30 PM'}
+                  time={"09:00 AM - 05:30 PM"}
                   isCurrentShift={currentShift === "shiftA"}
                   cardData={firstCardData}
                 />
@@ -103,7 +102,7 @@ const FullShiftOverall = ({
                   date={
                     ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate
                   }
-                  time={'09:00 PM - 05:30 AM'}
+                  time={"09:00 PM - 05:30 AM"}
                   cardData={secoundCardData}
                   isCurrentShift={currentShift === "shiftB"}
                 />
@@ -185,59 +184,78 @@ const FullShiftOverall = ({
                     {showMenu && (
                       <Box
                         sx={{
-                          cursor: "pointer",
                           display: "flex",
-                          fontFamily:
-                            '"Roboto", "Helvetica", "Arial", sans-serif',
-                          alignItems: "center",
-                          border: "1px solid",
-                          borderColor: "divider",
                           justifyContent: "center",
-                          borderRadius: 2,
-                          bgcolor: "#5a0497e8",
-                          color: "text.secondary",
-                          "& span": {
-                            m: 0.8,
-                          },
+                          alignItems: "center",
+                          height: "90%",
                         }}
                       >
-                        {" "}
-                        <span
-                          onClick={(e) => {
-                            setIsShift(() => true);
-                          }}
-                          style={{
-                            color: isShift
-                              ? "#eeaa0a"
-                              : theme.palette.mode === "dark"
-                              ? "white"
-                              : "#ddd",
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: "24px",
+                            background: "#d3cccc4f",
+                            boxShadow:
+                              "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
                           }}
                         >
-                          Shift hrs
-                        </span>
-                        <Divider
-                          orientation="vertical"
-                          color="#fff"
-                          variant="middle"
-                          flexItem
-                        />
-                        {ShowShiftDate === "Today" && (
                           <span
                             onClick={(e) => {
-                              setIsShift(false);
+                              setIsShift(() => true);
                             }}
                             style={{
-                              color: !isShift
+                              cursor: "pointer",
+                              display: "flex",
+                              fontFamily:
+                                '"Roboto", "Helvetica", "Arial", sans-serif',
+                              alignItems: "center",
+                              // borderColor: "divider",
+                              justifyContent: "center",
+                              padding: 8,
+                              // bgcolor: "#5a0497e8",
+                              // color: "text.secondary",
+                              color: isShift
                                 ? "#eeaa0a"
                                 : theme.palette.mode === "dark"
                                 ? "white"
-                                : "#ddd",
+                                : "#c9c7c7",
                             }}
                           >
-                            Current Hrs
+                            Shift hrs
                           </span>
-                        )}
+                          <Divider
+                            orientation="vertical"
+                            color="#fff"
+                            variant="middle"
+                            flexItem
+                          />
+                          {ShowShiftDate === "Today" && (
+                            <span
+                              onClick={(e) => {
+                                setIsShift(false);
+                              }}
+                              style={{
+                                cursor: "pointer",
+                                display: "flex",
+                                fontFamily:
+                                  '"Roboto", "Helvetica", "Arial", sans-serif',
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: "0px 40px 40px 0px",
+                                padding: 8,
+                                color: !isShift
+                                  ? "#eeaa0a"
+                                  : theme.palette.mode === "dark"
+                                  ? "white"
+                                  : "#c9c7c7",
+                              }}
+                            >
+                              Current Hrs
+                            </span>
+                          )}
+                        </Box>
                       </Box>
                     )}
                   </Box>

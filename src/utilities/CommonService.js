@@ -21,7 +21,7 @@ const CommonService = {
   },
   convertIntoKiloPrefix(count) {
     if (count && count !== 0) {
-      let countString = count.toString();
+      // let countString = count.toString();
       // if (countString.length === 7) {
       //   countString = count / 100000;
       //   countString = countString.toFixed(2);

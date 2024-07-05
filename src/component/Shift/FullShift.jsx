@@ -32,7 +32,6 @@ const FullShift = ({
   targetOne,
   shiftType,
 }) => {
-  
   const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
 
   const handleSlidechanges = () => {
@@ -45,7 +44,7 @@ const FullShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
-              time={'09:00 AM - 05:30 PM'}
+              time={"09:00 AM - 05:30 PM"}
               isCurrentShift={currentShift === "shiftA"}
               cardData={firstCardData}
             />
@@ -85,7 +84,7 @@ const FullShift = ({
           <Card sx={{ minWidth: 275 }}>
             <ShiftHeader
               date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
-              time={'09:00 PM - 05:30 AM'}
+              time={"09:00 PM - 05:30 AM"}
               isCurrentShift={currentShift === "shiftB"}
               cardData={secoundCardData}
             />

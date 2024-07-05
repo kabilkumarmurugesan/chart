@@ -91,10 +91,14 @@ const BarChart = ({
         annotations[`label${i}`] = {
           type: "label",
           xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
-          yValue: item.target + 5,
+          yValue: item.target + 7,
           content: [`${item.model}: ${Math.round(item.target)}`],
+          borderColor: "#F46306",
+          backgroundColor: "#F46306",
+          color: "#fff",
           font: {
-            size: 13,
+            weight: "bold",
+            size: 15,
           },
         };
 
@@ -150,16 +154,16 @@ const BarChart = ({
           },
           align: "center",
           color: "white",
-          borderColor: "#F4C402",
+          borderColor: "#423595f0",
           borderWidth: 1,
           borderRadius: 2,
-          backgroundColor: "#F4C402",
+          backgroundColor: "#423595f0",
           formatter: (value) => {
             return value;
           },
           font: {
             weight: "bold",
-            size: 14,
+            size: 15,
           },
         },
       },

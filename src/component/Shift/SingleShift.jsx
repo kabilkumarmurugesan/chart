@@ -39,7 +39,7 @@ const SingleShift = ({
   const theme = useTheme();
   const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
   const [isHappy, setIsHappy] = useState();
-  const [isShift, setIsShift] = useState(true);
+  const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
@@ -67,7 +67,9 @@ const SingleShift = ({
               }
               isCurrentShift={currentShift === "shiftA"}
               cardData={cardData}
-              overTimeRange={lastBarValue.overTime.overTimeRange}
+              overTimeRange={
+                lastBarValue.overTime && lastBarValue.overTime.overTimeRange
+              }
             />
             {firstResponse ? (
               <BarChartCopy
@@ -363,7 +365,7 @@ const SingleShift = ({
                         >
                           <span
                             onClick={(e) => {
-                              setIsShift(() => true);
+                              setIsShift(true);
                             }}
                             style={{
                               cursor: "pointer",

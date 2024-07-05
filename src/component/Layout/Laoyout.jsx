@@ -50,7 +50,7 @@ function Layout() {
 
   const handleShiftDateUpdate = (e) => {
     let temp = e.currentTarget.innerText;
-    setShowShiftDate(temp);
+    setShowShiftDate(() => temp);
   };
 
   const handleShiftTarget = (e) => {
