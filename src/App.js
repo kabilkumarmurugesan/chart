@@ -1,12 +1,12 @@
 import "./App.css";
-import Laoyout from "./component/Layout/Laoyout";
 import MUIWrapper from "./component/MUIWrapper";
+import AppRouter from "./router";
 
 function App() {
   return (
     <div className="App">
       <MUIWrapper>
-        <Laoyout />
+        <AppRouter />{" "}
       </MUIWrapper>
     </div>
   );
