@@ -178,10 +178,10 @@ const FullShiftOverall = ({
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: "35px",
+                      height: ShowShiftDate === "Today" ? "35px" : "5px",
                     }}
                   >
-                    {showMenu && (
+                    {ShowShiftDate === "Today" && showMenu && (
                       <Box
                         sx={{
                           display: "flex",
@@ -197,7 +197,9 @@ const FullShiftOverall = ({
                             alignItems: "center",
                             borderRadius: "5px",
                             // background: "#d3cccc4f",
-                            boxShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px 0px,rgba(0, 0, 0, 0.1) 0px 1px 2px 0px,rgba(0, 0, 0, 0.1) 0px 1px 2px 0px',                           }}
+                            boxShadow:
+                              "rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px 0px,rgba(0, 0, 0, 0.1) 0px 1px 2px 0px,rgba(0, 0, 0, 0.1) 0px 1px 2px 0px",
+                          }}
                         >
                           <span
                             onClick={(e) => {
@@ -229,30 +231,29 @@ const FullShiftOverall = ({
                             variant="middle"
                             flexItem
                           />
-                          {ShowShiftDate === "Today" && (
-                            <span
-                              onClick={(e) => {
-                                setIsShift(false);
-                              }}
-                              style={{
-                                cursor: "pointer",
-                                display: "flex",
-                                fontFamily:
-                                  '"Roboto", "Helvetica", "Arial", sans-serif',
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: "0px 40px 40px 0px",
-                                padding: 8,
-                                color: !isShift
-                                  ? "#eeaa0a"
-                                  : theme.palette.mode === "dark"
-                                  ? "white"
-                                  : "#c9c7c7",
-                              }}
-                            >
-                              Current Hrs
-                            </span>
-                          )}
+
+                          <span
+                            onClick={(e) => {
+                              setIsShift(false);
+                            }}
+                            style={{
+                              cursor: "pointer",
+                              display: "flex",
+                              fontFamily:
+                                '"Roboto", "Helvetica", "Arial", sans-serif',
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: "0px 40px 40px 0px",
+                              padding: 8,
+                              color: !isShift
+                                ? "#eeaa0a"
+                                : theme.palette.mode === "dark"
+                                ? "white"
+                                : "#c9c7c7",
+                            }}
+                          >
+                            Current Hrs
+                          </span>
                         </Box>
                       </Box>
                     )}

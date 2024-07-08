@@ -88,7 +88,7 @@ const BarChartCopy = ({
       targetListMap.forEach((item, i) => {
         temp[`model_${i}`] = item.model;
         temp[`target_${i}`] = item.target;
-        let timeT = CommonService.timeDifferenceInHours(item.time);
+        let timeT = CommonService.timeDifferenceInHours(item.time) + 0.5;
         temp[`time_${i}`] = timeT;
         let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
         let xMax = i === 0 ? timeT : preT + timeT;
@@ -101,7 +101,7 @@ const BarChartCopy = ({
           content: [`${item.model}: ${Math.round(item.target)}`],
           borderColor: "#423595f0",
           backgroundColor: "#423595f0",
-          padding:3,
+          padding: 3,
           color: "#fff",
           font: {
             weight: "bold",
@@ -215,8 +215,8 @@ const BarChartCopy = ({
       {
         label: "PRODUCT A",
         data: series,
-        backgroundColor: series.map(getColor),
-        borderColor: series.map(getColor),
+        backgroundColor: primary.complete,
+        borderColor: primary.complete,
         borderWidth: 1,
         barThickness: 34,
         datalabels: {
@@ -225,11 +225,11 @@ const BarChartCopy = ({
           },
           align: "center",
           color: "white",
-          borderColor:"rgb(0,0,0,0.4)",
+          borderColor: "rgb(0,0,0,0.4)",
           borderWidth: 1,
           borderRadius: 2,
           padding: 4,
-          backgroundColor:"rgb(0,0,0,0.4)",
+          backgroundColor: "rgb(0,0,0,0.4)",
           formatter: (value) => {
             // CommonService.convertIntoKiloPrefix(value)
             return value;

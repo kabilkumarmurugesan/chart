@@ -83,7 +83,7 @@ const BarChart = ({
       targetListMap.forEach((item, i) => {
         temp[`model_${i}`] = item.model;
         temp[`target_${i}`] = item.target;
-        let timeT = CommonService.timeDifferenceInHours(item.time);
+        let timeT = CommonService.timeDifferenceInHours(item.time) + 0.5;
         temp[`time_${i}`] = timeT;
         let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
         let xMax = i === 0 ? timeT : preT + timeT;
@@ -93,7 +93,7 @@ const BarChart = ({
           xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
           yValue: item.target + 8,
           content: [`${item.model}: ${Math.round(item.target)}`],
-          padding:3,
+          padding: 3,
           borderColor: "#423595f0",
           backgroundColor: "#423595f0",
           color: "#fff",
@@ -145,8 +145,8 @@ const BarChart = ({
       {
         label: "PRODUCT A",
         data: series,
-        backgroundColor: series.map(getColor),
-        borderColor: series.map(getColor),
+        backgroundColor: primary.complete,
+        borderColor: primary.complete,
         borderWidth: 1, // Reduced borderWidth to avoid white line
         barThickness: 35,
         datalabels: {
@@ -155,7 +155,7 @@ const BarChart = ({
           },
           align: "center",
           color: "white",
-          borderColor:"rgb(0,0,0,0.4)",
+          borderColor: "rgb(0,0,0,0.4)",
           borderWidth: 1,
           borderRadius: 2,
           backgroundColor: "rgb(0,0,0,0.4)",
