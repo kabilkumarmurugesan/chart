@@ -225,11 +225,11 @@ const BarChartCopy = ({
           },
           align: "center",
           color: "white",
-          borderColor: "rgb(0,0,0,0.4)",
+          borderColor: series.map(getColor),
           borderWidth: 1,
           borderRadius: 2,
           padding: 4,
-          backgroundColor: "rgb(0,0,0,0.4)",
+          backgroundColor: series.map(getColor),
           formatter: (value) => {
             // CommonService.convertIntoKiloPrefix(value)
             return value;

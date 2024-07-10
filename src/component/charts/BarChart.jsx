@@ -155,10 +155,10 @@ const BarChart = ({
           },
           align: "center",
           color: "white",
-          borderColor: "rgb(0,0,0,0.4)",
+          borderColor: series.map(getColor),
           borderWidth: 1,
           borderRadius: 2,
-          backgroundColor: "rgb(0,0,0,0.4)",
+          backgroundColor: series.map(getColor),
           formatter: (value) => {
             return value;
           },
