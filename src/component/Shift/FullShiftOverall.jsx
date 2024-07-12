@@ -223,7 +223,7 @@ const FullShiftOverall = ({
                                 : "#c9c7c7",
                             }}
                           >
-                            Shift hrs
+                            Shift Hrs
                           </span>
                           <Divider
                             orientation="vertical"

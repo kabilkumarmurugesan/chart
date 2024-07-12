@@ -69,6 +69,8 @@ const AppContainer = () => {
       : ["09 - 10", "10 - 11", "11 - 12", "12 - 01", "01 - 02", "02 - 03"]
   );
 
+  const [apiControll, setApiControll] = useState("");
+
   useEffect(() => {
     let temp = targetList.reduce(
       (accumulator, currentValue) => accumulator + currentValue.target,
@@ -205,10 +207,12 @@ const AppContainer = () => {
     ShowShift,
     shiftHours,
     refreshRate,
+    apiControll,
   ]);
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
+      setApiControll(data.timeRange);
       if (ShowShiftDate === "Today") {
         setLastBarValue(() => data);
       } else {
