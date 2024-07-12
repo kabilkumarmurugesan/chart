@@ -28,7 +28,8 @@ ChartJS.register(
 );
 
 export default function StackedBarLineChartTwo() {
-  
+  const [currentHour, setCurrentHour] = useState(new Date().getHours());
+
   const [dataSet, setDataSet] = useState({
     labels: ["9 AM", "10 AM", "11 AM"],
     datasets: [
@@ -93,10 +94,13 @@ export default function StackedBarLineChartTwo() {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-    getProductData();
+    const timeout = setTimeout(() => {
+      setCurrentHour(new Date().getHours());
+      getProductData();
     }, 5000);
-  }, [new Date().getHours()]);
+
+    return () => clearTimeout(timeout);
+  }, [currentHour]);
 
   useEffect(() => {
     const interval = setInterval(() => {

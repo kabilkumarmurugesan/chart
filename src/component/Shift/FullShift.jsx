@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Box, Card, Grid } from "@mui/material";
 import BasicTable from "../Table/Table";
 import BarChart from "../charts/BarChart";
-import BarChartCopy from "../charts/BarChartCopy";
+import BarChartLive from "../charts/BarChartLive";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 import ArrowNavigation from "../Card/ArrowNavigation";
@@ -11,8 +11,6 @@ import ShiftContext from "../Context/shiftContext";
 const FullShift = ({
   yesterdayDate,
   secoundResponse,
-  secoundShiftTiming,
-  firstShiftTiming,
   firstResponse,
   categories,
   lastBarValue,
@@ -62,7 +60,7 @@ const FullShift = ({
                 shiftType={shiftType}
               />
             ) : (
-              <BarChartCopy
+              <BarChartLive
                 height={"35vh"}
                 targetOne={targetOne}
                 targetList={targetList}
@@ -102,7 +100,7 @@ const FullShift = ({
                 targetOne={targetOne}
               />
             ) : (
-              <BarChartCopy
+              <BarChartLive
                 height={"35vh"}
                 targetList={targetList}
                 targetOne={targetOne}

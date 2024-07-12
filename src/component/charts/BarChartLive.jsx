@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
-import "../../asset/css/BarChartCopy.css";
+import "../../asset/css/BarChartLive.css";
 import { Card, useTheme } from "@mui/material";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
@@ -30,7 +30,7 @@ ChartJS.register(
 );
 ChartJS.register(...registerables);
 
-const BarChartCopy = ({
+const BarChartLive = ({
   categories,
   lastBarValue,
   handleSlidechange,
@@ -363,4 +363,4 @@ const BarChartCopy = ({
   );
 };
 
-export default BarChartCopy;
+export default BarChartLive;

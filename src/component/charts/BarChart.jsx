@@ -12,7 +12,7 @@ import {
 import annotationPlugin from "chartjs-plugin-annotation";
 import "chartjs-plugin-annotation";
 import { Card, useTheme } from "@mui/material";
-import "../../asset/css/BarChartCopy.css";
+import "../../asset/css/BarChartLive.css";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import CommonService from "../../utilities/CommonService";

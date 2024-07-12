@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Box, Card, Grid, Typography } from "@mui/material";
 import BasicTable from "../Table/Table";
 import DownTimeAction from "../Table/DownTimeAction";
-import BarChartCopy from "../charts/BarChartCopy";
+import BarChartLive from "../charts/BarChartLive";
 import ShiftCardDetails from "../Card/ShiftCardDetails";
 import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
@@ -73,7 +73,7 @@ const SingleShift = ({
               }
             />
             {firstResponse ? (
-              <BarChartCopy
+              <BarChartLive
                 height={"40vh"}
                 animations={{
                   tension: {
@@ -98,7 +98,7 @@ const SingleShift = ({
                 isCurrentShift={currentShift === "shiftA"}
               />
             ) : (
-              <BarChartCopy
+              <BarChartLive
                 targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 visibleQRCodeIndex={visibleQRCodeIndex}

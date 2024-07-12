@@ -3,7 +3,7 @@ import { Box, Card, Typography, Grid } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
-import BarChartCopy from "../charts/BarChartCopy";
+import BarChartLive from "../charts/BarChartLive";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 import MetricsCard from "../Card/MetricsCard";
@@ -75,7 +75,7 @@ const FullShiftOverall = ({
                   isCurrentShift={currentShift === "shiftA"}
                   cardData={firstCardData}
                 />
-                <BarChartCopy
+                <BarChartLive
                   height={"25vh"}
                   targetOne={targetOne}
                   lastBarValue={currentShift === "shiftA" && lastBarValue}
@@ -106,7 +106,7 @@ const FullShiftOverall = ({
                   cardData={secoundCardData}
                   isCurrentShift={currentShift === "shiftB"}
                 />
-                <BarChartCopy
+                <BarChartLive
                   height={"24vh"}
                   currentShift={currentShift}
                   targetList={targetList}
