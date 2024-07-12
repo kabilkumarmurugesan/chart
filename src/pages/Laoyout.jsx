@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
-import ENV from "../../utilities/ENV";
-import AppContainer from "./AppContainer";
-import AppHeader from "./AppHeader";
-import ShiftContext from "../Context/shiftContext";
+import ENV from "../utilities/ENV";
+import AppContainer from "../component/Layout/AppContainer";
+import AppHeader from "../component/Layout/AppHeader";
+import ShiftContext from "../component/Context/shiftContext";
 
 function Layout() {
   const theme = useTheme();
@@ -85,7 +85,7 @@ function Layout() {
 
   return (
     <ShiftContext.Provider value={contextValue}>
-      <AppHeader />
+      <AppHeader type={'tool'}/>
       <Box>
         <AppContainer />
       </Box>

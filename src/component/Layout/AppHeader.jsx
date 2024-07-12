@@ -58,8 +58,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function AppHeader() {
-  
+export default function AppHeader(props) {
   const {
     handleShiftUpdate,
     handleRefresh,
@@ -92,8 +91,12 @@ export default function AppHeader() {
       <AppBar
         position="static"
         color="default"
-        onMouseEnter={() => setShowMenu(false)}
-        onMouseLeave={() => setShowMenu(true)}
+        onMouseEnter={() => {
+          props.type === "tool" && setShowMenu(false);
+        }}
+        onMouseLeave={() => {
+          props.type === "tool" && setShowMenu(true);
+        }}
       >
         <Toolbar sx={{ height: 65, padding: "0px 10px 0px 0px" }}>
           <Box style={{ margin: "0px 0px 0px -40px" }}>

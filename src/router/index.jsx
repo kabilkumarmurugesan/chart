@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "../component/Layout/Laoyout";
+import Layout from "../pages/Laoyout";
 import StackedBarLineChartOne from "../pages/StackedBarLineChartOne";
 import StackedBarLineChartTwo from "../pages/StackedBarLineChartTwo";
 import StackedLineChart from "../pages/StackedLineChart";
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     element: <Layout />,
   },
   {
-    path: "/layout",
+    path: "/home",
     element: <Layout />,
   },
   {
