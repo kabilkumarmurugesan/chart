@@ -289,7 +289,7 @@ const SingleShift = ({
         <Grid item xs={4} md={2}>
           <Card>
             <Grid container spacing={1}>
-              {ShiftCardDetailList.map((item, index) => (
+              {ShiftCardDetailList?.map((item, index) => (
                 <Grid item xs={6} md={12} key={index}>
                   <ShiftCardDetails {...item} index={index} />
                 </Grid>

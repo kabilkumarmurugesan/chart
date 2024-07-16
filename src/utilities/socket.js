@@ -1,6 +1,6 @@
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL =   'http://137.184.206.139:8001';
+const URL = process.env.REACT_APP_BASE_URL;
 
 export const socket = io(URL);

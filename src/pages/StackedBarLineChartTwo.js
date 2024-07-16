@@ -14,6 +14,7 @@ import {
 import { Chart } from "react-chartjs-2";
 import ENV from "../utilities/ENV";
 import AppHeader from "../component/Layout/AppHeader";
+import RadioBtn from "../component/RadioBtn";
 
 ChartJS.register(
   LinearScale,
@@ -171,10 +172,17 @@ export default function StackedBarLineChartTwo() {
 
   return (
     <>
-      <AppHeader type={"head"} />
+      <AppHeader type={"head"} component={<RadioBtn list={radioList} />} />
       <div style={{ width: "1300px", height: "1100px" }}>
         <Chart type="bar" data={dataSet} />
       </div>
     </>
   );
 }
+
+const radioList = [
+  { value: 15, label: 15 },
+  { value: 20, label: 20 },
+  { value: 25, label: 25 },
+  { value: 30, label: 30 },
+];

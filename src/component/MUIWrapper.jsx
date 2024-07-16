@@ -1,37 +1,37 @@
-import React, { createContext, useMemo, useState } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material';
+import React, { createContext, useMemo, useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 export const MUIWrapperContext = createContext({
   toggleColorMode: () => {},
 });
 
 export default function MUIWrapper({ children }) {
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState("light");
   const primaryLight = {
-    main: '#fcfcfe',
-    pending: '#ffec31',
-    complete: '#3D860B',
-    incomplete: '#e1140a',
+    main: "#fcfcfe",
+    pending: "#ffec31",
+    complete: "#3D860B",
+    incomplete: "#e1140a",
   };
   const primaryDark = {
-    main: '#121212',
-    pending: '#ffec31',
-    complete: '#3D860B',
-    incomplete: '#ff3199',
+    main: "#121212",
+    pending: "#ffec31",
+    complete: "#3D860B",
+    incomplete: "#ff3199",
   };
 
   const secondaryLight = {
-    main: '#ffffff',
+    main: "#ffffff",
   };
   const secondaryDark = {
-    main: '#272727',
+    main: "#272727",
   };
 
   const toggleColorMode = useMemo(
     () => () => {
-      setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
     },
-    [],
+    []
   );
 
   const theme = useMemo(
@@ -39,11 +39,11 @@ export default function MUIWrapper({ children }) {
       createTheme({
         palette: {
           mode,
-          primary: mode === 'light' ? primaryLight : primaryDark,
-          secondary: mode === 'light' ? secondaryLight : secondaryDark,
+          primary: mode === "light" ? primaryLight : primaryDark,
+          secondary: mode === "light" ? secondaryLight : secondaryDark,
         },
       }),
-    [mode],
+    [mode]
   );
 
   return (
