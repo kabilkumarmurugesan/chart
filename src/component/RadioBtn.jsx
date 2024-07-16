@@ -2,10 +2,11 @@ import { FormControlLabel, Grid, Radio, RadioGroup } from "@mui/material";
 import React, { useState } from "react";
 
 function RadioBtn(props) {
-  const [inputs, setInputs] = useState(15);
+  const [inputs, setInputs] = useState(15000);
 
   const handleInputChange = (event) => {
     event.persist();
+    props.handleEvent(event);
     setInputs(event.target.value);
   };
 

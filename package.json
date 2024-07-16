@@ -16,6 +16,8 @@
     "chart.js": "^4.4.3",
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "dotenv": "^16.4.5",
+    "env-cmd": "^10.1.0",
     "qrcode.react": "^3.1.0",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
@@ -27,6 +29,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start:dev": "env-cmd -f ENV/.env.development react-scripts start",
+    "start:prod": "env-cmd -f ENV/.env.production react-scripts start",
+    "build:dev": "env-cmd -f ENV/.env.development react-scripts build",
+    "build:prod": "env-cmd -f ENV/.env.production react-scripts build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
