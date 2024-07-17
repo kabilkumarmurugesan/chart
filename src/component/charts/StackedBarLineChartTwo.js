@@ -12,10 +12,9 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import ENV from "../utilities/ENV";
-import AppHeader from "../component/Layout/AppHeader";
-import RadioBtn from "../component/RadioBtn";
-import { useTheme } from "@emotion/react";
+import ENV from "../../utilities/ENV";
+import AppHeader from "../Layout/AppHeader";
+import { Card } from "@mui/material";
 
 ChartJS.register(
   LinearScale,
@@ -29,18 +28,16 @@ ChartJS.register(
   BarController
 );
 
-export default function StackedBarLineChartTwo() {
-  const theme = useTheme();
-  const { primary } = theme.palette;
+export default function StackedBarLineChartTwo(props) {
   const [currentHour, setCurrentHour] = useState(new Date().getHours());
-  const [intervals, setIntervals] = useState(15000);
+
   const [dataSet, setDataSet] = useState({
     labels: ["9 AM", "10 AM", "11 AM"],
     datasets: [
       {
         type: "line",
         label: "Current Chart",
-        borderColor: primary.complete,
+        borderColor: "rgb(255, 99, 132)",
         borderWidth: 2,
         fill: false,
         data: [10],
@@ -97,6 +94,8 @@ export default function StackedBarLineChartTwo() {
     ],
   });
 
+  const [intervals, setIntervals] = useState(15000);
+
   useEffect(() => {
     getProductData();
   }, [currentHour]);
@@ -104,17 +103,13 @@ export default function StackedBarLineChartTwo() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCurrentHour(new Date().getHours());
-      getProductData();
-    }, 5000);
+    }, 60 * 60);
 
     return () => clearTimeout(timeout);
   }, [currentHour]);
 
   useEffect(() => {
-    console.log("intervals", intervals);
-    let interval = 0;
-    clearInterval(interval);
-    interval = setInterval(() => {
+    const interval = setInterval(() => {
       setDataSet((prevData) => {
         let time = new Date().toLocaleTimeString().split(":");
         let temp = `${time[0] % 12 || 12}:${time[1]}:${time[2]} ${
@@ -141,7 +136,7 @@ export default function StackedBarLineChartTwo() {
     }, intervals);
 
     return () => clearInterval(interval);
-  }, [intervals]);
+  }, []);
 
   const getProductData = async () => {
     try {
@@ -180,28 +175,59 @@ export default function StackedBarLineChartTwo() {
     }
   };
 
-  const handleInterval = (event) => {
-    event.persist();
-    // console.log('event',event.target.value)
-    setIntervals(event.target.value);
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        stacked: true,
+      },
+      y: {
+        suggestedMax: 140,
+        ticks: {
+          stepSize: 20, // Set the step size for the y-axis labels and grid lines
+        },
+        stacked: true,
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      tooltip: {
+        enabled: true,
+        mode: "nearest", // Show tooltip for the nearest item
+        intersect: true, // Ensure tooltip shows only for the intersected item
+        displayColors: false, // Disable the color box in tooltips
+      },
+      legend: {
+        display: false, // Disable legend
+      },
+    },
+    maintainAspectRatio: false,
   };
 
+  const handleInterval = (event) => {
+    event.persist();
+    setIntervals(event.target.value);
+  };
+  
   return (
     <>
-      <AppHeader
-        type={"head"}
-        component={<RadioBtn list={radioList} handleEvent={handleInterval} />}
-      />
-      <div style={{ width: "1300px", height: "1100px" }}>
-        <Chart type="bar" data={dataSet} />
-      </div>
+      {props.type !== "chart" && <AppHeader type={"head"} />}
+      <div></div>
+      <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
+        <div
+          id="chart"
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <Chart type="bar" options={options} data={dataSet} />
+        </div>
+      </Card>
     </>
   );
 }
-
-const radioList = [
-  { value: 15000, label: 15 },
-  { value: 20000, label: 20 },
-  { value: 25000, label: 25 },
-  { value: 30000, label: 30 },
-];

@@ -8,6 +8,7 @@ import FullShiftOverall from "../Shift/FullShiftOverall";
 import ENV from "../../utilities/ENV";
 import CommonService from "../../utilities/CommonService";
 import ShiftContext from "../Context/shiftContext";
+import SingleShiftHrs from "../../pages/SingleShiftHrs";
 
 const ShiftCardDetailList = [
   { title: "MFG ORDER", value: 2 },
@@ -570,30 +571,55 @@ const AppContainer = () => {
             height: currentSlide !== 0 ? "100%" : "93.2vh",
           }}
         >
-          <SingleShift
-            handleSlidechange={handleSlidechange}
-            lastBarValue={lastBarValue}
-            visibleQRCodeIndex={visibleQRCodeIndex}
-            setVisibleQRCodeIndex={setVisibleQRCodeIndex}
-            handleButtonClick={handleButtonClick}
-            secoundResponse={secoundResponse}
-            categories={categories}
-            yesterdayDate={yesterdayDate}
-            todayDate={todayDate}
-            currentShift={currentShift}
-            targetOne={targetOne}
-            firstDowntimeDetails={firstDowntimeDetails}
-            secoundDowntimeDetails={secoundDowntimeDetails}
-            ShiftCardDetailList={mfgcardData["shiftA"]}
-            cardData={
-              currentShift === "shiftA" ? firstCardData : secoundCardData
-            }
-            firstResponse={
-              currentShift === "shiftA" ? firstResponse : undefined
-            }
-            firstShiftTiming={firstShiftTiming}
-            secoundShiftTiming={secoundShiftTiming}
-          />
+          {" "}
+          {currentSlide === 0 ? (
+            <SingleShift
+              handleSlidechange={handleSlidechange}
+              lastBarValue={lastBarValue}
+              visibleQRCodeIndex={visibleQRCodeIndex}
+              setVisibleQRCodeIndex={setVisibleQRCodeIndex}
+              handleButtonClick={handleButtonClick}
+              secoundResponse={secoundResponse}
+              categories={categories}
+              yesterdayDate={yesterdayDate}
+              todayDate={todayDate}
+              currentShift={currentShift}
+              targetOne={targetOne}
+              firstDowntimeDetails={firstDowntimeDetails}
+              secoundDowntimeDetails={secoundDowntimeDetails}
+              ShiftCardDetailList={mfgcardData["shiftA"]}
+              cardData={
+                currentShift === "shiftA" ? firstCardData : secoundCardData
+              }
+              firstResponse={
+                currentShift === "shiftA" ? firstResponse : undefined
+              }
+              firstShiftTiming={firstShiftTiming}
+              currentSlide={currentSlide}
+             secoundShiftTiming={secoundShiftTiming}
+            />
+          ) : (
+            <SingleShiftHrs
+              categories={categories}
+              secoundResponse={secoundResponse}
+              ShiftCardDetailList={mfgcardData["shiftA"]}
+              handleSlidechange={handleSlidechange}
+              firstResponse={
+                currentShift === "shiftA" ? firstResponse : undefined
+              }
+              lastBarValue={lastBarValue}
+              visibleQRCodeIndex={visibleQRCodeIndex}
+              yesterdayDate={yesterdayDate}
+              todayDate={todayDate}
+              cardData={
+                currentShift === "shiftA" ? firstCardData : secoundCardData
+              }
+              firstDowntimeDetails={firstDowntimeDetails}
+              secoundDowntimeDetails={secoundDowntimeDetails}
+              currentShift={currentShift}
+              currentSlide={currentSlide}
+            />
+          )}
         </Box>
       )}
     </>

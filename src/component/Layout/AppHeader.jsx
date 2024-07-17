@@ -312,6 +312,7 @@ export default function AppHeader(props) {
               </span>
             )}
           </IconButton>{" "}
+          {props.component && props.component}
         </Toolbar>
       </AppBar>
     </Box>
