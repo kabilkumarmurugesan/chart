@@ -6,7 +6,7 @@ import BarChartLive from "../charts/BarChartLive";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 import ArrowNavigation from "../Card/ArrowNavigation";
-import ShiftContext from "../Context/shiftContext";
+import ShiftContext from "../../utilities/Context/shiftContext";
 
 const FullShift = ({
   yesterdayDate,

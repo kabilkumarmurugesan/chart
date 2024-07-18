@@ -8,7 +8,7 @@ import smileEmoji from "../asset/gif/emoj.png";
 import sadEmoji from "../asset/gif/SadEmoji.png";
 import { CommonAPIService } from "../utilities/CommonAPI";
 import ArrowNavigation from "../component/Card/ArrowNavigation";
-import ShiftContext from "../component/Context/shiftContext";
+import ShiftContext from "../utilities/Context/shiftContext";
 import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
 import CommonService from "../utilities/CommonService";

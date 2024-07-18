@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
-import ENV from "../utilities/ENV";
-import AppContainer from "../component/Layout/AppContainer";
-import AppHeader from "../component/Layout/AppHeader";
-import ShiftContext from "../component/Context/shiftContext";
-import RadioBtn from "../component/RadioBtn";
+import ENV from "../../utilities/ENV";
+import AppContainer from "../../component/Layout/AppContainer";
+import AppHeader from "../../component/Layout/AppHeader";
+import ShiftContext from "../../utilities/Context/shiftContext";
+import RadioBtn from "../../component/RadioBtn";
 
 function Home() {
   const theme = useTheme();

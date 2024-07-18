@@ -7,7 +7,7 @@ import { socket } from "../../utilities/socket";
 import FullShiftOverall from "../Shift/FullShiftOverall";
 import ENV from "../../utilities/ENV";
 import CommonService from "../../utilities/CommonService";
-import ShiftContext from "../Context/shiftContext";
+import ShiftContext from "../../utilities/Context/shiftContext";
 import SingleShiftHrs from "../../pages/SingleShiftHrs";
 
 const ShiftCardDetailList = [

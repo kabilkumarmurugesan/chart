@@ -15,7 +15,7 @@ import SyncDisabledIcon from "@mui/icons-material/SyncDisabled";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import logo from "../../asset/img/Logo.png";
-import ShiftContext from "../Context/shiftContext";
+import ShiftContext from "../../utilities/Context/shiftContext";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,

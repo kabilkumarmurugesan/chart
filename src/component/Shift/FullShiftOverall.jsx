@@ -11,7 +11,7 @@ import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
 import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
-import ShiftContext from "../Context/shiftContext";
+import ShiftContext from "../../utilities/Context/shiftContext";
 
 const FullShiftOverall = ({
   yesterdayDate,
