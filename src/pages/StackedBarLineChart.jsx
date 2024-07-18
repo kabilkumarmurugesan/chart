@@ -111,7 +111,6 @@ export default function StackedBarLineChart() {
   }, [currentHour]);
 
   useEffect(() => {
-    console.log("intervals", intervals);
     let interval = 0;
     clearInterval(interval);
     interval = setInterval(() => {

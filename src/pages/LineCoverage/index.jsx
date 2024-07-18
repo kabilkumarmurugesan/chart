@@ -82,10 +82,6 @@ export default function LineCoverage() {
     setIntervals(event.target.value);
   };
 
-  const getData = (data) => {
-    setDataSet(() => data);
-  };
-
   return (
     <>
       <AppHeader
@@ -108,11 +104,7 @@ export default function LineCoverage() {
             date={todayDate}
             time={`${dataSet.labels[0]} - ${currentHour}`}
           />
-          <StackedBarLineChartTwo
-            getData={getData}
-            type={"line"}
-            intervals={intervals}
-          />
+          <StackedBarLineChartTwo type={"line"} intervals={intervals} />
         </div>
         <div
           style={{

@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 const ShiftHeader = (props) => {
   const { date, cardData, time, overTimeRange } = props;
 
-  const [overTime, setOverTime] = useState(cardData.overTime);
+  const [overTime, setOverTime] = useState(cardData?.overTime || 0);
 
   useEffect(() => {
     props.isCurrentShift &&
