@@ -101,6 +101,10 @@ export default function StackedBarLineChartTwo(props) {
   }, [currentHour]);
 
   useEffect(() => {
+    props.intervals && setIntervals(props.intervals);
+  }, [props.intervals]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setCurrentHour(new Date().getHours());
     }, 60 * 60);
@@ -109,6 +113,8 @@ export default function StackedBarLineChartTwo(props) {
   }, [currentHour]);
 
   useEffect(() => {
+    // const payload = { duration: 15 };
+    //   socket.send(JSON.stringify(payload));
     const interval = setInterval(() => {
       setDataSet((prevData) => {
         let time = new Date().toLocaleTimeString().split(":");
@@ -207,27 +213,32 @@ export default function StackedBarLineChartTwo(props) {
     maintainAspectRatio: false,
   };
 
-  const handleInterval = (event) => {
-    event.persist();
-    setIntervals(event.target.value);
-  };
-  
+ console.log('dataSet,dataSet',dataSet.labels[0])
+
   return (
     <>
-      {props.type !== "chart" && <AppHeader type={"head"} />}
-      <div></div>
-      <Card className="mb-4" style={{ position: "relative", padding: "20px" }}>
-        <div
-          id="chart"
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "40vh",
-          }}
+      {props.type === undefined && <AppHeader type={"head"} />}
+      {props.type === "chart" ? (
+        <Card
+          className="mb-4"
+          style={{ position: "relative", padding: "20px" }}
         >
+          <div
+            id="chart"
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "40vh",
+            }}
+          >
+            <Chart type="bar" options={options} data={dataSet} />
+          </div>
+        </Card>
+      ) : (
+        <Card style={{ position: "relative", height: "24vh", padding: "10px" }}>
           <Chart type="bar" options={options} data={dataSet} />
-        </div>
-      </Card>
+        </Card>
+      )}
     </>
   );
 }

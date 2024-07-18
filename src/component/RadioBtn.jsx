@@ -1,5 +1,6 @@
 import { FormControlLabel, Grid, Radio, RadioGroup } from "@mui/material";
 import React, { useState } from "react";
+import radioList from "../utilities/JSON/radioList.json";
 
 function RadioBtn(props) {
   const [inputs, setInputs] = useState(15000);
@@ -15,14 +16,16 @@ function RadioBtn(props) {
       <Grid container>
         <Grid item xs={12}>
           <RadioGroup
-            aria-label="one"
-            name="one"
+            aria-label="Interval"
+            name="Interval"
             row
+            label="Interval"
             value={inputs}
             onChange={handleInputChange}
           >
-            {props.list &&
-              props.list.map((item, index) => (
+            
+            {radioList &&
+              radioList.map((item, index) => (
                 <FormControlLabel
                   key={index}
                   value={item.value}

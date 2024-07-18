@@ -10,6 +10,14 @@ const CommonService = {
 
     return [year, month, day].join("-");
   },
+
+  formatDate(date) {
+    const day = String(date.getDate());
+    const month = String(date.getMonth() + 1);
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  },
+
   timeDifferenceInHours(timeString) {
     const [startTime, endTime] = timeString
       .split("-")

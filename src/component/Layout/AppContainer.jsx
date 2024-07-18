@@ -19,6 +19,7 @@ const ShiftCardDetailList = [
 
 const AppContainer = () => {
   const {
+    setAppHeaderStatus,
     ShowShift,
     ShowShiftDate,
     refreshRate,
@@ -189,7 +190,7 @@ const AppContainer = () => {
     const dates = new Date();
     if (targetList !== undefined) {
       if (ShowShiftDate === "Today") {
-        date = formatDate(new Date());
+        date = CommonService.formatDate(new Date());
         const formattedDate = `${dates.getFullYear()}-${
           dates.getMonth() + 1
         }-${dates.getDate()}`;
@@ -200,6 +201,13 @@ const AppContainer = () => {
       }
     }
     setTodayDate(date);
+    if (ShowShift === "Shift") {
+      if (currentSlide % 2 !== 0) {
+        setAppHeaderStatus(() => "head");
+      } else {
+        setAppHeaderStatus(() => "tool");
+      }
+    }
   }, [
     ShowShiftDate,
     shiftType,
@@ -228,6 +236,7 @@ const AppContainer = () => {
     ShowShift,
     shiftHours,
   ]);
+
   useEffect(() => {
     let cardDatalist = cardData;
     if (lastBarValue.overAllActual !== undefined) {
@@ -237,14 +246,7 @@ const AppContainer = () => {
         setCardData(() => cardDatalist);
       }
     }
-  }, [lastBarValue]);
-
-  const formatDate = (date) => {
-    const day = String(date.getDate());
-    const month = String(date.getMonth() + 1);
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
+  }, [lastBarValue, cardData]);
 
   const getProductData = async (line, categoriesList, formattedDate) => {
     const date = CommonService.formatDates(formattedDate);
@@ -365,7 +367,9 @@ const AppContainer = () => {
       : setCurrentSlide((prevSlide) => (prevSlide + 1) % 2);
   };
 
-  const [todayDate, setTodayDate] = useState(formatDate(new Date()));
+  const [todayDate, setTodayDate] = useState(
+    CommonService.formatDate(new Date())
+  );
 
   const handleButtonClick = (index, id) => {
     setVisibleQRCodeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -596,7 +600,7 @@ const AppContainer = () => {
               }
               firstShiftTiming={firstShiftTiming}
               currentSlide={currentSlide}
-             secoundShiftTiming={secoundShiftTiming}
+              secoundShiftTiming={secoundShiftTiming}
             />
           ) : (
             <SingleShiftHrs

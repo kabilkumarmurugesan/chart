@@ -4,8 +4,9 @@ import ENV from "../utilities/ENV";
 import AppContainer from "../component/Layout/AppContainer";
 import AppHeader from "../component/Layout/AppHeader";
 import ShiftContext from "../component/Context/shiftContext";
+import RadioBtn from "../component/RadioBtn";
 
-function Layout() {
+function Home() {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [refreshRate, setRefreshRate] = useState(30000);
@@ -15,6 +16,8 @@ function Layout() {
   const [refreshStatus, setRefreshStatus] = useState(true);
   const [isSystem, setIsSystem] = useState(true);
   const [targetList, setTargetList] = useState([]);
+  const [appHeaderStatus, setAppHeaderStatus] = useState("tool");
+  const [intervals, setIntervals] = useState(15000);
 
   useEffect(() => {
     const dates = new Date();
@@ -67,6 +70,11 @@ function Layout() {
       });
   };
 
+  const handleInterval = (event) => {
+    event.persist();
+    setIntervals(event.target.value);
+  };
+
   const contextValue = {
     handleShiftUpdate,
     handleRefresh,
@@ -74,6 +82,7 @@ function Layout() {
     handleOnShift,
     handleShiftTarget,
     handleRefreshStatus,
+    setAppHeaderStatus,
     isSystem,
     refreshRate,
     ShowShift,
@@ -81,11 +90,19 @@ function Layout() {
     refreshStatus,
     shiftHours,
     targetList,
+    intervals
   };
 
   return (
     <ShiftContext.Provider value={contextValue}>
-      <AppHeader type={'tool'}/>
+      {appHeaderStatus === "head" ? (
+        <AppHeader
+          type={"head"}
+          component={<RadioBtn handleEvent={handleInterval} />}
+        />
+      ) : (
+        <AppHeader type={appHeaderStatus} />
+      )}
       <Box>
         <AppContainer />
       </Box>
@@ -98,10 +115,10 @@ function Layout() {
           color: primary.main,
         }}
       >
-        V 1.5
+        V 2.1
       </Box>
     </ShiftContext.Provider>
   );
 }
 
-export default Layout;
+export default Home;

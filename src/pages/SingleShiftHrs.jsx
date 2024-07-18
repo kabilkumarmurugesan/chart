@@ -36,6 +36,8 @@ const SingleShiftHrs = ({
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [dataSet, setDataSet] = useState({})
+  const [currentHour, setCurrentHour] = useState(new Date().getHours());
 
   useEffect(() => {
     CommonAPIService.getEmojiStatus(
@@ -45,29 +47,20 @@ const SingleShiftHrs = ({
     );
   }, [isShift, lastBarValue.totalCount]);
 
+  const getData = (data) => {
+    setDataSet(() => data);
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={1}>
         <Grid item xs={6} md={10}>
           <Card sx={{ minWidth: 275, height: 500 }}>
             <ShiftHeader
-              date={ShowShiftDate === "Yesterday" ? yesterdayDate : todayDate}
-              time={
-                ShowShiftDate === "Today"
-                  ? currentShift === "shiftA"
-                    ? "09:00 AM - 05:30 PM"
-                    : "09:00 PM - 05:30 AM"
-                  : firstResponse
-                  ? "09:00 AM - 05:30 PM"
-                  : "09:00 PM - 05:30 AM"
-              }
-              isCurrentShift={currentShift === "shiftA"}
-              cardData={cardData}
-              overTimeRange={
-                lastBarValue?.overTime && lastBarValue.overTime.overTimeRange
-              }
+              date={todayDate}
+              time={`${dataSet.labels[0]} - ${currentHour}`}
             />
-            <StackedBarLineChartTwo type={"chart"} />
+            <StackedBarLineChartTwo getData={getData} type={"chart"} />
           </Card>
         </Grid>
         <Grid item xs={4} md={2}>

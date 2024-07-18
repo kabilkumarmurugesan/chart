@@ -29,7 +29,7 @@ ChartJS.register(
   BarController
 );
 
-export default function StackedBarLineChartTwo() {
+export default function StackedBarLineChart() {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [currentHour, setCurrentHour] = useState(new Date().getHours());
@@ -182,7 +182,6 @@ export default function StackedBarLineChartTwo() {
 
   const handleInterval = (event) => {
     event.persist();
-    // console.log('event',event.target.value)
     setIntervals(event.target.value);
   };
 
@@ -190,7 +189,7 @@ export default function StackedBarLineChartTwo() {
     <>
       <AppHeader
         type={"head"}
-        component={<RadioBtn list={radioList} handleEvent={handleInterval} />}
+        component={<RadioBtn handleEvent={handleInterval} />}
       />
       <div style={{ width: "1300px", height: "1100px" }}>
         <Chart type="bar" data={dataSet} />
@@ -198,10 +197,3 @@ export default function StackedBarLineChartTwo() {
     </>
   );
 }
-
-const radioList = [
-  { value: 15000, label: 15 },
-  { value: 20000, label: 20 },
-  { value: 25000, label: 25 },
-  { value: 30000, label: 30 },
-];

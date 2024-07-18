@@ -7,13 +7,15 @@ const ShiftHeader = (props) => {
   const [overTime, setOverTime] = useState(cardData.overTime);
 
   useEffect(() => {
-    setOverTime(
-      overTimeRange
-        ? overTimeRange
-        : cardData?.overTime !== undefined
-        ? cardData?.overTime
-        : formatAMPM(new Date())
-    );
+    props.isCurrentShift &&
+      props.cardData &&
+      setOverTime(
+        overTimeRange
+          ? overTimeRange
+          : cardData?.overTime !== undefined
+          ? cardData?.overTime
+          : formatAMPM(new Date())
+      );
   }, [cardData]);
 
   const formatAMPM = (date) => {
@@ -53,16 +55,18 @@ const ShiftHeader = (props) => {
         <b>Shift Time: </b>
         {time}
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <Typography
-          sx={{ p: 1 }}
-          style={{
-            fontSize: "15px",
-          }}
-        >
-          <b> OT: </b> {overTime}{" "}
-        </Typography>
-      </Box>
+      {props.cardData && (
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Typography
+            sx={{ p: 1 }}
+            style={{
+              fontSize: "15px",
+            }}
+          >
+            <b> OT: </b> {overTime}{" "}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

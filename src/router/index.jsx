@@ -1,30 +1,25 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "../pages/Laoyout";
-import StackedBarLineChartOne from "../pages/StackedBarLineChartOne";
-import StackedBarLineChartTwo from "../pages/StackedBarLineChartTwo";
-import StackedLineChart from "../pages/StackedLineChart";
+import Home from "../pages/Home";
+import StackedBarLineChart from "../pages/StackedBarLineChart";
+import LineCoverage from "../pages/LineCoverage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Home />,
   },
   {
     path: "/home",
-    element: <Layout />,
-  },
-  {
-    path: "/stacked",
-    element: <StackedBarLineChartOne />,
+    element: <Home />,
   },
   {
     path: "/stackedone",
-    element: <StackedBarLineChartTwo />,
+    element: <StackedBarLineChart />,
   },
   {
-    path: "/stackeLine",
-    element: <StackedLineChart />,
+    path: "/lineCoverage",
+    element: <LineCoverage />,
   },
 ]);
 export default function AppRouter() {
