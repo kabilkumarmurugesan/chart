@@ -30,6 +30,7 @@ const SingleShiftHrs = ({
   secoundDowntimeDetails,
   currentShift,
   currentSlide,
+  intervals,
 }) => {
   const theme = useTheme();
   const { ShowShiftDate } = useContext(ShiftContext);
@@ -157,7 +158,12 @@ const SingleShiftHrs = ({
               date={todayDate}
               time={`${currentHour - 2} - ${currentHour}`}
             />
-            <StackedBarLineChartTwo type={"chart"} data={dataSet} />
+            <StackedBarLineChartTwo
+              type={"chart"}
+              data={dataSet}
+              intervals={intervals}
+              line={"L1"}
+            />
           </Card>
         </Grid>
         <Grid item xs={4} md={2}>

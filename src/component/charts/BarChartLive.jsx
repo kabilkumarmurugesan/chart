@@ -187,9 +187,6 @@ const BarChartLive = ({
   //       }
   //       return response.json();
   //     })
-  //     .then((updatedData) => {
-  //       console.log("Data updated:", updatedData);
-  //     })
   //     .catch((error) => {
   //       console.error("Error updating data:", error);
   //     });

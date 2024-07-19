@@ -27,6 +27,7 @@ const AppContainer = () => {
     refreshStatus,
     targetList,
     isSystem,
+    intervals,
   } = useContext(ShiftContext);
 
   const theme = useTheme();
@@ -622,6 +623,7 @@ const AppContainer = () => {
               secoundDowntimeDetails={secoundDowntimeDetails}
               currentShift={currentShift}
               currentSlide={currentSlide}
+              intervals={intervals}
             />
           )}
         </Box>

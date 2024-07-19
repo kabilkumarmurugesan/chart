@@ -77,6 +77,7 @@ export default function AppHeader(props) {
   const { toggleColorMode } = useContext(MUIWrapperContext);
   const [showMenu, setShowMenu] = useState(true);
 
+  console.log("props", props);
   return (
     <Box
       id="app-header"
@@ -312,7 +313,12 @@ export default function AppHeader(props) {
               </span>
             )}
           </IconButton>{" "}
-          {props.component && props.component}
+          {props.component !== undefined && (
+            <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
+              <Box>Interval (sec):</Box>
+              {props.component}
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

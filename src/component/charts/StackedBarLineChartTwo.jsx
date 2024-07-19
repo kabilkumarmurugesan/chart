@@ -12,10 +12,9 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import ENV from "../../utilities/ENV";
-import AppHeader from "../Layout/AppHeader";
 import { Card } from "@mui/material";
 import { socket } from "../../utilities/socket";
+import AppHeader from "../Layout/AppHeader";
 
 ChartJS.register(
   LinearScale,
@@ -29,34 +28,44 @@ ChartJS.register(
   BarController
 );
 
-export default function StackedBarLineChartTwo(props) {
-  const [dataSet, setDataSet] = useState(props.data);
-  const [intervals, setIntervals] = useState(15000);
+const StackedBarLineChartTwo = (props) => {
+  const { data, intervals, type } = props;
+  const [dataSet, setDataSet] = useState(data);
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {
-    props.intervals && setIntervals(props.intervals);
-  }, [props.intervals]);
+    setDataSet(data);
+  }, [data]);
 
   useEffect(() => {
     const payload = { duration: intervals / 1000 };
     socket.send(JSON.stringify(payload));
     socket.on("getCurrentHour", (data) => {
       setDataSet((prevData) => {
-        let newLabels = [...props.data.labels];
-        let newBarData = [...props.data.datasets[1].data];
-        let newLineData = [...props.data.datasets[1].data];
-        let size = data.L1.length;
-        data.L1.forEach((item, i) => {
-          let time = item.interval.split(":");
-          let temp = `${time[0] % 12 || 12}:${time[1]}:${time[2]} ${
-            time[0] >= 12 ? "PM" : "AM"
+        const newLabels = [...props.data.labels];
+        const newBarData = [...props.data.datasets[1].data];
+        const newLineData = [...props.data.datasets[1].data];
+        // if (prevData.labels.length === 2) {
+        data[props.line].forEach((item) => {
+          const [hours, minutes, seconds] = item.interval.split(":");
+          const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
+            hours >= 12 ? "PM" : "AM"
           }`;
-          let lineData = item.count;
-          newLabels.push(temp);
-          newLineData.push(lineData);
+          newLabels.push(time);
+          newLineData.push(item.count);
         });
-        setLabels(() => newLabels);
+        // } else {
+        //   debugger
+        //   const [hours, minutes, seconds] =
+        //     data[props.line][prevData.labels.length].interval.split(":");
+        //   const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
+        //     hours >= 12 ? "PM" : "AM"
+        //   }`;
+        //   newLabels.push(time);
+        //   newLineData.push(data[props.line][prevData.labels.length].count);
+        // }
+
+        setLabels(newLabels);
         return {
           labels: newLabels,
           datasets: [
@@ -75,6 +84,9 @@ export default function StackedBarLineChartTwo(props) {
   }, [intervals, props.data]);
 
   const options = {
+    animation: {
+      duration: 1600,
+    },
     responsive: true,
     scales: {
       x: {
@@ -86,7 +98,7 @@ export default function StackedBarLineChartTwo(props) {
       y: {
         suggestedMax: 140,
         ticks: {
-          stepSize: 20, // Set the step size for the y-axis labels and grid lines
+          stepSize: 20,
         },
         stacked: true,
         beginAtZero: true,
@@ -97,39 +109,50 @@ export default function StackedBarLineChartTwo(props) {
         enabled: true,
         mode: "nearest", // Show tooltip for the nearest item
         intersect: true, // Ensure tooltip shows only for the intersected item
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = tooltipItem.label;
+            if (label) {
+              label += ": ";
+            }
+            label += tooltipItem.raw;
+            return label;
+          },
+        },
         displayColors: false, // Disable the color box in tooltips
       },
       legend: {
-        display: false, // Disable legend
+        display: false,
       },
     },
     maintainAspectRatio: false,
+    interaction: {
+      mode: "nearest",
+      axis: "x",
+      intersect: false,
+    },
   };
 
   return (
     <>
-      {props.type === undefined && <AppHeader type={"head"} />}
-      {props.type === "chart" ? (
-        <Card
-          className="mb-4"
-          style={{ position: "relative", padding: "20px" }}
+      {type === undefined && <AppHeader type="head" />}
+      <Card
+        className="mb-4"
+        style={{
+          position: "relative",
+          padding: type === "chart" ? "20px" : "10px",
+          height: type === "chart" ? "40vh" : "24vh",
+        }}
+      >
+        <div
+          id="chart"
+          style={{ position: "relative", width: "100%", height: "100%" }}
         >
-          <div
-            id="chart"
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "40vh",
-            }}
-          >
-            <Chart type="bar" options={options} data={dataSet} />
-          </div>
-        </Card>
-      ) : (
-        <Card style={{ position: "relative", height: "24vh", padding: "10px" }}>
           <Chart type="bar" options={options} data={dataSet} />
-        </Card>
-      )}
+        </div>
+      </Card>
     </>
   );
-}
+};
+
+export default StackedBarLineChartTwo;
