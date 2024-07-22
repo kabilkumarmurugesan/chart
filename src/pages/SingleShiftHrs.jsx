@@ -13,7 +13,7 @@ import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
 import CommonService from "../utilities/CommonService";
 import BasicTable from "../component/Table/Table";
-import StackedBarLineChartTwo from "../component/charts/StackedBarLineChartTwo";
+import StackedBarLineChart from "../component/charts/StackedBarLineChart";
 import ENV from "../utilities/ENV";
 
 const SingleShiftHrs = ({
@@ -158,7 +158,7 @@ const SingleShiftHrs = ({
               date={todayDate}
               time={`${currentHour - 2} - ${currentHour}`}
             />
-            <StackedBarLineChartTwo
+            <StackedBarLineChart
               type={"chart"}
               data={dataSet}
               intervals={intervals}

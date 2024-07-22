@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppHeader from "../../component/Layout/AppHeader";
 import RadioBtn from "../../component/RadioBtn";
 import { useTheme } from "@emotion/react";
-import StackedBarLineChartTwo from "../../component/charts/StackedBarLineChartTwo";
+import StackedBarLineChart from "../../component/charts/StackedBarLineChart";
 import CommonService from "../../utilities/CommonService";
 import ShiftHeader from "../../component/Shift/ShiftHeader";
 import ENV from "../../utilities/ENV";
@@ -276,7 +276,7 @@ export default function LineCoverage() {
             date={todayDate}
             time={`${dataSet.L1.labels[0]} - ${currentHour}`}
           />
-          <StackedBarLineChartTwo
+          <StackedBarLineChart
             type={"line"}
             data={dataSet.L1}
             intervals={intervals}
@@ -290,7 +290,7 @@ export default function LineCoverage() {
           }}
         >
           <div>Line 2</div>
-          <StackedBarLineChartTwo
+          <StackedBarLineChart
             type={"line"}
             data={dataSet.L2}
             intervals={intervals}
@@ -304,7 +304,7 @@ export default function LineCoverage() {
           }}
         >
           <div>Line 3</div>
-          <StackedBarLineChartTwo
+          <StackedBarLineChart
             type={"line"}
             data={dataSet.L3}
             intervals={intervals}

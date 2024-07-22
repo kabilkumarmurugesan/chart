@@ -31,7 +31,6 @@ ChartJS.register(
 const StackedBarLineChartTwo = (props) => {
   const { data, intervals, type } = props;
   const [dataSet, setDataSet] = useState(data);
-  const [labels, setLabels] = useState([]);
 
   useEffect(() => {
     setDataSet(data);
@@ -45,7 +44,6 @@ const StackedBarLineChartTwo = (props) => {
         const newLabels = [...props.data.labels];
         const newBarData = [...props.data.datasets[1].data];
         const newLineData = [...props.data.datasets[1].data];
-        // if (prevData.labels.length === 2) {
         data[props.line].forEach((item) => {
           const [hours, minutes, seconds] = item.interval.split(":");
           const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
@@ -54,18 +52,7 @@ const StackedBarLineChartTwo = (props) => {
           newLabels.push(time);
           newLineData.push(item.count);
         });
-        // } else {
-        //   debugger
-        //   const [hours, minutes, seconds] =
-        //     data[props.line][prevData.labels.length].interval.split(":");
-        //   const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
-        //     hours >= 12 ? "PM" : "AM"
-        //   }`;
-        //   newLabels.push(time);
-        //   newLineData.push(data[props.line][prevData.labels.length].count);
-        // }
 
-        setLabels(newLabels);
         return {
           labels: newLabels,
           datasets: [
