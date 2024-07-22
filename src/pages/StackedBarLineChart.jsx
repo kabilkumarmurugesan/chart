@@ -16,6 +16,7 @@ import ENV from "../utilities/ENV";
 import AppHeader from "../component/Layout/AppHeader";
 import RadioBtn from "../component/RadioBtn";
 import { useTheme } from "@emotion/react";
+import zoomPlugin from "chartjs-plugin-zoom";
 
 ChartJS.register(
   LinearScale,
@@ -26,6 +27,7 @@ ChartJS.register(
   Legend,
   Tooltip,
   LineController,
+  zoomPlugin,
   BarController
 );
 
@@ -33,7 +35,7 @@ export default function StackedBarLineChart() {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [currentHour, setCurrentHour] = useState(new Date().getHours());
-  const [intervals, setIntervals] = useState(15000);
+  const [intervals, setIntervals] = useState(60000);
   const [dataSet, setDataSet] = useState({
     labels: ["9 AM", "10 AM", "11 AM"],
     datasets: [
@@ -184,6 +186,69 @@ export default function StackedBarLineChart() {
     setIntervals(event.target.value);
   };
 
+  const options = {
+    animation: {
+      duration: 1600,
+    },
+    responsive: true,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        stacked: true,
+      },
+      y: {
+        suggestedMax: 140,
+        ticks: {
+          stepSize: 20,
+        },
+        stacked: true,
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      zoom: {
+        limits: {
+          x: { min: 0 },
+          y: { min: 2 },
+        },
+        wheel: {
+          enabled: true,
+        },
+        pinch: {
+          enabled: true,
+        },
+        mode: "x",
+      },
+      tooltip: {
+        enabled: true,
+        mode: "nearest", // Show tooltip for the nearest item
+        intersect: true, // Ensure tooltip shows only for the intersected item
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = tooltipItem.label;
+            if (label) {
+              label += ": ";
+            }
+            label += tooltipItem.raw;
+            return label;
+          },
+        },
+        displayColors: false, // Disable the color box in tooltips
+      },
+      legend: {
+        display: false,
+      },
+    },
+    maintainAspectRatio: false,
+    interaction: {
+      mode: "nearest",
+      axis: "x",
+      intersect: false,
+    },
+  };
+
   return (
     <>
       <AppHeader
@@ -191,7 +256,7 @@ export default function StackedBarLineChart() {
         component={<RadioBtn handleEvent={handleInterval} />}
       />
       <div style={{ width: "1300px", height: "1100px" }}>
-        <Chart type="bar" data={dataSet} />
+        <Chart type="bar" options={options} data={dataSet} />
       </div>
     </>
   );

@@ -14,7 +14,7 @@ export default function LineCoverage() {
   const [todayDate, setTodayDate] = useState(
     CommonService.formatDate(new Date())
   );
-  const [intervals, setIntervals] = useState(15000);
+  const [intervals, setIntervals] = useState(60000);
   const [dataSet, setDataSet] = useState({
     L1: {
       labels: ["9 AM"],

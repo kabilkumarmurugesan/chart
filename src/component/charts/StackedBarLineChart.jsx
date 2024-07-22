@@ -15,6 +15,7 @@ import { Chart } from "react-chartjs-2";
 import { Card } from "@mui/material";
 import { socket } from "../../utilities/socket";
 import AppHeader from "../Layout/AppHeader";
+import zoomPlugin from "chartjs-plugin-zoom";
 
 ChartJS.register(
   LinearScale,
@@ -25,6 +26,7 @@ ChartJS.register(
   Legend,
   Tooltip,
   LineController,
+  zoomPlugin,
   BarController
 );
 
@@ -92,6 +94,19 @@ const StackedBarLineChartTwo = (props) => {
       },
     },
     plugins: {
+      zoom: {
+        limits: {
+          x: { min: 0 },
+          y: { min: 2 },
+        },
+        wheel: {
+          enabled: true,
+        },
+        pinch: {
+          enabled: true,
+        },
+        mode: "x",
+      },
       tooltip: {
         enabled: true,
         mode: "nearest", // Show tooltip for the nearest item

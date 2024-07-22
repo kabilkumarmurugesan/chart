@@ -17,7 +17,7 @@ function Home() {
   const [isSystem, setIsSystem] = useState(true);
   const [targetList, setTargetList] = useState([]);
   const [appHeaderStatus, setAppHeaderStatus] = useState("tool");
-  const [intervals, setIntervals] = useState(15000);
+  const [intervals, setIntervals] = useState(60000);
 
   useEffect(() => {
     const dates = new Date();

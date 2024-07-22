@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import radioList from "../utilities/JSON/radioList.json";
 
 function RadioBtn(props) {
-  const [inputs, setInputs] = useState(15000);
+  const [inputs, setInputs] = useState(60000);
 
   const handleInputChange = (event) => {
     event.persist();

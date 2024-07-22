@@ -14,7 +14,7 @@ const ShiftContext = React.createContext({
   ShowShiftDate: "Today",
   refreshStatus: true,
   shiftHours: true,
-  intervals: 15000,
+  intervals: 60000,
 });
 
 export default ShiftContext;
