@@ -19,7 +19,6 @@ const ShiftCardDetailList = [
 
 const AppContainer = () => {
   const {
-    setAppHeaderStatus,
     ShowShift,
     ShowShiftDate,
     refreshRate,
@@ -27,7 +26,6 @@ const AppContainer = () => {
     refreshStatus,
     targetList,
     isSystem,
-    intervals,
   } = useContext(ShiftContext);
 
   const theme = useTheme();
@@ -36,6 +34,7 @@ const AppContainer = () => {
   const [targetOne, setTargetOne] = useState(10);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
   const [firstResponse, setFirstResponse] = useState([]);
+  const [hrsResponse, setHrsResponse] = useState([]);
   const [firstShiftTiming, setFirstShiftTiming] = useState(
     "09:00 PM - 05:30 AM"
   );
@@ -49,7 +48,8 @@ const AppContainer = () => {
   const [shiftType, setShiftType] = useState("1st");
   const [visibleQRCodeIndex, setVisibleQRCodeIndex] = useState(null);
   const [mfgcardData, setMFGCardData] = useState([]);
-
+  const [currentHour, setCurrentHour] = useState(new Date().getHours());
+  const [intervals, setIntervals] = useState(60000);
   const [cardData, setCardData] = useState([]);
   const [firstCardData, setFirstCardData] = useState([]);
   const [secoundCardData, setSecoundCardData] = useState([]);
@@ -73,6 +73,68 @@ const AppContainer = () => {
   );
 
   const [apiControll, setApiControll] = useState("");
+  const [dataSet, setDataSet] = useState({
+    labels: ["9 AM"],
+    datasets: [
+      {
+        type: "line",
+        label: "Current Chart",
+        borderColor: "rgb(255, 99, 132)",
+        borderWidth: 2,
+        fill: false,
+        data: [10],
+        datalabels: {
+          display: (con) => {
+            if (con.dataIndex < 2) {
+              return false;
+            } else {
+              return con.dataset.data[con.dataIndex] > 0;
+            }
+          },
+          align: "top",
+          color: "white",
+          backgroundColor: "rgb(77, 90, 129)",
+          borderWidth: 1,
+          borderRadius: 2,
+          padding: 4,
+          formatter: (value) => {
+            return value;
+          },
+          font: {
+            weight: "bold",
+            size: 13,
+          },
+        },
+      },
+      {
+        type: "bar",
+        label: "Shift Chart",
+        backgroundColor: "#3D860B",
+        data: [10],
+        borderColor: "white",
+        borderWidth: 1, // Reduced borderWidth to avoid white line
+        barThickness: 35,
+        datalabels: {
+          display: (con) => {
+            return con.dataset.data[con.dataIndex] > 0;
+          },
+          align: "center",
+          color: "white",
+          borderWidth: 1,
+          borderRadius: 2,
+          backgroundColor: "rgb(75, 192, 192)",
+          padding: 4,
+          formatter: (value) => {
+            return value;
+          },
+          font: {
+            weight: "bold",
+            size: 15,
+          },
+        },
+      },
+    ],
+  });
 
   useEffect(() => {
     let temp = targetList.reduce(
@@ -81,6 +143,10 @@ const AppContainer = () => {
     );
     targetList.length > 0 && setTargetOne(temp / targetList.length);
   }, [targetList]);
+
+  useEffect(() => {
+    getHrsProductData();
+  }, [currentHour]);
 
   useEffect(() => {
     let intervalshiftHours = 0;
@@ -202,13 +268,6 @@ const AppContainer = () => {
       }
     }
     setTodayDate(date);
-    if (ShowShift === "Shift") {
-      if (currentSlide % 2 !== 0) {
-        setAppHeaderStatus(() => "head");
-      } else {
-        setAppHeaderStatus(() => "tool");
-      }
-    }
   }, [
     ShowShiftDate,
     shiftType,
@@ -382,6 +441,67 @@ const AppContainer = () => {
     ) {
       handleSlidechange();
     }
+  };
+
+  const getHrsProductData = async () => {
+    try {
+      const response = await ENV.get(`getLastThreeHour?line=L1`);
+      const result = response.data.data;
+      setCurrentHour(new Date().getHours());
+      const dome = result.map((res, i) => {
+        let x = `${CommonService.timeFromater12(
+          res.start_time
+        )} - ${CommonService.timeFromater12(res.end_time)}`;
+        return {
+          id: res ? res.id : i,
+          x: res ? x : "-",
+          y: res ? res.totalcount : "-",
+          z: res ? res.target : "-",
+          headcount: res ? res.headcount : "-",
+          upph: res ? res.upph : "-",
+          product_id: res ? res.product_id : "-",
+          target: res ? res.target : "-",
+          comments: res ? res.comments : "-",
+          op_date: res ? res.op_date : "-",
+          line: res ? res.line : "-",
+          downtime: res ? res.downtime : "-",
+        };
+      });
+
+      setHrsResponse(dome);
+      setDataSet((prevData) => {
+        let initialLabel = [];
+        const newLineData = [];
+        const newBarData = [];
+        result.forEach((res) => {
+          let temp = CommonService.timeFromater12(res.start_time);
+          initialLabel.push(temp);
+          newLineData.push(res.totalcount);
+          newBarData.push(res.totalcount);
+        });
+
+        return {
+          labels: [...initialLabel],
+          datasets: [
+            {
+              ...prevData.datasets[0],
+              data: newLineData,
+            },
+            {
+              ...prevData.datasets[1],
+              data: newBarData,
+            },
+          ],
+        };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleInterval = (event) => {
+    event.persist();
+    setIntervals(event.target.value);
   };
 
   return (
@@ -606,12 +726,10 @@ const AppContainer = () => {
           ) : (
             <SingleShiftHrs
               categories={categories}
-              secoundResponse={secoundResponse}
+              response={dataSet}
+              hrsResponse={hrsResponse}
               ShiftCardDetailList={mfgcardData["shiftA"]}
               handleSlidechange={handleSlidechange}
-              firstResponse={
-                currentShift === "shiftA" ? firstResponse : undefined
-              }
               lastBarValue={lastBarValue}
               visibleQRCodeIndex={visibleQRCodeIndex}
               yesterdayDate={yesterdayDate}
@@ -623,7 +741,9 @@ const AppContainer = () => {
               secoundDowntimeDetails={secoundDowntimeDetails}
               currentShift={currentShift}
               currentSlide={currentSlide}
+              handleInterval={handleInterval}
               intervals={intervals}
+              currentHour={currentHour}
             />
           )}
         </Box>

@@ -30,9 +30,17 @@ ChartJS.register(
   BarController
 );
 
-const StackedBarLineChartTwo = (props) => {
+const StackedBarLineChart = (props) => {
   const { data, intervals, type } = props;
   const [dataSet, setDataSet] = useState(data);
+  const [annotationsList, setAnnotationsList] = useState({
+    label1: {
+      type: "label",
+      xValue: 2,
+      yValue: 5,
+      content: [`Time:  ${props.time}`],
+    },
+  });
 
   useEffect(() => {
     setDataSet(data);
@@ -42,6 +50,23 @@ const StackedBarLineChartTwo = (props) => {
     const payload = { duration: intervals / 1000 };
     socket.send(JSON.stringify(payload));
     socket.on("getCurrentHour", (data) => {
+      setAnnotationsList((prevData) => {
+        return {
+          ...prevData,
+          label1: {
+            type: "label",
+            xValue: data.L1.length - data.L1.length / 15.6,
+            yValue: data.L1[data.L1.length - 1].count / 2,
+            content: [`Time:  ${props.time}`],
+          },
+          label2: {
+            type: "label",
+            xValue: data.L1.length - data.L1.length / 15.6,
+            yValue: data.L1[data.L1.length - 1].count / 4,
+            content: [`Cumulative O/P:  ${data.L1[data.L1.length - 1].count}`],
+          },
+        };
+      });
       setDataSet((prevData) => {
         const newLabels = [...props.data.labels];
         const newBarData = [...props.data.datasets[1].data];
@@ -74,7 +99,7 @@ const StackedBarLineChartTwo = (props) => {
 
   const options = {
     animation: {
-      duration: 1600,
+      duration: 2500,
     },
     responsive: true,
     scales: {
@@ -95,17 +120,15 @@ const StackedBarLineChartTwo = (props) => {
     },
     plugins: {
       zoom: {
-        limits: {
-          x: { min: 0 },
-          y: { min: 2 },
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: "x",
         },
-        wheel: {
-          enabled: true,
-        },
-        pinch: {
-          enabled: true,
-        },
-        mode: "x",
       },
       tooltip: {
         enabled: true,
@@ -122,6 +145,9 @@ const StackedBarLineChartTwo = (props) => {
           },
         },
         displayColors: false, // Disable the color box in tooltips
+      },
+      annotation: {
+        annotations: annotationsList,
       },
       legend: {
         display: false,
@@ -157,4 +183,4 @@ const StackedBarLineChartTwo = (props) => {
   );
 };
 
-export default StackedBarLineChartTwo;
+export default StackedBarLineChart;

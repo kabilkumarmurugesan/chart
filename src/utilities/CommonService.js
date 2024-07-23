@@ -27,6 +27,7 @@ const CommonService = {
     const totalHours = endHour - startHour;
     return totalHours;
   },
+
   convertIntoKiloPrefix(count) {
     if (count && count !== 0) {
       // let countString = count.toString();
@@ -53,5 +54,13 @@ const CommonService = {
       return 0;
     }
   },
+
+  timeFromater12(item) {
+    let time = typeof item === "string" ? item.split(":") : item;
+    return typeof item === "string"
+      ? `${time[0] % 12 || 12} ${time[0] >= 12 ? "PM" : "AM"}`
+      : `${time % 12 || 12} ${time >= 12 ? "PM" : "AM"}`;
+  },
 };
+
 export default CommonService;

@@ -17,6 +17,7 @@ import AppHeader from "../component/Layout/AppHeader";
 import RadioBtn from "../component/RadioBtn";
 import { useTheme } from "@emotion/react";
 import zoomPlugin from "chartjs-plugin-zoom";
+import CommonService from "../utilities/CommonService";
 
 ChartJS.register(
   LinearScale,
@@ -155,8 +156,7 @@ export default function StackedBarLineChart() {
         const newBarData = [];
 
         result.forEach((res) => {
-          let time = res.start_time.split(":");
-          let temp = `${time[0] % 12 || 12} ${time[0] >= 12 ? "PM" : "AM"}`;
+          let temp = CommonService.timeFromater12(res.start_time);
           initialLabel.push(temp);
           newLineData.push(res.totalcount);
           newBarData.push(res.totalcount);
@@ -209,10 +209,6 @@ export default function StackedBarLineChart() {
     },
     plugins: {
       zoom: {
-        limits: {
-          x: { min: 0 },
-          y: { min: 2 },
-        },
         wheel: {
           enabled: true,
         },
@@ -251,11 +247,9 @@ export default function StackedBarLineChart() {
 
   return (
     <>
-      <AppHeader
-        type={"head"}
-        component={<RadioBtn handleEvent={handleInterval} />}
-      />
+      <AppHeader />
       <div style={{ width: "1300px", height: "1100px" }}>
+        <RadioBtn handleEvent={handleInterval} />
         <Chart type="bar" options={options} data={dataSet} />
       </div>
     </>

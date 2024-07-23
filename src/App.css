@@ -192,21 +192,21 @@ header {
   /* padding: 10px; */
 }
 
-  .grid-item {
-    /* background-color: rgba(255, 255, 255, 0.8); */
-    /* border: 1px solid rgba(0, 0, 0, 0.8); */
-    /* padding: 32px 20px; */
-    font-size: 30px;
-    text-align: center;
-    height: 123px;
-    justify-content: center;
-    display: flex;
-  }
-  .grid-items {
-    padding: 36px 20px;
-    font-size: 30px;
-    text-align: center;
-  }
+.grid-item {
+  /* background-color: rgba(255, 255, 255, 0.8); */
+  /* border: 1px solid rgba(0, 0, 0, 0.8); */
+  /* padding: 32px 20px; */
+  font-size: 30px;
+  text-align: center;
+  height: 123px;
+  justify-content: center;
+  display: flex;
+}
+.grid-items {
+  padding: 36px 20px;
+  font-size: 30px;
+  text-align: center;
+}
 
 /* .table-container {
   border: 2px solid #4d5a81;
@@ -234,4 +234,8 @@ header {
 }
 .uphTable {
   height: 230px;
+}
+
+span.MuiButtonBase-root.MuiRadio-root.MuiRadio-colorPrimary.PrivateSwitchBase-root.MuiRadio-root.MuiRadio-colorPrimary.Mui-checked.MuiRadio-root.MuiRadio-colorPrimary.css-fd13l-MuiButtonBase-root-MuiRadio-root {
+  color: #282c34;
 }

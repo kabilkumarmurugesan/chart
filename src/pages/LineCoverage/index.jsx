@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppHeader from "../../component/Layout/AppHeader";
-import RadioBtn from "../../component/RadioBtn";
+// import RadioBtn from "../../component/RadioBtn";
 import { useTheme } from "@emotion/react";
 import StackedBarLineChart from "../../component/charts/StackedBarLineChart";
 import CommonService from "../../utilities/CommonService";
@@ -249,17 +249,14 @@ export default function LineCoverage() {
     }
   };
 
-  const handleInterval = (event) => {
-    event.persist();
-    setIntervals(event.target.value);
-  };
+  // const handleInterval = (event) => {
+  //   event.persist();
+  //   setIntervals(event.target.value);
+  // };
 
   return (
     <>
-      <AppHeader
-        type={"head"}
-        component={<RadioBtn handleEvent={handleInterval} />}
-      />
+      <AppHeader />
       <div
         style={{
           display: "flex",

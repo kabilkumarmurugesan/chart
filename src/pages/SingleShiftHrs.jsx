@@ -14,14 +14,15 @@ import Divider from "@mui/material/Divider";
 import CommonService from "../utilities/CommonService";
 import BasicTable from "../component/Table/Table";
 import StackedBarLineChart from "../component/charts/StackedBarLineChart";
-import ENV from "../utilities/ENV";
+import RadioBtn from "../component/RadioBtn";
+import { socket } from "../utilities/socket";
 
 const SingleShiftHrs = ({
   categories,
-  secoundResponse,
   ShiftCardDetailList,
   handleSlidechange,
-  firstResponse,
+  response,
+  hrsResponse,
   lastBarValue,
   visibleQRCodeIndex,
   todayDate,
@@ -30,124 +31,26 @@ const SingleShiftHrs = ({
   secoundDowntimeDetails,
   currentShift,
   currentSlide,
+  handleInterval,
   intervals,
+  currentHour,
 }) => {
   const theme = useTheme();
   const { ShowShiftDate } = useContext(ShiftContext);
   const [isHappy, setIsHappy] = useState();
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [dataSet, setDataSet] = useState({
-    labels: ["9 AM"],
-    datasets: [
-      {
-        type: "line",
-        label: "Current Chart",
-        borderColor: "rgb(255, 99, 132)",
-        borderWidth: 2,
-        fill: false,
-        data: [10],
-        datalabels: {
-          display: (con) => {
-            if (con.dataIndex < 2) {
-              return false;
-            } else {
-              return con.dataset.data[con.dataIndex] > 0;
-            }
-          },
-          align: "top",
-          color: "white",
-          backgroundColor: "rgb(77, 90, 129)",
-          borderWidth: 1,
-          borderRadius: 2,
-          padding: 4,
-          formatter: (value) => {
-            return value;
-          },
-          font: {
-            weight: "bold",
-            size: 15,
-          },
-        },
-      },
-      {
-        type: "bar",
-        label: "Shift Chart",
-        backgroundColor: "#3D860B",
-        data: [10],
-        borderColor: "white",
-        borderWidth: 1, // Reduced borderWidth to avoid white line
-        barThickness: 45,
-        datalabels: {
-          display: (con) => {
-            return con.dataset.data[con.dataIndex] > 0;
-          },
-          align: "center",
-          color: "white",
-          borderWidth: 1,
-          borderRadius: 2,
-          backgroundColor: "rgb(75, 192, 192)",
-          padding: 4,
-          formatter: (value) => {
-            return value;
-          },
-          font: {
-            weight: "bold",
-            size: 15,
-          },
-        },
-      },
-    ],
-  });
-  const [currentHour, setCurrentHour] = useState(new Date().getHours());
+  const [liveData, setLiveData] = useState([]);
 
   useEffect(() => {
-    getProductData();
-  }, [currentHour]);
+    CommonAPIService.getEmojiStatus(isShift, liveData.totalCount, setIsHappy);
+  }, [isShift, liveData.totalCount]);
 
   useEffect(() => {
-    CommonAPIService.getEmojiStatus(
-      isShift,
-      lastBarValue.totalCount,
-      setIsHappy
-    );
-  }, [isShift, lastBarValue.totalCount]);
-
-  const getProductData = async () => {
-    try {
-      const response = await ENV.get(`getLastThreeHour?line=L1`);
-      const result = response.data.data;
-      setCurrentHour(new Date().getHours());
-      setDataSet((prevData) => {
-        let initialLabel = [];
-        const newLineData = [];
-        const newBarData = [];
-        result.forEach((res) => {
-          let time = res.start_time.split(":");
-          let temp = `${time[0] % 12 || 12} ${time[0] >= 12 ? "PM" : "AM"}`;
-          initialLabel.push(temp);
-          newLineData.push(res.totalcount);
-          newBarData.push(res.totalcount);
-        });
-
-        return {
-          labels: [...initialLabel],
-          datasets: [
-            {
-              ...prevData.datasets[0],
-              data: newLineData,
-            },
-            {
-              ...prevData.datasets[1],
-              data: newBarData,
-            },
-          ],
-        };
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    socket.on("LastThreeHourdata", (data) => {
+      setLiveData(() => data);
+    });
+  }, []);
 
   return (
     <Box sx={{ p: 2 }}>
@@ -156,11 +59,17 @@ const SingleShiftHrs = ({
           <Card sx={{ minWidth: 275, height: 500 }}>
             <ShiftHeader
               date={todayDate}
-              time={`${currentHour - 2} - ${currentHour}`}
+              time={`${CommonService.timeFromater12(
+                currentHour - 2
+              )} - ${CommonService.timeFromater12(currentHour)}`}
+              component={<RadioBtn handleEvent={handleInterval} />}
             />
             <StackedBarLineChart
               type={"chart"}
-              data={dataSet}
+              time={`${CommonService.timeFromater12(
+                currentHour - 2
+              )} - ${CommonService.timeFromater12(currentHour)}`}
+              data={response}
               intervals={intervals}
               line={"L1"}
             />
@@ -197,9 +106,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {CommonService.convertIntoKiloPrefix(
-                          cardData?.shiftTarget
-                        )}
+                        {CommonService.convertIntoKiloPrefix(liveData?.target)}
                       </b>
                     </Typography>
                   </Box>
@@ -232,11 +139,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {CommonService.convertIntoKiloPrefix(
-                          ShowShiftDate === "Yesterday"
-                            ? cardData?.shiftActual
-                            : lastBarValue?.shiftActual
-                        )}
+                        {CommonService.convertIntoKiloPrefix(liveData?.actual)}
                       </b>
                     </Typography>
                   </Box>
@@ -271,7 +174,7 @@ const SingleShiftHrs = ({
                         }}
                       >
                         {CommonService.convertIntoKiloPrefix(
-                          cardData?.shiftUPH
+                          liveData?.shiftUph
                         )}
                       </b>
                     </Typography>
@@ -316,18 +219,7 @@ const SingleShiftHrs = ({
           </Card>
         </Grid>
         <Grid item xs={6} md={10}>
-          <BasicTable
-            categories={categories}
-            response={
-              ShowShiftDate === "Today"
-                ? currentShift === "shiftA"
-                  ? firstResponse
-                  : secoundResponse
-                : firstResponse
-                ? firstResponse
-                : secoundResponse
-            }
-          />
+          <BasicTable categories={categories} response={hrsResponse} />
         </Grid>{" "}
         <Grid item xs={4} md={2}>
           <Card>

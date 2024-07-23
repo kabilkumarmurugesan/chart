@@ -58,7 +58,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function AppHeader(props) {
+export default function AppHeader() {
   const {
     handleShiftUpdate,
     handleRefresh,
@@ -77,7 +77,6 @@ export default function AppHeader(props) {
   const { toggleColorMode } = useContext(MUIWrapperContext);
   const [showMenu, setShowMenu] = useState(true);
 
-  console.log("props", props);
   return (
     <Box
       id="app-header"
@@ -93,10 +92,10 @@ export default function AppHeader(props) {
         position="static"
         color="default"
         onMouseEnter={() => {
-          props.type === "tool" && setShowMenu(false);
+          setShowMenu(false);
         }}
         onMouseLeave={() => {
-          props.type === "tool" && setShowMenu(true);
+          setShowMenu(true);
         }}
       >
         <Toolbar sx={{ height: 65, padding: "0px 10px 0px 0px" }}>
@@ -313,12 +312,6 @@ export default function AppHeader(props) {
               </span>
             )}
           </IconButton>{" "}
-          {props.component !== undefined && (
-            <Box sx={{ p: 1, display: showMenu && "none", cursor: "pointer" }}>
-              <Box>Interval (sec):</Box>
-              {props.component}
-            </Box>
-          )}
         </Toolbar>
       </AppBar>
     </Box>

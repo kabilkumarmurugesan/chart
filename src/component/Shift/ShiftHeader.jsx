@@ -67,6 +67,7 @@ const ShiftHeader = (props) => {
           </Typography>
         </Box>
       )}
+      {props.component && props.component}
     </Box>
   );
 };

@@ -7,14 +7,12 @@ const ShiftContext = React.createContext({
   handleOnShift: () => {},
   handleShiftTarget: () => {},
   handleRefreshStatus: () => {},
-  setAppHeaderStatus: () => {},
   isSystem: true,
   refreshRate: 30000,
   ShowShift: "Day",
   ShowShiftDate: "Today",
   refreshStatus: true,
   shiftHours: true,
-  intervals: 60000,
 });
 
 export default ShiftContext;
