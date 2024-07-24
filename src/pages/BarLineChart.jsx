@@ -16,7 +16,6 @@ import ENV from "../utilities/ENV";
 import AppHeader from "../component/Layout/AppHeader";
 import RadioBtn from "../component/RadioBtn";
 import { useTheme } from "@emotion/react";
-import zoomPlugin from "chartjs-plugin-zoom";
 import CommonService from "../utilities/CommonService";
 
 ChartJS.register(
@@ -28,11 +27,10 @@ ChartJS.register(
   Legend,
   Tooltip,
   LineController,
-  zoomPlugin,
   BarController
 );
 
-export default function StackedBarLineChart() {
+export default function BarLineChart() {
   const theme = useTheme();
   const { primary } = theme.palette;
   const [currentHour, setCurrentHour] = useState(new Date().getHours());
@@ -208,15 +206,6 @@ export default function StackedBarLineChart() {
       },
     },
     plugins: {
-      zoom: {
-        wheel: {
-          enabled: true,
-        },
-        pinch: {
-          enabled: true,
-        },
-        mode: "x",
-      },
       tooltip: {
         enabled: true,
         mode: "nearest", // Show tooltip for the nearest item

@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "../pages/Home";
-import StackedBarLineChart from "../pages/StackedBarLineChart";
+import BarLineChart from "../pages/BarLineChart";
 import LineCoverage from "../pages/LineCoverage";
 
 const router = createBrowserRouter([
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/stackedone",
-    element: <StackedBarLineChart />,
+    element: <BarLineChart />,
   },
   {
     path: "/lineCoverage",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -12,10 +12,10 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
+import zoomPlugin from "chartjs-plugin-zoom"; // Import the zoom plugin
 import { Card } from "@mui/material";
 import { socket } from "../../utilities/socket";
 import AppHeader from "../Layout/AppHeader";
-import zoomPlugin from "chartjs-plugin-zoom";
 
 ChartJS.register(
   LinearScale,
@@ -26,11 +26,13 @@ ChartJS.register(
   Legend,
   Tooltip,
   LineController,
-  zoomPlugin,
-  BarController
+  BarController,
+  zoomPlugin // Register the zoom plugin
 );
 
 const StackedBarLineChart = (props) => {
+  const chartRef = useRef(null);
+
   const { data, intervals, type } = props;
   const [dataSet, setDataSet] = useState(data);
   const [annotationsList, setAnnotationsList] = useState({
@@ -42,9 +44,9 @@ const StackedBarLineChart = (props) => {
     },
   });
 
-  useEffect(() => {
-    setDataSet(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setDataSet(data);
+  // }, [data]);
 
   useEffect(() => {
     const payload = { duration: intervals / 1000 };
@@ -67,35 +69,37 @@ const StackedBarLineChart = (props) => {
           },
         };
       });
-      setDataSet((prevData) => {
-        const newLabels = [...props.data.labels];
-        const newBarData = [...props.data.datasets[1].data];
-        const newLineData = [...props.data.datasets[1].data];
-        data[props.line].forEach((item) => {
-          const [hours, minutes, seconds] = item.interval.split(":");
-          const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
-            hours >= 12 ? "PM" : "AM"
-          }`;
-          newLabels.push(time);
-          newLineData.push(item.count);
-        });
+      if (dataSet.datasets[1].data < 5) {
+        setDataSet((prevData) => {
+          const newLabels = [...props.data.labels];
+          const newBarData = [...props.data.datasets[1].data];
+          const newLineData = [...props.data.datasets[1].data];
+          data[props.line].forEach((item) => {
+            const [hours, minutes, seconds] = item.interval.split(":");
+            const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
+              hours >= 12 ? "PM" : "AM"
+            }`;
+            newLabels.push(time);
+            newLineData.push(item.count);
+          });
 
-        return {
-          labels: newLabels,
-          datasets: [
-            {
-              ...prevData.datasets[0],
-              data: newLineData,
-            },
-            {
-              ...prevData.datasets[1],
-              data: newBarData,
-            },
-          ],
-        };
-      });
+          return {
+            labels: newLabels,
+            datasets: [
+              {
+                ...prevData.datasets[0],
+                data: newLineData,
+              },
+              {
+                ...prevData.datasets[1],
+                data: newBarData,
+              },
+            ],
+          };
+        });
+      }
     });
-  }, [intervals, props.data]);
+  }, [intervals]);
 
   const options = {
     animation: {
@@ -120,6 +124,10 @@ const StackedBarLineChart = (props) => {
     },
     plugins: {
       zoom: {
+        pan: {
+          enabled: true,
+          mode: "x",
+        },
         zoom: {
           wheel: {
             enabled: true,
@@ -132,8 +140,8 @@ const StackedBarLineChart = (props) => {
       },
       tooltip: {
         enabled: true,
-        mode: "nearest", // Show tooltip for the nearest item
-        intersect: true, // Ensure tooltip shows only for the intersected item
+        mode: "nearest",
+        intersect: true,
         callbacks: {
           label: function (tooltipItem) {
             let label = tooltipItem.label;
@@ -144,7 +152,7 @@ const StackedBarLineChart = (props) => {
             return label;
           },
         },
-        displayColors: false, // Disable the color box in tooltips
+        displayColors: false,
       },
       annotation: {
         annotations: annotationsList,
@@ -159,6 +167,27 @@ const StackedBarLineChart = (props) => {
       axis: "x",
       intersect: false,
     },
+  };
+
+  const handleZoomIn = () => {
+    const chart = chartRef.current;
+    if (chart) {
+      chart.zoom(1.2); // Zoom in by a factor of 1.2
+    }
+  };
+
+  const handleZoomOut = () => {
+    const chart = chartRef.current;
+    if (chart) {
+      chart.zoom(0.8); // Zoom out by a factor of 0.8
+    }
+  };
+
+  const handleResetZoom = () => {
+    const chart = chartRef.current;
+    if (chart) {
+      chart.resetZoom(); // Reset zoom to the initial state
+    }
   };
 
   return (
@@ -176,7 +205,12 @@ const StackedBarLineChart = (props) => {
           id="chart"
           style={{ position: "relative", width: "100%", height: "100%" }}
         >
-          <Chart type="bar" options={options} data={dataSet} />
+          <Chart type="bar" ref={chartRef} options={options} data={dataSet} />
+          <div>
+            <button onClick={handleZoomIn}>Zoom In</button>
+            <button onClick={handleZoomOut}>Zoom Out</button>
+            <button onClick={handleResetZoom}>Reset Zoom</button>
+          </div>
         </div>
       </Card>
     </>
