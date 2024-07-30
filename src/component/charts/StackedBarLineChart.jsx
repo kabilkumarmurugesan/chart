@@ -69,35 +69,33 @@ const StackedBarLineChart = (props) => {
           },
         };
       });
-      if (dataSet.datasets[1].data < 5) {
-        setDataSet((prevData) => {
-          const newLabels = [...props.data.labels];
-          const newBarData = [...props.data.datasets[1].data];
-          const newLineData = [...props.data.datasets[1].data];
-          data[props.line].forEach((item) => {
-            const [hours, minutes, seconds] = item.interval.split(":");
-            const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
-              hours >= 12 ? "PM" : "AM"
-            }`;
-            newLabels.push(time);
-            newLineData.push(item.count);
-          });
-
-          return {
-            labels: newLabels,
-            datasets: [
-              {
-                ...prevData.datasets[0],
-                data: newLineData,
-              },
-              {
-                ...prevData.datasets[1],
-                data: newBarData,
-              },
-            ],
-          };
+      setDataSet((prevData) => {
+        const newLabels = [...props.data.labels];
+        const newBarData = [...props.data.datasets[1].data];
+        const newLineData = [...props.data.datasets[1].data];
+        data[props.line].forEach((item) => {
+          const [hours, minutes, seconds] = item.interval.split(":");
+          const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
+            hours >= 12 ? "PM" : "AM"
+          }`;
+          newLabels.push(time);
+          newLineData.push(item.count);
         });
-      }
+
+        return {
+          labels: newLabels,
+          datasets: [
+            {
+              ...prevData.datasets[0],
+              data: newLineData,
+            },
+            {
+              ...prevData.datasets[1],
+              data: newBarData,
+            },
+          ],
+        };
+      });
     });
   }, [intervals]);
 

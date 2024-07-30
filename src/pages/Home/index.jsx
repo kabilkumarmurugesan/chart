@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Box, useTheme } from "@mui/material";
-import ENV from "../../utilities/ENV";
 import AppContainer from "../../component/Layout/AppContainer";
 import AppHeader from "../../component/Layout/AppHeader";
 import ShiftContext from "../../utilities/Context/shiftContext";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchShiftTarget } from "../../api/TargetData";
 
 function Home() {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const targetList = useSelector((state) => state.ShiftTarget.data);
   const { primary } = theme.palette;
   const [refreshRate, setRefreshRate] = useState(30000);
   const [ShowShift, setShowShift] = useState("Day");
@@ -14,20 +17,29 @@ function Home() {
   const [shiftHours, setShiftHours] = useState(true);
   const [refreshStatus, setRefreshStatus] = useState(true);
   const [isSystem, setIsSystem] = useState(true);
-  const [targetList, setTargetList] = useState([]);
 
   useEffect(() => {
     const dates = new Date();
     if (ShowShiftDate === "Today") {
       let formattedDate = dates.toISOString().split("T")[0];
-      getShiftTarget(formattedDate);
+      dispatch(
+        fetchShiftTarget({
+          isSystem,
+          data: formattedDate,
+        })
+      );
     } else {
       const formattedDate = `${dates.getFullYear()}-${
         dates.getMonth() + 1
       }-${dates.getDate()}`;
       let currentDateString = new Date(formattedDate);
       let date = currentDateString.toISOString().split("T")[0];
-      getShiftTarget(date);
+      dispatch(
+        fetchShiftTarget({
+          isSystem,
+          date,
+        })
+      );
     }
   }, [isSystem, ShowShiftDate]);
 
@@ -55,15 +67,6 @@ function Home() {
 
   const handleShiftTarget = (e) => {
     setIsSystem(e.target.checked);
-  };
-
-  const getShiftTarget = async (date) => {
-    try {
-      const res = await ENV.get(`/getTarget?isSystem=${isSystem}&date=${date}`);
-      setTargetList(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const contextValue = {
