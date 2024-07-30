@@ -32,15 +32,15 @@ function Home() {
   }, [isSystem, ShowShiftDate]);
 
   const handleOnShift = (e) => {
-    setShiftHours((pre) => e.target.checked);
+    setShiftHours(e.target.checked);
   };
 
   const handleRefresh = (e) => {
-    let temp = !e.currentTarget.checked ? 30000 : 45000;
+    let temp = e.target.checked ? 45000 : 30000;
     setRefreshRate(temp);
   };
 
-  const handleRefreshStatus = (e) => {
+  const handleRefreshStatus = () => {
     setRefreshStatus(!refreshStatus);
   };
 
@@ -50,21 +50,20 @@ function Home() {
 
   const handleShiftDateUpdate = (e) => {
     let temp = e.currentTarget.innerText;
-    setShowShiftDate(() => temp);
+    setShowShiftDate(temp);
   };
 
   const handleShiftTarget = (e) => {
-    setIsSystem((pre) => e.target.checked);
+    setIsSystem(e.target.checked);
   };
 
   const getShiftTarget = async (date) => {
-    ENV.get(`/getTarget?isSystem=${isSystem}&date=${date}`)
-      .then((res) => {
-        setTargetList(res.data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const res = await ENV.get(`/getTarget?isSystem=${isSystem}&date=${date}`);
+      setTargetList(res.data.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const contextValue = {

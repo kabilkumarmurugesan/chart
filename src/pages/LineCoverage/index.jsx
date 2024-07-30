@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AppHeader from "../../component/Layout/AppHeader";
-// import RadioBtn from "../../component/RadioBtn";
 import { useTheme } from "@emotion/react";
 import StackedBarLineChart from "../../component/charts/StackedBarLineChart";
 import CommonService from "../../utilities/CommonService";
