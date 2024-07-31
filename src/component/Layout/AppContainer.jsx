@@ -9,6 +9,7 @@ import ENV from "../../utilities/ENV";
 import CommonService from "../../utilities/CommonService";
 import ShiftContext from "../../utilities/Context/shiftContext";
 import SingleShiftHrs from "../../pages/SingleShiftHrs";
+import { useSelector } from "react-redux";
 
 const ShiftCardDetailList = [
   { title: "MFG ORDER", value: 2 },
@@ -24,12 +25,12 @@ const AppContainer = () => {
     refreshRate,
     shiftHours,
     refreshStatus,
-    targetList,
     isSystem,
   } = useContext(ShiftContext);
 
   const theme = useTheme();
   const { primary } = theme.palette;
+  const targetList = useSelector((state) => state.shiftTarget.data);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [targetOne, setTargetOne] = useState(10);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
@@ -542,7 +543,6 @@ const AppContainer = () => {
                       secoundShiftTiming={secoundShiftTiming}
                       firstShiftTiming={firstShiftTiming}
                       categories={categories}
-                      targetList={targetList}
                       yesterdayDate={yesterdayDate}
                       todayDate={todayDate}
                       lastBarValue={lastBarValue}
@@ -579,7 +579,6 @@ const AppContainer = () => {
                   <FullShiftOverall
                     targetOne={targetOne}
                     ShowShiftDate={ShowShiftDate}
-                    targetList={targetList}
                     handleSlidechange={handleSlidechange}
                     firstResponse={firstResponse}
                     visibleQRCodeIndex={visibleQRCodeIndex}

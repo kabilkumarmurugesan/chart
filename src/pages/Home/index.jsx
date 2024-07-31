@@ -9,7 +9,6 @@ import { fetchShiftTarget } from "../../api/TargetData";
 function Home() {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const targetList = useSelector((state) => state.ShiftTarget.data);
   const { primary } = theme.palette;
   const [refreshRate, setRefreshRate] = useState(30000);
   const [ShowShift, setShowShift] = useState("Day");
@@ -82,7 +81,6 @@ function Home() {
     ShowShiftDate,
     refreshStatus,
     shiftHours,
-    targetList,
   };
 
   return (

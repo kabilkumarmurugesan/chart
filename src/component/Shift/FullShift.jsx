@@ -30,7 +30,7 @@ const FullShift = ({
   targetOne,
   shiftType,
 }) => {
-  const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
+  const { ShowShiftDate, shiftHours } = useContext(ShiftContext);
 
   const handleSlidechanges = () => {
     handleSlidechange();
@@ -50,7 +50,6 @@ const FullShift = ({
               <BarChart
                 height={"33vh"}
                 targetOne={targetOne}
-                targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 handleButtonClick={handleButtonClick}
                 handleSlidechange={handleSlidechanges}
@@ -63,7 +62,6 @@ const FullShift = ({
               <BarChartLive
                 height={"35vh"}
                 targetOne={targetOne}
-                targetList={targetList}
                 lastBarValue={currentShift === "shiftA" && lastBarValue}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 handleButtonClick={handleButtonClick}
@@ -89,7 +87,6 @@ const FullShift = ({
             {currentShift === "shiftA" ? (
               <BarChart
                 height={"33vh"}
-                targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 handleButtonClick={handleButtonClick}
                 handleSlidechange={handleSlidechanges}
@@ -102,7 +99,6 @@ const FullShift = ({
             ) : (
               <BarChartLive
                 height={"35vh"}
-                targetList={targetList}
                 targetOne={targetOne}
                 lastBarValue={currentShift === "shiftB" && lastBarValue}
                 animations={false}

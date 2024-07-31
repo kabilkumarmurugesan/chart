@@ -6,7 +6,6 @@ import ShiftHeader from "../component/Shift/ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../asset/gif/emoj.png";
 import sadEmoji from "../asset/gif/SadEmoji.png";
-import { CommonAPIService } from "../utilities/CommonAPI";
 import ArrowNavigation from "../component/Card/ArrowNavigation";
 import ShiftContext from "../utilities/Context/shiftContext";
 import { useTheme } from "@emotion/react";
@@ -15,7 +14,8 @@ import CommonService from "../utilities/CommonService";
 import BasicTable from "../component/Table/Table";
 import StackedBarLineChart from "../component/charts/StackedBarLineChart";
 import RadioBtn from "../component/RadioBtn";
-import { socket } from "../utilities/socket";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEmojiStatus } from "../api/EmojiStatus";
 
 const SingleShiftHrs = ({
   categories,
@@ -23,7 +23,6 @@ const SingleShiftHrs = ({
   handleSlidechange,
   response,
   hrsResponse,
-  lastBarValue,
   visibleQRCodeIndex,
   todayDate,
   cardData,
@@ -35,22 +34,22 @@ const SingleShiftHrs = ({
   intervals,
   currentHour,
 }) => {
+  
   const theme = useTheme();
+
+  const dispatch = useDispatch();
+
   const { ShowShiftDate } = useContext(ShiftContext);
-  const [isHappy, setIsHappy] = useState();
+
+  const liveData = useSelector((state) => state.currentHrs);
+  const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [liveData, setLiveData] = useState([]);
 
   useEffect(() => {
-    CommonAPIService.getEmojiStatus(isShift, liveData.totalCount, setIsHappy);
+    let count = liveData.totalCount;
+    dispatch(fetchEmojiStatus({ isShift, count }));
   }, [isShift, liveData.totalCount]);
-
-  useEffect(() => {
-    socket.on("LastThreeHourdata", (data) => {
-      setLiveData(() => data);
-    });
-  }, []);
 
   return (
     <Box sx={{ p: 2 }}>

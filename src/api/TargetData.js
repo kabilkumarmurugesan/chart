@@ -2,7 +2,7 @@ import {
   fetchShiftTargetStart,
   fetchShiftTargetSuccess,
   fetchShiftTargetFailure,
-} from "../features/shiftTarget.js";
+} from "../Slicer/shiftTargetSlice.js";
 import ENV from "../utilities/ENV.js";
 
 export const fetchShiftTarget = (payload) => async (dispatch) => {

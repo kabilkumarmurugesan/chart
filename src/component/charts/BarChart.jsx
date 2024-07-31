@@ -16,6 +16,7 @@ import "../../asset/css/BarChartLive.css";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import CommonService from "../../utilities/CommonService";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -37,12 +38,12 @@ const BarChart = ({
   response,
   height,
   shiftType,
-  targetList,
   targetOne,
   handleButtonClick,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
+  const targetList = useSelector((state) => state.shiftTarget.data);
   const [series, setSeries] = useState([]);
   const [seriesLabel, setSeriesLabel] = useState({});
   const [annotationsList, setAnnotationsList] = useState({

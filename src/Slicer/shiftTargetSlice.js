@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const ShiftTargetSlice = createSlice({
-  name: "ShiftTarget",
+  name: "shiftTarget",
   initialState: {
     data: [],
     loading: false,

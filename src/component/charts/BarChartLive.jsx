@@ -17,6 +17,7 @@ import { Card, useTheme } from "@mui/material";
 import "chartjs-plugin-datalabels";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import CommonService from "../../utilities/CommonService";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -44,13 +45,13 @@ const BarChartLive = ({
   setVisibleQRCodeIndex,
   handleButtonClick,
   visibleQRCodeIndex,
-  targetList,
   isCurrentShift,
   targetOne,
   shiftType,
 }) => {
   const theme = useTheme();
   const { primary } = theme.palette;
+  const targetList = useSelector((state) => state.shiftTarget.data);
   const [isBlinking, setIsBlinking] = useState(true);
   const [blinkingIndex, setBlinkingIndex] = useState(0);
   const [categoriesList, setCategories] = useState(categories);

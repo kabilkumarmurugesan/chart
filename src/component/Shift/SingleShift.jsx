@@ -8,12 +8,13 @@ import ShiftHeader from "./ShiftHeader";
 import { QRCodeCanvas } from "qrcode.react";
 import smileEmoji from "../../asset/gif/emoj.png";
 import sadEmoji from "../../asset/gif/SadEmoji.png";
-import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
 import ShiftContext from "../../utilities/Context/shiftContext";
 import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
 import CommonService from "../../utilities/CommonService";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEmojiStatus } from "../../api/EmojiStatus";
 
 const SingleShift = ({
   categories,
@@ -37,17 +38,15 @@ const SingleShift = ({
   handleButtonClick,
 }) => {
   const theme = useTheme();
-  const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
-  const [isHappy, setIsHappy] = useState();
+  const dispatch = useDispatch();
+  const { ShowShiftDate, shiftHours } = useContext(ShiftContext);
+  const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
-    CommonAPIService.getEmojiStatus(
-      isShift,
-      lastBarValue.totalCount,
-      setIsHappy
-    );
+    let count = lastBarValue.totalCount;
+    dispatch(fetchEmojiStatus({ isShift, count }));
   }, [isShift]);
 
   return (
@@ -83,7 +82,6 @@ const SingleShift = ({
                     to: 0,
                   },
                 }}
-                targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 handleSlidechange={handleSlidechange}
                 visibleQRCodeIndex={visibleQRCodeIndex}
@@ -99,7 +97,6 @@ const SingleShift = ({
               />
             ) : (
               <BarChartLive
-                targetList={targetList}
                 setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                 visibleQRCodeIndex={visibleQRCodeIndex}
                 handleSlidechange={handleSlidechange}

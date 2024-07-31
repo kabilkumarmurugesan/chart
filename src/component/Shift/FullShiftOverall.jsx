@@ -7,11 +7,12 @@ import BarChartLive from "../charts/BarChartLive";
 import ShiftHeader from "./ShiftHeader";
 import DownTimeAction from "../Table/DownTimeAction";
 import MetricsCard from "../Card/MetricsCard";
-import { CommonAPIService } from "../../utilities/CommonAPI";
 import ArrowNavigation from "../Card/ArrowNavigation";
 import { useTheme } from "@emotion/react";
 import Divider from "@mui/material/Divider";
 import ShiftContext from "../../utilities/Context/shiftContext";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEmojiStatus } from "../../api/EmojiStatus";
 
 const FullShiftOverall = ({
   yesterdayDate,
@@ -37,19 +38,15 @@ const FullShiftOverall = ({
   secoundCardData,
   firstCardData,
 }) => {
-  const { ShowShiftDate, shiftHours, targetList } = useContext(ShiftContext);
-
-  const [isHappy, setIsHappy] = useState();
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const { ShowShiftDate, shiftHours } = useContext(ShiftContext);
+  const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const theme = useTheme();
 
   useEffect(() => {
-    CommonAPIService.getEmojiStatus(
-      isShift,
-      lastBarValue.totalCount,
-      setIsHappy
-    );
+    dispatch(fetchEmojiStatus(isShift, lastBarValue.totalCount));
   }, [isShift, lastBarValue.totalCount]);
 
   useEffect(() => {
@@ -84,7 +81,6 @@ const FullShiftOverall = ({
                   visibleQRCodeIndex={visibleQRCodeIndex}
                   categories={categories}
                   response={firstResponse}
-                  targetList={targetList}
                   handleButtonClick={handleSlidechanges}
                   currentShift={currentShift}
                   isCurrentShift={currentShift === "shiftA"}
@@ -109,7 +105,6 @@ const FullShiftOverall = ({
                 <BarChartLive
                   height={"24vh"}
                   currentShift={currentShift}
-                  targetList={targetList}
                   targetOne={targetOne}
                   setVisibleQRCodeIndex={setVisibleQRCodeIndex}
                   handleSlidechange={handleSlidechanges}
