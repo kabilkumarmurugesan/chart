@@ -3,7 +3,7 @@ import { Box, useTheme } from "@mui/material";
 import AppContainer from "../../component/Layout/AppContainer";
 import AppHeader from "../../component/Layout/AppHeader";
 import ShiftContext from "../../utilities/Context/shiftContext";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchShiftTarget } from "../../api/TargetData";
 
 function Home() {

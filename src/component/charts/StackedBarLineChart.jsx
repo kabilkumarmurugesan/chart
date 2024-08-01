@@ -16,6 +16,8 @@ import zoomPlugin from "chartjs-plugin-zoom"; // Import the zoom plugin
 import { Card } from "@mui/material";
 import { socket } from "../../utilities/socket";
 import AppHeader from "../Layout/AppHeader";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentHrs } from "../../api/Socket";
 
 ChartJS.register(
   LinearScale,
@@ -32,7 +34,8 @@ ChartJS.register(
 
 const StackedBarLineChart = (props) => {
   const chartRef = useRef(null);
-
+  const dispatch = useDispatch();
+  const currentHrs = useSelector((state) => state.currentHrs);
   const { data, intervals, type } = props;
   const [dataSet, setDataSet] = useState(data);
   const [annotationsList, setAnnotationsList] = useState({
@@ -44,14 +47,15 @@ const StackedBarLineChart = (props) => {
     },
   });
 
-  // useEffect(() => {
-  //   setDataSet(data);
-  // }, [data]);
+  useEffect(() => {
+     dispatch(fetchCurrentHrs( { duration: intervals / 1000 }));
+  }, [intervals]);
 
   useEffect(() => {
-    const payload = { duration: intervals / 1000 };
-    socket.send(JSON.stringify(payload));
-    socket.on("getCurrentHour", (data) => {
+    let data = currentHrs.data;
+    if (data[props.line] && data[props.line].length > 0) {
+      console.log(props.line, "data[props.line] =>", data);
+
       setAnnotationsList((prevData) => {
         return {
           ...prevData,
@@ -96,8 +100,8 @@ const StackedBarLineChart = (props) => {
           ],
         };
       });
-    });
-  }, [intervals]);
+    }
+  }, [currentHrs]);
 
   const options = {
     animation: {
