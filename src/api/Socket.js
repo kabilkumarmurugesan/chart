@@ -2,7 +2,7 @@ import {
   fetchLastThreeHrsAvgSuccess,
   fetchLastThreeHrsAvgFailure,
   fetchLastThreeHrsAvgStart,
-} from "../Slicer/LastThreeHrsAvgSilcer.js";
+} from "../Slicer/LastThreeHrsAvgSilce.js";
 import {
   fetchCurrentHrsSuccess,
   fetchCurrentHrsFailure,

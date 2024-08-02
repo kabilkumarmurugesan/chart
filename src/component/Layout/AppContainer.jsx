@@ -9,16 +9,10 @@ import ENV from "../../utilities/ENV";
 import CommonService from "../../utilities/CommonService";
 import ShiftContext from "../../utilities/Context/shiftContext";
 import SingleShiftHrs from "../../pages/SingleShiftHrs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductionData } from "../../api/ProductionData";
 
-const ShiftCardDetailList = [
-  { title: "MFG ORDER", value: 2 },
-  { title: "MTM", value: 2 },
-  { title: "MONTH TARGET", value: 11200 },
-  { title: "MONTH ACTUAL", value: 8150 },
-];
-
-const AppContainer = () => {
+const AppContainer = (props) => {
   const {
     ShowShift,
     ShowShiftDate,
@@ -29,8 +23,10 @@ const AppContainer = () => {
   } = useContext(ShiftContext);
 
   const theme = useTheme();
+  const dispatch = useDispatch();
   const { primary } = theme.palette;
   const targetList = useSelector((state) => state.shiftTarget.data);
+  const productionData = useSelector((state) => state.productionData);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [targetOne, setTargetOne] = useState(10);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
@@ -256,16 +252,43 @@ const AppContainer = () => {
       return categoriesList;
     });
     const dates = new Date();
+    let temp = "";
+    if (currentSlide === 0 && ShowShift === "Day") {
+      temp = shiftHours
+        ? `&duration=6hrs&shift=${shiftType}`
+        : `&duration=9hrs&shift=${shiftType}`;
+    } else {
+      temp = shiftHours
+        ? `&duration=12hrs&shift=1st`
+        : `&duration=9hrs&shift=${shiftType}`;
+    }
     if (targetList !== undefined) {
       if (ShowShiftDate === "Today") {
         date = CommonService.formatDate(new Date());
         const formattedDate = `${dates.getFullYear()}-${
           dates.getMonth() + 1
         }-${dates.getDate()}`;
-        getProductData("L1", categoriesList, formattedDate);
+        console.log("props.locale", props.locale);
+        dispatch(
+          fetchProductionData({
+            Line: props.locale.line,
+            targetOne,
+            date: formattedDate,
+            isSystem,
+            temp,
+          })
+        );
       } else {
         date = yesterdayDate;
-        getProductData("L1", categoriesList, yesterdayDate);
+        dispatch(
+          fetchProductionData({
+            Line: props.locale.line,
+            targetOne,
+            date: yesterdayDate,
+            isSystem,
+            temp,
+          })
+        );
       }
     }
     setTodayDate(date);
@@ -279,6 +302,12 @@ const AppContainer = () => {
     refreshRate,
     apiControll,
   ]);
+
+  useEffect(() => {
+    if (productionData.data.shiftB) {
+      getProductData(categories, productionData);
+    }
+  }, [categories, productionData]);
 
   useEffect(() => {
     socket.on("dataUpdate", (data) => {
@@ -309,117 +338,91 @@ const AppContainer = () => {
     }
   }, [lastBarValue, cardData]);
 
-  const getProductData = async (line, categoriesList, formattedDate) => {
-    const date = CommonService.formatDates(formattedDate);
-    let temp = "";
-    if (currentSlide === 0 && ShowShift === "Day") {
-      temp = shiftHours
-        ? `&duration=6hrs&shift=${shiftType}`
-        : `&duration=9hrs&shift=${shiftType}`;
-    } else {
-      temp = shiftHours
-        ? `&duration=12hrs&shift=1st`
-        : `&duration=9hrs&shift=${shiftType}`;
-    }
+  const getProductData = async (categoriesList, result) => {
+    let ShiftCardDetailListMFG = props.locale.shift_card_detail_list;
+    let shiftACardDetailListMFG = [];
+    let shiftBCardDetailListMFG = [];
 
-    try {
-      const response = await ENV.get(
-        `productiondata?line=${line}${temp}&date=${date}&target=${targetOne}&isSystem=${isSystem}`
-      );
-      const result = response.data;
-      const shifts = ["shiftA", "shiftB"];
-      let ShiftCardDetailListMFG = ShiftCardDetailList;
-      let shiftACardDetailListMFG = [];
-      let shiftBCardDetailListMFG = [];
+    props.locale.shifts.forEach((shift, index) => {
+      const dome = categoriesList.map((element, i) => {
+        const res = result.data[shift].find((item) => item.x === element);
+        ShiftCardDetailListMFG[0].value =
+          result.data[`${shift}Details`].mfgOrderCount;
+        ShiftCardDetailListMFG[1].value =
+          result.data[`${shift}Details`].mfgProductCount;
+        return {
+          id: res
+            ? res.id
+            : shift === "shiftA"
+            ? i + index
+            : i +
+              (index === 0
+                ? shiftType === "1st"
+                  ? 12
+                  : 13
+                : shiftType === "1st"
+                ? 24
+                : 25),
 
-      shifts.forEach((shift, index) => {
-        const dome = categoriesList.map((element, i) => {
-          const res = result.data[shift].find((item) => item.x === element);
-          ShiftCardDetailListMFG[0].value =
-            result.data[`${shift}Details`].mfgOrderCount;
-          ShiftCardDetailListMFG[1].value =
-            result.data[`${shift}Details`].mfgProductCount;
-          return {
-            id: res
-              ? res.id
-              : shift === "shiftA"
-              ? i + index
-              : i +
-                (index === 0
-                  ? shiftType === "1st"
-                    ? 12
-                    : 13
-                  : shiftType === "1st"
-                  ? 24
-                  : 25),
-
-            x: res ? res.x : element,
-            y: res ? res.y : "-",
-            z: res ? res.z : "-",
-            headcount: res ? res.headcount : "-",
-            upph: res ? res.upph : "-",
-            product_id: res ? res.product_id : "-",
-            target: res ? res.target : "-",
-            comments: res ? res.comments : "-",
-            op_date: res ? res.op_date : "-",
-            line: res ? res.line : "-",
-            downtime: res ? res.downtime : "-",
-          };
-        });
-
-        if (shift === "shiftA") {
-          shiftACardDetailListMFG = ShiftCardDetailListMFG;
-          setFirstResponse(dome);
-        } else {
-          shiftBCardDetailListMFG = ShiftCardDetailListMFG;
-          setSecoundResponse(dome);
-        }
+          x: res ? res.x : element,
+          y: res ? res.y : "-",
+          z: res ? res.z : "-",
+          headcount: res ? res.headcount : "-",
+          upph: res ? res.upph : "-",
+          product_id: res ? res.product_id : "-",
+          target: res ? res.target : "-",
+          comments: res ? res.comments : "-",
+          op_date: res ? res.op_date : "-",
+          line: res ? res.line : "-",
+          downtime: res ? res.downtime : "-",
+        };
       });
 
-      ShiftCardDetailListMFG = {
-        shiftA: shiftACardDetailListMFG,
-        shiftB: shiftBCardDetailListMFG,
-      };
+      if (shift === "shiftA") {
+        shiftACardDetailListMFG = ShiftCardDetailListMFG;
+        setFirstResponse(dome);
+      } else {
+        shiftBCardDetailListMFG = ShiftCardDetailListMFG;
+        setSecoundResponse(dome);
+      }
+    });
 
-      const overallData = [
-        {
-          label: "OVERALL TARGET",
-          value: result.data.overAllDetails.overAllTarget,
-          background: "#241773",
-        },
-        {
-          label: "OVERALL ACTUAL",
-          value: result.data.overAllDetails.overAllActual,
-          background: "#3d860b",
-        },
-        {
-          label: "OVERALL UPH",
-          value: result.data.overAllDetails.overAllUPH,
-          background: "#483456",
-        },
-        {
-          label: "DOWN TIME",
-          value: result.data.overAllDetails.overAlldownTime,
-          background: "#e1140a",
-        },
-      ];
-      setCardData(overallData);
-      setCurrentShift(result.data.currentShift);
-      setFirstCardData(result.data.shiftADetails);
-      setSecoundCardData(result.data.shiftBDetails);
-      setFirstShiftTiming(result.data.shiftADetails.shiftTiming);
-      setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
-      setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
-      setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
-      // ShiftCardDetailList[0].value =
-      //   result.data[`${result.data.currentShift}Details`].mfgOrderCount;
-      // ShiftCardDetailList[1].value =
-      //   result.data[`${result.data.currentShift}Details`].mfgProductCount;
+    ShiftCardDetailListMFG = {
+      shiftA: shiftACardDetailListMFG,
+      shiftB: shiftBCardDetailListMFG,
+    };
 
-      setMFGCardData(ShiftCardDetailListMFG);
-    } catch (error) {
-      console.error("Error fetching production data:", error);
-    }
+    const overallData = [
+      {
+        label: "OVERALL TARGET",
+        value: result.data.overAllDetails.overAllTarget,
+        background: "#241773",
+      },
+      {
+        label: "OVERALL ACTUAL",
+        value: result.data.overAllDetails.overAllActual,
+        background: "#3d860b",
+      },
+      {
+        label: "OVERALL UPH",
+        value: result.data.overAllDetails.overAllUPH,
+        background: "#483456",
+      },
+      {
+        label: "DOWN TIME",
+        value: result.data.overAllDetails.overAlldownTime,
+        background: "#e1140a",
+      },
+    ];
+    setCardData(overallData);
+    setCurrentShift(result.data.currentShift);
+    setFirstCardData(result.data.shiftADetails);
+    setSecoundCardData(result.data.shiftBDetails);
+    setFirstShiftTiming(result.data.shiftADetails.shiftTiming);
+    setSecoundShiftTiming(result.data.shiftBDetails.shiftTiming);
+    setFirstDowntimeDetails(result.data.shiftADowntimeDetails);
+    setSecoundDowntimeDetails(result.data.shiftBDowntimeDetails);
+    setMFGCardData(ShiftCardDetailListMFG);
   };
 
   const handleSlidechange = (type) => {
@@ -577,6 +580,7 @@ const AppContainer = () => {
                   }}
                 >
                   <FullShiftOverall
+                    {...props}
                     targetOne={targetOne}
                     ShowShiftDate={ShowShiftDate}
                     handleSlidechange={handleSlidechange}
@@ -635,6 +639,7 @@ const AppContainer = () => {
                   }}
                 >
                   <SingleShift
+                    {...props}
                     targetOne={targetOne}
                     handleSlidechange={handleSlidechange}
                     lastBarValue={lastBarValue}
@@ -663,6 +668,7 @@ const AppContainer = () => {
                   }}
                 >
                   <SingleShift
+                    {...props}
                     currentSlide={currentSlide}
                     targetOne={targetOne}
                     handleSlidechange={handleSlidechange}
@@ -698,6 +704,7 @@ const AppContainer = () => {
           {" "}
           {currentSlide === 0 ? (
             <SingleShift
+              {...props}
               handleSlidechange={handleSlidechange}
               lastBarValue={lastBarValue}
               visibleQRCodeIndex={visibleQRCodeIndex}
@@ -724,6 +731,7 @@ const AppContainer = () => {
             />
           ) : (
             <SingleShiftHrs
+              {...props}
               categories={categories}
               response={dataSet}
               hrsResponse={hrsResponse}

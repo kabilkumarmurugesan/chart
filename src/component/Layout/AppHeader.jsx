@@ -58,7 +58,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function AppHeader() {
+export default function AppHeader(props) {
   const {
     handleShiftUpdate,
     handleRefresh,
@@ -120,7 +120,7 @@ export default function AppHeader() {
               paddingLeft: "10px",
             }}
           >
-            SMART MFG PRODUCTIVITY DASHBOARD
+            {props.locale.app_title}            
           </Typography>
           <Box
             sx={{

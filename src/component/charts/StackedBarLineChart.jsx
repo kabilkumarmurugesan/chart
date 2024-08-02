@@ -14,7 +14,6 @@ import {
 import { Chart } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom"; // Import the zoom plugin
 import { Card } from "@mui/material";
-import { socket } from "../../utilities/socket";
 import AppHeader from "../Layout/AppHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentHrs } from "../../api/Socket";
@@ -48,15 +47,13 @@ const StackedBarLineChart = (props) => {
   });
 
   useEffect(() => {
-     dispatch(fetchCurrentHrs( { duration: intervals / 1000 }));
+    dispatch(fetchCurrentHrs({ duration: intervals / 1000 }));
   }, [intervals]);
 
   useEffect(() => {
     let data = currentHrs.data;
     if (data[props.line] && data[props.line].length > 0) {
-      console.log(props.line, "data[props.line] =>", data);
-
-      setAnnotationsList((prevData) => {
+       setAnnotationsList((prevData) => {
         return {
           ...prevData,
           label1: {

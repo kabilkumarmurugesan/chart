@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import radioList from "../utilities/JSON/radioList.json";
+import RadioList from "../utilities/JSON/RadioList.json";
 import { useTheme } from "@emotion/react";
 
 function RadioBtn(props) {
@@ -45,8 +45,8 @@ function RadioBtn(props) {
           value={inputs}
           onChange={handleInputChange}
         >
-          {radioList &&
-            radioList.map((item, index) => (
+          {RadioList &&
+            RadioList.map((item, index) => (
               <FormControlLabel
                 key={index}
                 id="control-radio"
