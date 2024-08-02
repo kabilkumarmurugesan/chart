@@ -5,6 +5,7 @@ import AppHeader from "../../component/Layout/AppHeader";
 import ShiftContext from "../../utilities/Context/shiftContext";
 import { useDispatch } from "react-redux";
 import { fetchShiftTarget } from "../../api/TargetData";
+import locale from "../../utilities/local/local";
 
 function Home() {
   const theme = useTheme();
@@ -85,9 +86,9 @@ function Home() {
 
   return (
     <ShiftContext.Provider value={contextValue}>
-      <AppHeader />
+      <AppHeader locale={locale} />
       <Box>
-        <AppContainer />
+        <AppContainer locale={locale} />
       </Box>
       <Box
         style={{

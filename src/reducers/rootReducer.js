@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   shiftTarget: ShiftTargetReducer,
   emojiStatus: EmojiStatusReducer,
   currentHrs: CurrentHrsReducer,
-  LastThreeHrsAvg: LastThreeHrsAvgReducer,
+  lastThreeHrsAvg: LastThreeHrsAvgReducer,
   productionData: ProductionDataReducer,
 });
 
