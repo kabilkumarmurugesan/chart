@@ -10,7 +10,10 @@ import CommonService from "../../utilities/CommonService";
 import ShiftContext from "../../utilities/Context/shiftContext";
 import SingleShiftHrs from "../../pages/SingleShiftHrs";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductionData } from "../../api/ProductionData";
+import {
+  fetchLastTwoHour,
+  fetchProductionData,
+} from "../../api/ProductionData";
 
 const AppContainer = (props) => {
   const {
@@ -27,6 +30,7 @@ const AppContainer = (props) => {
   const { primary } = theme.palette;
   const targetList = useSelector((state) => state.shiftTarget.data);
   const productionData = useSelector((state) => state.productionData);
+  const lastThreeHrsData = useSelector((state) => state.lastThreeHrsData);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [targetOne, setTargetOne] = useState(10);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
@@ -142,8 +146,14 @@ const AppContainer = (props) => {
   }, [targetList]);
 
   useEffect(() => {
-    getHrsProductData();
+    dispatch(fetchLastTwoHour({ Line: "L1" }));
   }, [currentHour]);
+
+  useEffect(() => {
+    lastThreeHrsData.data &&
+      lastThreeHrsData.data.length > 0 &&
+      handleHrsProductData(lastThreeHrsData);
+  }, [lastThreeHrsData]);
 
   useEffect(() => {
     let intervalshiftHours = 0;
@@ -446,60 +456,54 @@ const AppContainer = (props) => {
     }
   };
 
-  const getHrsProductData = async () => {
-    try {
-      const response = await ENV.get(`getLastThreeHour?line=L1`);
-      const result = response.data.data;
-      setCurrentHour(new Date().getHours());
-      const dome = result.map((res, i) => {
-        let x = `${CommonService.timeFromater12(
-          res.start_time
-        )} - ${CommonService.timeFromater12(res.end_time)}`;
-        return {
-          id: res ? res.id : i,
-          x: res ? x : "-",
-          y: res ? res.totalcount : "-",
-          z: res ? res.target : "-",
-          headcount: res ? res.headcount : "-",
-          upph: res ? res.upph : "-",
-          product_id: res ? res.product_id : "-",
-          target: res ? res.target : "-",
-          comments: res ? res.comments : "-",
-          op_date: res ? res.op_date : "-",
-          line: res ? res.line : "-",
-          downtime: res ? res.downtime : "-",
-        };
+  const handleHrsProductData = (result) => {
+    setCurrentHour(new Date().getHours());
+    const dome = result.data.map((res, i) => {
+      let x = `${CommonService.timeFromater12(
+        res.start_time
+      )} - ${CommonService.timeFromater12(res.end_time)}`;
+      return {
+        id: res ? res.id : i,
+        x: res ? x : "-",
+        y: res ? res.totalcount : "-",
+        z: res ? res.target : "-",
+        headcount: res ? res.headcount : "-",
+        upph: res ? res.upph : "-",
+        product_id: res ? res.product_id : "-",
+        target: res ? res.target : "-",
+        comments: res ? res.comments : "-",
+        op_date: res ? res.op_date : "-",
+        line: res ? res.line : "-",
+        downtime: res ? res.downtime : "-",
+      };
+    });
+
+    setHrsResponse(dome);
+    setDataSet((prevData) => {
+      let initialLabel = [];
+      const newLineData = [];
+      const newBarData = [];
+      result.data.forEach((res) => {
+        let temp = CommonService.timeFromater12(res.start_time);
+        initialLabel.push(temp);
+        newLineData.push(res.totalcount);
+        newBarData.push(res.totalcount);
       });
 
-      setHrsResponse(dome);
-      setDataSet((prevData) => {
-        let initialLabel = [];
-        const newLineData = [];
-        const newBarData = [];
-        result.forEach((res) => {
-          let temp = CommonService.timeFromater12(res.start_time);
-          initialLabel.push(temp);
-          newLineData.push(res.totalcount);
-          newBarData.push(res.totalcount);
-        });
-
-        return {
-          labels: [...initialLabel],
-          datasets: [
-            {
-              ...prevData.datasets[0],
-              data: newLineData,
-            },
-            {
-              ...prevData.datasets[1],
-              data: newBarData,
-            },
-          ],
-        };
-      });
-    } catch (error) {
-      console.error(error);
-    }
+      return {
+        labels: [...initialLabel],
+        datasets: [
+          {
+            ...prevData.datasets[0],
+            data: newLineData,
+          },
+          {
+            ...prevData.datasets[1],
+            data: newBarData,
+          },
+        ],
+      };
+    });
   };
 
   const handleInterval = (event) => {
