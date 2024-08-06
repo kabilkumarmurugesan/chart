@@ -30,7 +30,7 @@ const AppContainer = (props) => {
   const { primary } = theme.palette;
   const targetList = useSelector((state) => state.shiftTarget.data);
   const productionData = useSelector((state) => state.productionData);
-  const lastThreeHrsData = useSelector((state) => state.lastThreeHrsData);
+  const lastTwoHrsData = useSelector((state) => state.lastTwoHrsData);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [targetOne, setTargetOne] = useState(10);
   const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
@@ -150,10 +150,10 @@ const AppContainer = (props) => {
   }, [currentHour]);
 
   useEffect(() => {
-    lastThreeHrsData.data &&
-      lastThreeHrsData.data.length > 0 &&
-      handleHrsProductData(lastThreeHrsData);
-  }, [lastThreeHrsData]);
+    lastTwoHrsData.data &&
+      lastTwoHrsData.data?.length > 0 &&
+      handleHrsProductData(lastTwoHrsData);
+  }, [lastTwoHrsData]);
 
   useEffect(() => {
     let intervalshiftHours = 0;
@@ -457,6 +457,7 @@ const AppContainer = (props) => {
   };
 
   const handleHrsProductData = (result) => {
+    console.log("result", result);
     setCurrentHour(new Date().getHours());
     const dome = result.data.map((res, i) => {
       let x = `${CommonService.timeFromater12(

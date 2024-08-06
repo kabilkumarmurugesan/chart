@@ -23,8 +23,8 @@ const LastThreeHrsAvg = createSlice({
   },
 });
 
-const LastThreeHrsData = createSlice({
-  name: "LastThreeHrsData",
+const LastTwoHrsData = createSlice({
+  name: "LastTwoHrsData",
   initialState: {
     data: [],
     loading: false,
@@ -48,9 +48,9 @@ const LastThreeHrsData = createSlice({
 
 export const {
   fetchLastTwoHrsDataStart,
-  fetchLastThreeHrsDataSuccess,
-  fetchLastThreeHrsDataFailure,
-} = LastThreeHrsData.actions;
+  fetchLastTwoHrsDataSuccess,
+  fetchLastTwoHrsDataFailure,
+} = LastTwoHrsData.actions;
 
 export const {
   fetchLastThreeHrsAvgStart,
@@ -58,6 +58,6 @@ export const {
   fetchLastThreeHrsAvgFailure,
 } = LastThreeHrsAvg.actions;
 
-export const LastThreeHrsDataReducer = LastThreeHrsData.reducer;
+export const LastTwoHrsDataReducer = LastTwoHrsData.reducer;
 
 export const LastThreeHrsAvgReducer = LastThreeHrsAvg.reducer;

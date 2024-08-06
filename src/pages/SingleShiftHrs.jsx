@@ -40,7 +40,7 @@ const SingleShiftHrs = ({
   const dispatch = useDispatch();
 
   const { ShowShiftDate } = useContext(ShiftContext);
-  const liveData = useSelector((state) => state.lastThreeHrsAvg);
+  const liveData = useSelector((state) => state.lastTwoHrsData);
   const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
