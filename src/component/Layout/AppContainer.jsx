@@ -268,7 +268,6 @@ const AppContainer = (props) => {
         const formattedDate = `${dates.getFullYear()}-${
           dates.getMonth() + 1
         }-${dates.getDate()}`;
-        console.log("props.locale", props.locale);
         dispatch(
           fetchProductionData({
             Line: props.locale.line,

@@ -16,6 +16,7 @@ import StackedBarLineChart from "../component/charts/StackedBarLineChart";
 import RadioBtn from "../component/RadioBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmojiStatus } from "../api/EmojiStatus";
+import { fetchLastThreeHrsAvgHrs } from "../api/Socket";
 
 const SingleShiftHrs = ({
   categories,
@@ -39,7 +40,7 @@ const SingleShiftHrs = ({
   const dispatch = useDispatch();
 
   const { ShowShiftDate } = useContext(ShiftContext);
-  const liveData = useSelector((state) => state.lastThree);
+  const liveData = useSelector((state) => state.lastThreeHrsAvg);
   const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
