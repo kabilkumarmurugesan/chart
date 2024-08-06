@@ -17,6 +17,7 @@ import AppHeader from "../component/Layout/AppHeader";
 import RadioBtn from "../component/RadioBtn";
 import { useTheme } from "@emotion/react";
 import CommonService from "../utilities/CommonService";
+import { useDispatch } from "react-redux";
 
 ChartJS.register(
   LinearScale,
@@ -32,6 +33,7 @@ ChartJS.register(
 
 export default function BarLineChart() {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const { primary } = theme.palette;
   const [currentHour, setCurrentHour] = useState(new Date().getHours());
   const [intervals, setIntervals] = useState(60000);

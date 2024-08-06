@@ -16,7 +16,6 @@ import StackedBarLineChart from "../component/charts/StackedBarLineChart";
 import RadioBtn from "../component/RadioBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmojiStatus } from "../api/EmojiStatus";
-import { fetchLastThreeHrsAvgHrs } from "../api/Socket";
 
 const SingleShiftHrs = ({
   categories,
@@ -40,7 +39,6 @@ const SingleShiftHrs = ({
   const dispatch = useDispatch();
 
   const { ShowShiftDate } = useContext(ShiftContext);
-
   const liveData = useSelector((state) => state.lastThree);
   const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
@@ -51,9 +49,9 @@ const SingleShiftHrs = ({
   }, []);
 
   useEffect(() => {
-    let count = liveData.totalCount;
+    let count = liveData.actual;
     dispatch(fetchEmojiStatus({ isShift, count }));
-  }, [isShift, liveData.totalCount]);
+  }, [isShift, liveData.actual]);
 
   return (
     <Box sx={{ p: 2 }}>
@@ -109,7 +107,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {CommonService.convertIntoKiloPrefix(liveData?.target)}
+                        {liveData?.target}
                       </b>
                     </Typography>
                   </Box>
@@ -142,7 +140,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {CommonService.convertIntoKiloPrefix(liveData?.actual)}
+                        {liveData?.actual}
                       </b>
                     </Typography>
                   </Box>
@@ -176,9 +174,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {CommonService.convertIntoKiloPrefix(
-                          liveData?.shiftUph
-                        )}
+                        {liveData?.shiftUph}
                       </b>
                     </Typography>
                   </Box>
@@ -210,9 +206,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {CommonService.convertIntoKiloPrefix(
-                          cardData?.shiftdownTime
-                        )}
+                        {cardData?.shiftdownTime}
                       </b>
                     </Typography>
                   </Box>
