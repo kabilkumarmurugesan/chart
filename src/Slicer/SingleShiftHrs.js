@@ -46,6 +46,35 @@ const LastTwoHrsData = createSlice({
   },
 });
 
+const LastHrsData = createSlice({
+  name: "LastHrsData",
+  initialState: {
+    data: [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    fetchLastHrsDataStart: (state) => {
+      state.loading = true;
+    },
+    fetchLastHrsDataSuccess: (state, action) => {
+      state.loading = false;
+      state.data = action.payload;
+      state.error = null;
+    },
+    fetchLastHrsDataFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
+});
+
+export const {
+  fetchLastHrsDataStart,
+  fetchLastHrsDataSuccess,
+  fetchLastHrsDataFailure,
+} = LastHrsData.actions;
+
 export const {
   fetchLastTwoHrsDataStart,
   fetchLastTwoHrsDataSuccess,
@@ -57,6 +86,8 @@ export const {
   fetchLastThreeHrsAvgSuccess,
   fetchLastThreeHrsAvgFailure,
 } = LastThreeHrsAvg.actions;
+
+export const LastHrsDataReducer = LastHrsData.reducer;
 
 export const LastTwoHrsDataReducer = LastTwoHrsData.reducer;
 

@@ -3,6 +3,7 @@ import { ShiftTargetReducer } from "../Slicer/shiftTargetSlice";
 import { EmojiStatusReducer } from "../Slicer/EmojiStatusSlice";
 import { CurrentHrsReducer } from "../Slicer/CurrentHrsSilce";
 import {
+  LastHrsDataReducer,
   LastThreeHrsAvgReducer,
   LastTwoHrsDataReducer,
 } from "../Slicer/SingleShiftHrs";
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   currentHrs: CurrentHrsReducer,
   lastThreeHrsAvg: LastThreeHrsAvgReducer,
   lastTwoHrsData: LastTwoHrsDataReducer,
+  lastHrsData: LastHrsDataReducer,
   productionData: ProductionDataReducer,
 });
 

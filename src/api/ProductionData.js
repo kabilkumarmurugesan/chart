@@ -7,6 +7,9 @@ import {
   fetchLastTwoHrsDataStart,
   fetchLastTwoHrsDataSuccess,
   fetchLastTwoHrsDataFailure,
+  fetchLastHrsDataStart,
+  fetchLastHrsDataSuccess,
+  fetchLastHrsDataFailure,
 } from "../Slicer/SingleShiftHrs.js";
 import CommonService from "../utilities/CommonService.js";
 import ENV from "../utilities/ENV.js";
@@ -19,7 +22,6 @@ export const fetchProductionData = (payload) => async (dispatch) => {
       `productiondata?line=${payload.Line}${payload.temp}&date=${date}&target=${payload.targetOne}&isSystem=${payload.isSystem}`
     );
     dispatch(fetchProductionDataSuccess(response.data.data));
-    return response.data.data;
   } catch (error) {
     dispatch(fetchProductionDataFailure(error.message));
   }
@@ -30,8 +32,19 @@ export const fetchLastTwoHour = (payload) => async (dispatch) => {
   try {
     const response = await ENV.get(`getLastThreeHour?line=${payload.Line}`);
     dispatch(fetchLastTwoHrsDataSuccess(response.data.data));
-    return response.data.data;
   } catch (error) {
     dispatch(fetchLastTwoHrsDataFailure(error.message));
+  }
+};
+
+export const fetchLastHour = (payload) => async (dispatch) => {
+  dispatch(fetchLastHrsDataStart());
+  try {
+    const response = await ENV.get(
+      `getLastHour?duration=${payload.duration / 1000}`
+    );
+    dispatch(fetchLastHrsDataSuccess(response.data.data));
+  } catch (error) {
+    dispatch(fetchLastHrsDataFailure(error.message));
   }
 };
