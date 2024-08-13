@@ -15,6 +15,7 @@ import {
   fetchProductionData,
 } from "../../api/ProductionData";
 import locale from "../../utilities/local/local";
+import { fetchCurrentHrsDataSuccess } from "../../Slicer/SingleShiftHrs";
 
 const AppContainer = (props) => {
   const {
@@ -33,9 +34,10 @@ const AppContainer = (props) => {
   const productionData = useSelector((state) => state.productionData);
   const lastTwoHrsData = useSelector((state) => state.lastTwoHrsData);
   const lastHrsData = useSelector((state) => state.lastHrsData);
+  const currentHrsData = useSelector((state) => state.currentHrsData);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [targetOne, setTargetOne] = useState(10);
-  const [lastBarValue, setLastBarValue] = useState({}); // Initial value for the last bar of PRODUCT A
+  const [lastBarValue, setLastBarValue] = useState(currentHrsData); // Initial value for the last bar of PRODUCT A
   const [firstResponse, setFirstResponse] = useState([]);
   const [hrsResponse, setHrsResponse] = useState([]);
   const [firstShiftTiming, setFirstShiftTiming] = useState(
@@ -330,16 +332,19 @@ const AppContainer = (props) => {
   }, [categories, productionData]);
 
   useEffect(() => {
-    socket.on("dataUpdate", (data) => {
+    const handleDataUpdate = (data) => {
       setApiControll(data.timeRange);
       if (ShowShiftDate === "Today") {
         setLastBarValue(() => data);
+        dispatch(fetchCurrentHrsDataSuccess(data));
       } else {
         setLastBarValue({});
+        dispatch(fetchCurrentHrsDataSuccess({}));
       }
-    });
+    };
+    socket.on("dataUpdate", handleDataUpdate);
     return () => {
-      socket.off("dataUpdate");
+      socket.off("dataUpdate", handleDataUpdate);
     };
   }, [
     ShowShiftDate,

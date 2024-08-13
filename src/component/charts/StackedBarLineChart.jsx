@@ -16,6 +16,8 @@ import zoomPlugin from "chartjs-plugin-zoom"; // Import the zoom plugin
 import { Card } from "@mui/material";
 import AppHeader from "../Layout/AppHeader";
 import { socket } from "../../utilities/socket";
+import { fetchLastHour, fetchLastTwoHour } from "../../api/ProductionData";
+import { useDispatch } from "react-redux";
 
 ChartJS.register(
   LinearScale,
@@ -32,21 +34,38 @@ ChartJS.register(
 
 const StackedBarLineChart = (props) => {
   const chartRef = useRef(null);
-  const [currentHrs, setcurrentHrs] = useState();
+  const dispatch = useDispatch();
 
+  const [currentHrs, setcurrentHrs] = useState();
   const [dataSet, setDataSet] = useState(props.data);
   const [annotationsList, setAnnotationsList] = useState({
     label1: {
       type: "label",
-      xValue: 2,
-      yValue: 5,
+      xValue: props.data.labels.length - 2,
+      yValue: 40,
       content: [`Time:  ${props.time}`],
+    },
+    label2: {
+      type: "label",
+      xValue: props.data.labels.length - 2, // Position at the last X index
+      yValue: 30, // Position at the bottom of the Y-axis
+      content: [
+        `Cumulative O/P:  ${
+          props.data.datasets[0].data[props.data.datasets[0].data.length - 1]
+        }`,
+      ],
     },
   });
 
   useEffect(() => {
     const handleNewData = (data) => {
-      setcurrentHrs(() => data.L1);
+      const [hours, minutes, seconds] = data.L1.lastEntryTime.split(":");
+      if (minutes === "59") {
+        dispatch(fetchLastTwoHour({ Line: "L1" }));
+        dispatch(fetchLastHour({ duration: props.intervals / 100 }));
+      } else {
+        setcurrentHrs(() => data.L1);
+      }
     };
 
     socket.send(JSON.stringify({ duration: props.intervals / 1000 }));
@@ -69,21 +88,29 @@ const StackedBarLineChart = (props) => {
     const chart = chartRef.current;
     if (chart && data) {
       setAnnotationsList((prevData) => {
+        const lastXIndex = dataSet.labels.length;
+
         return {
           ...prevData,
           label1: {
             type: "label",
-            xValue:
-              dataSet.datasets[0].data.length -
-              dataSet.datasets[0].data.length / 15.6,
-            yValue: data.count / 2,
+            xValue: lastXIndex,
+            yValue: 40,
             content: [`Time:  ${props.time}`],
+            position: "end",
+            align: "end",
+            xAdjust: -20,
+            yAdjust: 20,
           },
           label2: {
             type: "label",
-            xValue: dataSet.labels.length - dataSet.labels.length / 15.6,
-            yValue: data.count / 4,
+            xValue: lastXIndex, // Position at the last X index
+            yValue: 40, // Position at the bottom of the Y-axis
             content: [`Cumulative O/P:  ${data.count}`],
+            position: "end",
+            align: "end",
+            xAdjust: -20,
+            yAdjust: 40,
           },
         };
       });
@@ -185,27 +212,6 @@ const StackedBarLineChart = (props) => {
     },
   };
 
-  const handleZoomIn = () => {
-    const chart = chartRef.current;
-    if (chart) {
-      chart.zoom(1.2); // Zoom in by a factor of 1.2
-    }
-  };
-
-  const handleZoomOut = () => {
-    const chart = chartRef.current;
-    if (chart) {
-      chart.zoom(0.8); // Zoom out by a factor of 0.8
-    }
-  };
-
-  const handleResetZoom = () => {
-    const chart = chartRef.current;
-    if (chart) {
-      chart.resetZoom(); // Reset zoom to the initial state
-    }
-  };
-
   return (
     <>
       {props.type === undefined && <AppHeader type="head" />}
@@ -222,11 +228,6 @@ const StackedBarLineChart = (props) => {
           style={{ position: "relative", width: "100%", height: "100%" }}
         >
           <Chart type="bar" ref={chartRef} options={options} data={dataSet} />
-          {/* <div>
-            <button onClick={handleZoomIn}>Zoom In</button>
-            <button onClick={handleZoomOut}>Zoom Out</button>
-            <button onClick={handleResetZoom}>Reset Zoom</button>
-          </div> */}
         </div>
       </Card>
     </>

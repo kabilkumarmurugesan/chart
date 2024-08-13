@@ -69,8 +69,8 @@ const SingleShiftHrs = ({
             <StackedBarLineChart
               type={"chart"}
               time={`${CommonService.timeFromater12(
-                currentHour - 2
-              )} - ${CommonService.timeFromater12(currentHour)}`}
+                currentHour
+              )} - ${CommonService.timeFromater12(currentHour + 1)}`}
               data={response}
               intervals={intervals}
               line={"L1"}
