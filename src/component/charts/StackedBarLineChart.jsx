@@ -15,8 +15,7 @@ import { Chart } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom"; // Import the zoom plugin
 import { Card } from "@mui/material";
 import AppHeader from "../Layout/AppHeader";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCurrentHrs } from "../../api/Socket";
+import { socket } from "../../utilities/socket";
 
 ChartJS.register(
   LinearScale,
@@ -33,10 +32,9 @@ ChartJS.register(
 
 const StackedBarLineChart = (props) => {
   const chartRef = useRef(null);
-  const dispatch = useDispatch();
-  const currentHrs = useSelector((state) => state.currentHrs);
-  const { data, intervals, type } = props;
-  const [dataSet, setDataSet] = useState(data);
+  const [currentHrs, setcurrentHrs] = useState();
+
+  const [dataSet, setDataSet] = useState(props.data);
   const [annotationsList, setAnnotationsList] = useState({
     label1: {
       type: "label",
@@ -47,41 +45,61 @@ const StackedBarLineChart = (props) => {
   });
 
   useEffect(() => {
-    dispatch(fetchCurrentHrs({ duration: intervals / 1000 }));
-  }, [intervals]);
+    const handleNewData = (data) => {
+      setcurrentHrs(() => data.L1);
+    };
+
+    socket.send(JSON.stringify({ duration: props.intervals / 1000 }));
+    socket.on("getCurrentHour", handleNewData);
+
+    // Cleanup listener on component unmount
+    return () => {
+      socket.off("getCurrentHour", handleNewData);
+    };
+  }, [props.intervals, props.data]);
 
   useEffect(() => {
-    let data = currentHrs.data;
-    if (data[props.line] && data[props.line].length > 0) {
-       setAnnotationsList((prevData) => {
+    if (currentHrs && currentHrs.count) {
+      updateChartData(currentHrs);
+      chartRef.current.update();
+    }
+  }, [currentHrs]);
+
+  const updateChartData = (data) => {
+    const chart = chartRef.current;
+    if (chart && data) {
+      setAnnotationsList((prevData) => {
         return {
           ...prevData,
           label1: {
             type: "label",
-            xValue: data.L1.length - data.L1.length / 15.6,
-            yValue: data.L1[data.L1.length - 1].count / 2,
+            xValue:
+              dataSet.datasets[0].data.length -
+              dataSet.datasets[0].data.length / 15.6,
+            yValue: data.count / 2,
             content: [`Time:  ${props.time}`],
           },
           label2: {
             type: "label",
-            xValue: data.L1.length - data.L1.length / 15.6,
-            yValue: data.L1[data.L1.length - 1].count / 4,
-            content: [`Cumulative O/P:  ${data.L1[data.L1.length - 1].count}`],
+            xValue: dataSet.labels.length - dataSet.labels.length / 15.6,
+            yValue: data.count / 4,
+            content: [`Cumulative O/P:  ${data.count}`],
           },
         };
       });
+
       setDataSet((prevData) => {
-        const newLabels = [...props.data.labels];
-        const newBarData = [...props.data.datasets[1].data];
-        const newLineData = [...props.data.datasets[1].data];
-        data[props.line].forEach((item) => {
-          const [hours, minutes, seconds] = item.interval.split(":");
-          const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
-            hours >= 12 ? "PM" : "AM"
-          }`;
-          newLabels.push(time);
-          newLineData.push(item.count);
-        });
+        const newLabels = [...prevData.labels];
+        const newBarData = [...prevData.datasets[1].data];
+        const newLineData = [...prevData.datasets[0].data];
+
+        const [hours, minutes, seconds] = data.lastEntryTime.split(":");
+        const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
+          hours >= 12 ? "PM" : "AM"
+        }`;
+
+        newLabels.push(time);
+        newLineData.push(data.count);
 
         return {
           labels: newLabels,
@@ -97,8 +115,10 @@ const StackedBarLineChart = (props) => {
           ],
         };
       });
+
+      chart.update(); // Ensure the chart updates with the new data
     }
-  }, [currentHrs]);
+  };
 
   const options = {
     animation: {
@@ -143,11 +163,8 @@ const StackedBarLineChart = (props) => {
         intersect: true,
         callbacks: {
           label: function (tooltipItem) {
-            let label = tooltipItem.label;
-            if (label) {
-              label += ": ";
-            }
-            label += tooltipItem.raw;
+            let label = tooltipItem.label || "";
+            label += `: ${tooltipItem.raw}`;
             return label;
           },
         },
@@ -191,13 +208,13 @@ const StackedBarLineChart = (props) => {
 
   return (
     <>
-      {type === undefined && <AppHeader type="head" />}
+      {props.type === undefined && <AppHeader type="head" />}
       <Card
         className="mb-4"
         style={{
           position: "relative",
-          padding: type === "chart" ? "20px" : "10px",
-          height: type === "chart" ? "40vh" : "24vh",
+          padding: props.type === "chart" ? "20px" : "10px",
+          height: props.type === "chart" ? "40vh" : "24vh",
         }}
       >
         <div
@@ -205,11 +222,11 @@ const StackedBarLineChart = (props) => {
           style={{ position: "relative", width: "100%", height: "100%" }}
         >
           <Chart type="bar" ref={chartRef} options={options} data={dataSet} />
-          <div>
+          {/* <div>
             <button onClick={handleZoomIn}>Zoom In</button>
             <button onClick={handleZoomOut}>Zoom Out</button>
             <button onClick={handleResetZoom}>Reset Zoom</button>
-          </div>
+          </div> */}
         </div>
       </Card>
     </>

@@ -150,19 +150,20 @@ const AppContainer = (props) => {
   useEffect(() => {
     dispatch(fetchLastTwoHour({ Line: "L1" }));
     dispatch(fetchLastHour({ duration: intervals }));
-  }, [currentHour, currentSlide]);
+  }, [intervals]);
 
   useEffect(() => {
-    lastTwoHrsData.data &&
-      lastTwoHrsData.data.length > 0 &&
-      handleHrsProductData(lastTwoHrsData, "bar");
+    if (lastHrsData.error === null && lastHrsData.loading) {
+      lastTwoHrsData.data &&
+        lastTwoHrsData.data.length > 0 &&
+        handleHrsProductData(lastTwoHrsData);
+    }
   }, [lastTwoHrsData]);
 
   useEffect(() => {
-    lastHrsData.data.L1Details &&
-      lastTwoHrsData.data &&
-      lastTwoHrsData.data.length > 0 &&
-      handleHrsProductData(lastHrsData.data, "line");
+    if (lastTwoHrsData.error === null && !lastTwoHrsData.loading) {
+      lastHrsData.data.L1Details && handleHrsLineProductData(lastHrsData.data);
+    }
   }, [lastHrsData, lastTwoHrsData]);
 
   useEffect(() => {
@@ -337,6 +338,9 @@ const AppContainer = (props) => {
         setLastBarValue({});
       }
     });
+    return () => {
+      socket.off("dataUpdate");
+    };
   }, [
     ShowShiftDate,
     shiftType,
@@ -466,29 +470,29 @@ const AppContainer = (props) => {
     }
   };
 
-  const handleHrsProductData = (result, type) => {
-    if (type === "bar") {
-      setCurrentHour(new Date().getHours());
-      const dome = result.data.map((res, i) => {
-        let x = `${CommonService.timeFromater12(
-          res.start_time
-        )} - ${CommonService.timeFromater12(res.end_time)}`;
-        return {
-          id: res ? res.id : i,
-          x: res ? x : "-",
-          y: res ? res.totalcount : "-",
-          z: res ? res.target : "-",
-          headcount: res ? res.headcount : "-",
-          upph: res ? res.upph : "-",
-          product_id: res ? res.product_id : "-",
-          target: res ? res.target : "-",
-          comments: res ? res.comments : "-",
-          op_date: res ? res.op_date : "-",
-          line: res ? res.line : "-",
-          downtime: res ? res.downtime : "-",
-        };
-      });
-      setHrsResponse(dome);
+  const handleHrsProductData = (result) => {
+    setCurrentHour(new Date().getHours());
+    const dome = result.data.map((res, i) => {
+      let x = `${CommonService.timeFromater12(
+        res.start_time
+      )} - ${CommonService.timeFromater12(res.end_time)}`;
+      return {
+        id: res ? res.id : i,
+        x: res ? x : "-",
+        y: res ? res.totalcount : "-",
+        z: res ? res.target : "-",
+        headcount: res ? res.headcount : "-",
+        upph: res ? res.upph : "-",
+        product_id: res ? res.product_id : "-",
+        target: res ? res.target : "-",
+        comments: res ? res.comments : "-",
+        op_date: res ? res.op_date : "-",
+        line: res ? res.line : "-",
+        downtime: res ? res.downtime : "-",
+      };
+    });
+    setHrsResponse(dome);
+    dataSet.labels.length < 2 &&
       setDataSet((prevData) => {
         let initialLabel = [];
         const newLineData = [];
@@ -499,7 +503,6 @@ const AppContainer = (props) => {
           newLineData.push(res.totalcount);
           newBarData.push(res.totalcount);
         });
-
         return {
           labels: [...initialLabel],
           datasets: [
@@ -514,38 +517,37 @@ const AppContainer = (props) => {
           ],
         };
       });
-    } else {
-      setDataSet((prevData) => {
-        const newLabels = [...prevData.labels];
-        const newBarData = [...prevData.datasets[1].data];
-        const newLineData = [...prevData.datasets[1].data];
-        result[`${locale.line}Details`].forEach((item) => {
-          const [hours, minutes, seconds] = item.interval.split(":");
-          const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
-            hours >= 12 ? "PM" : "AM"
-          }`;
-          newLabels.push(time);
-          newLineData.push(item.count);
-        });
-
-        return {
-          labels: newLabels,
-          datasets: [
-            {
-              ...prevData.datasets[0],
-              data: newLineData,
-            },
-            {
-              ...prevData.datasets[1],
-              data: newBarData,
-            },
-          ],
-        };
-      });
-    }
   };
 
+  const handleHrsLineProductData = (result) => {
+    setDataSet((prevData) => {
+      const newLabels = [...prevData.labels];
+      const newBarData = [...prevData.datasets[1].data];
+      const newLineData = [...prevData.datasets[1].data];
+      result[`${locale.line}Details`].forEach((item) => {
+        const [hours, minutes, seconds] = item.interval.split(":");
+        const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
+          hours >= 12 ? "PM" : "AM"
+        }`;
+        newLabels.push(time);
+        newLineData.push(item.count);
+      });
 
+      return {
+        labels: newLabels,
+        datasets: [
+          {
+            ...prevData.datasets[0],
+            data: newLineData,
+          },
+          {
+            ...prevData.datasets[1],
+            data: newBarData,
+          },
+        ],
+      };
+    });
+  };
 
   const handleInterval = (event) => {
     event.persist();
