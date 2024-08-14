@@ -17,6 +17,69 @@ import {
 import locale from "../../utilities/local/local";
 import { fetchCurrentHrsDataSuccess } from "../../Slicer/SingleShiftHrs";
 
+const initialDataSet = {
+  labels: ["9 AM"],
+  datasets: [
+    {
+      type: "line",
+      label: "Current Chart",
+      borderColor: "rgb(255, 99, 132)",
+      borderWidth: 2,
+      fill: false,
+      data: [10],
+      datalabels: {
+        display: (con) => {
+          if (con.dataIndex < 2) {
+            return false;
+          } else {
+            return con.dataset.data[con.dataIndex] > 0;
+          }
+        },
+        align: "top",
+        color: "white",
+        backgroundColor: "rgb(77, 90, 129)",
+        borderWidth: 1,
+        borderRadius: 2,
+        padding: 4,
+        formatter: (value) => {
+          return value;
+        },
+        font: {
+          weight: "bold",
+          size: 13,
+        },
+      },
+    },
+    {
+      type: "bar",
+      label: "Shift Chart",
+      backgroundColor: "#3D860B",
+      data: [10],
+      borderColor: "white",
+      borderWidth: 1, // Reduced borderWidth to avoid white line
+      barThickness: 35,
+      datalabels: {
+        display: (con) => {
+          return con.dataset.data[con.dataIndex] > 0;
+        },
+        align: "center",
+        color: "white",
+        borderWidth: 1,
+        borderRadius: 2,
+        backgroundColor: "rgb(75, 192, 192)",
+        padding: 4,
+        formatter: (value) => {
+          return value;
+        },
+        font: {
+          weight: "bold",
+          size: 15,
+        },
+      },
+    },
+  ],
+};
+
 const AppContainer = (props) => {
   const {
     ShowShift,
@@ -78,68 +141,7 @@ const AppContainer = (props) => {
   );
 
   const [apiControll, setApiControll] = useState("");
-  const [dataSet, setDataSet] = useState({
-    labels: ["9 AM"],
-    datasets: [
-      {
-        type: "line",
-        label: "Current Chart",
-        borderColor: "rgb(255, 99, 132)",
-        borderWidth: 2,
-        fill: false,
-        data: [10],
-        datalabels: {
-          display: (con) => {
-            if (con.dataIndex < 2) {
-              return false;
-            } else {
-              return con.dataset.data[con.dataIndex] > 0;
-            }
-          },
-          align: "top",
-          color: "white",
-          backgroundColor: "rgb(77, 90, 129)",
-          borderWidth: 1,
-          borderRadius: 2,
-          padding: 4,
-          formatter: (value) => {
-            return value;
-          },
-          font: {
-            weight: "bold",
-            size: 13,
-          },
-        },
-      },
-      {
-        type: "bar",
-        label: "Shift Chart",
-        backgroundColor: "#3D860B",
-        data: [10],
-        borderColor: "white",
-        borderWidth: 1, // Reduced borderWidth to avoid white line
-        barThickness: 35,
-        datalabels: {
-          display: (con) => {
-            return con.dataset.data[con.dataIndex] > 0;
-          },
-          align: "center",
-          color: "white",
-          borderWidth: 1,
-          borderRadius: 2,
-          backgroundColor: "rgb(75, 192, 192)",
-          padding: 4,
-          formatter: (value) => {
-            return value;
-          },
-          font: {
-            weight: "bold",
-            size: 15,
-          },
-        },
-      },
-    ],
-  });
+  const [dataSet, setDataSet] = useState(initialDataSet);
 
   useEffect(() => {
     let temp = targetList.reduce(
