@@ -29,6 +29,7 @@ const SingleShiftHrs = ({
   visibleQRCodeIndex,
   todayDate,
   cardData,
+  lastBarValue,
   firstDowntimeDetails,
   secoundDowntimeDetails,
   currentShift,
@@ -43,7 +44,6 @@ const SingleShiftHrs = ({
 
   const { ShowShiftDate } = useContext(ShiftContext);
   const lastThreeHrsAvg = useSelector((state) => state.lastThreeHrsAvg.data);
-  console.log(lastThreeHrsAvg);
   const liveData = useSelector((state) => state.lastTwoHrsData);
   const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
@@ -116,7 +116,9 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {lastThreeHrsAvg?.target}
+                        {CommonService.convertIntoKiloPrefix(
+                          cardData.shiftTarget
+                        )}
                       </b>
                     </Typography>
                   </Box>
@@ -149,7 +151,9 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {lastThreeHrsAvg?.actual}
+                        {CommonService.convertIntoKiloPrefix(
+                          lastBarValue.shiftActual
+                        )}
                       </b>
                     </Typography>
                   </Box>
@@ -183,7 +187,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {lastThreeHrsAvg?.shiftUph}
+                        {CommonService.convertIntoKiloPrefix(cardData.shiftUPH)}
                       </b>
                     </Typography>
                   </Box>
@@ -215,7 +219,9 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {cardData?.shiftdownTime}
+                        {CommonService.convertIntoKiloPrefix(
+                          cardData?.shiftdownTime
+                        )}
                       </b>
                     </Typography>
                   </Box>

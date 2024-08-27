@@ -132,13 +132,7 @@ const FullShiftOverall = ({
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={6} md={10}>
-          <DownTimeAction
-            data={
-              currentShift === "shiftB"
-                ? secoundDowntimeDetails
-                : firstDowntimeDetails
-            }
-          />
+          <DownTimeAction data={firstDowntimeDetails} />
         </Grid>
         <Grid
           item

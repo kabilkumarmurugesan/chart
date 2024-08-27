@@ -11,8 +11,8 @@ export const fetchShiftTarget = (payload) => async (dispatch) => {
     const response = await ENV.get(
       `/getTarget?isSystem=${payload.isSystem}&date=${payload.date}`
     );
-    const data = await response.json();
-    dispatch(fetchShiftTargetSuccess(response.data.data));
+    const data = response.data.data;
+    dispatch(fetchShiftTargetSuccess(data));
     return data;
   } catch (error) {
     dispatch(fetchShiftTargetFailure(error.message));

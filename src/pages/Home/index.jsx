@@ -99,7 +99,7 @@ function Home() {
           color: primary.main,
         }}
       >
-        V 3.1
+        V 3.4
       </Box>
     </ShiftContext.Provider>
   );

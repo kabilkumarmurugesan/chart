@@ -114,7 +114,6 @@ const BarChart = ({
           borderWidth: 4,
         };
       });
-
       setAnnotationsList(annotations);
     }
   }, [targetList, shiftType]);
@@ -122,7 +121,6 @@ const BarChart = ({
   useEffect(() => {
     const temp = [];
     const seriesLabels = {};
-
     if (response !== undefined) {
       response.forEach((item) => {
         temp.push(item.y !== "-" ? item.y : 0);
