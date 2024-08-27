@@ -21,8 +21,9 @@ export const fetchProductionData = (payload) => async (dispatch) => {
     const response = await ENV.get(
       `productiondata?line=${payload.Line}${payload.temp}&date=${date}&target=${payload.targetOne}&isSystem=${payload.isSystem}`
     );
-    dispatch(fetchProductionDataSuccess(response.data.data));
-    return response.data.data;
+    const data = response.data.data;
+    dispatch(fetchProductionDataSuccess(data));
+    return data;
   } catch (error) {
     dispatch(fetchProductionDataFailure(error.message));
   }
@@ -32,8 +33,9 @@ export const fetchLastTwoHour = (payload) => async (dispatch) => {
   dispatch(fetchLastTwoHrsDataStart());
   try {
     const response = await ENV.get(`getLastThreeHour?line=${payload.Line}`);
-    dispatch(fetchLastTwoHrsDataSuccess(response.data.data));
-    return response.data.data;
+    const data = response.data.data;
+    dispatch(fetchLastTwoHrsDataSuccess(data));
+    return data;
   } catch (error) {
     dispatch(fetchLastTwoHrsDataFailure(error.message));
   }
@@ -45,8 +47,9 @@ export const fetchLastHour = (payload) => async (dispatch) => {
     const response = await ENV.get(
       `getLastHour?duration=${payload.duration / 1000}`
     );
-    dispatch(fetchLastHrsDataSuccess(response.data.data));
-    return response.data.data;
+    const data = response.data.data;
+    dispatch(fetchLastHrsDataSuccess(data));
+    return data;
   } catch (error) {
     dispatch(fetchLastHrsDataFailure(error.message));
   }

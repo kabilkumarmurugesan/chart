@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   FormControlLabel,
   Box,
@@ -5,19 +6,18 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import RadioList from "../utilities/JSON/RadioList.json";
 import { useTheme } from "@emotion/react";
 
 function RadioBtn(props) {
   const theme = useTheme();
-  const { primary, secondary } = theme.palette;
-  const [inputs, setInputs] = useState(60000);
-
+  const { secondary } = theme.palette;
+  const [inputs, setInputs] = useState(props.intervals);
+ 
   const handleInputChange = (event) => {
-    event.persist();
-    props.handleEvent(event);
-    setInputs(event.target.value);
+    const newValue = event.target.value;
+    setInputs(newValue); // Update the state with the new value
+    props.handleEvent(event); // Call the parent handler
   };
 
   return (
@@ -35,14 +35,12 @@ function RadioBtn(props) {
           justifyContent: "space-between",
         }}
       >
-        {" "}
         <Typography>Interval (Sec): </Typography>
         <RadioGroup
           aria-label="Interval"
           name="Interval"
           row
-          label="Interval"
-          value={inputs}
+          value={inputs} // Bind the selected value to the RadioGroup
           onChange={handleInputChange}
         >
           {RadioList &&
@@ -54,9 +52,9 @@ function RadioBtn(props) {
                 control={
                   <Radio
                     sx={{
-                      color: secondary.pending, // Default color
+                      color: secondary.pending, // Default color from theme
                       "&.Mui-checked": {
-                        color: secondary.pending, // Checked color
+                        color: secondary.pending, // Checked color from theme
                       },
                     }}
                   />

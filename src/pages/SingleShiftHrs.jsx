@@ -17,6 +17,8 @@ import RadioBtn from "../component/RadioBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmojiStatus } from "../api/EmojiStatus";
 import { fetchLastThreeHrsAvgHrs } from "../api/Socket";
+import { fetchLastThreeHrsAvgSuccess } from "../Slicer/SingleShiftHrs";
+import { socket } from "../utilities/socket";
 
 const SingleShiftHrs = ({
   categories,
@@ -40,13 +42,17 @@ const SingleShiftHrs = ({
   const dispatch = useDispatch();
 
   const { ShowShiftDate } = useContext(ShiftContext);
+  const lastThreeHrsAvg = useSelector((state) => state.lastThreeHrsAvg.data);
+  console.log(lastThreeHrsAvg);
   const liveData = useSelector((state) => state.lastTwoHrsData);
   const isHappy = useSelector((state) => state.emojiStatus);
   const [isShift, setIsShift] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchLastThreeHrsAvgHrs());
+    socket.on("LastThreeHourdata", (data) => {
+      dispatch(fetchLastThreeHrsAvgSuccess(data));
+    });
   }, []);
 
   useEffect(() => {
@@ -64,7 +70,9 @@ const SingleShiftHrs = ({
               time={`${CommonService.timeFromater12(
                 currentHour - 2
               )} - ${CommonService.timeFromater12(currentHour)}`}
-              component={<RadioBtn handleEvent={handleInterval} />}
+              component={
+                <RadioBtn intervals={intervals} handleEvent={handleInterval} />
+              }
             />
             <StackedBarLineChart
               type={"chart"}
@@ -108,7 +116,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {liveData?.target}
+                        {lastThreeHrsAvg?.target}
                       </b>
                     </Typography>
                   </Box>
@@ -141,7 +149,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {liveData?.actual}
+                        {lastThreeHrsAvg?.actual}
                       </b>
                     </Typography>
                   </Box>
@@ -175,7 +183,7 @@ const SingleShiftHrs = ({
                           fontSize: "30px",
                         }}
                       >
-                        {liveData?.shiftUph}
+                        {lastThreeHrsAvg?.shiftUph}
                       </b>
                     </Typography>
                   </Box>

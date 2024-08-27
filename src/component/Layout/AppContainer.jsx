@@ -152,9 +152,10 @@ const AppContainer = (props) => {
   }, [targetList]);
 
   useEffect(() => {
+    setDataSet(() => initialDataSet);
     dispatch(fetchLastTwoHour({ Line: "L1" }));
     dispatch(fetchLastHour({ duration: intervals }));
-  }, [intervals]);
+  }, [intervals, currentSlide]);
 
   useEffect(() => {
     if (lastHrsData.error === null && lastHrsData.loading) {
@@ -536,7 +537,10 @@ const AppContainer = (props) => {
         const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
           hours >= 12 ? "PM" : "AM"
         }`;
-        newLabels.push(time);
+        if (!newLabels.includes(time)) {
+          newLabels.push(time);
+          newLineData.push(item.count);
+        }
         newLineData.push(item.count);
       });
 
