@@ -201,7 +201,7 @@ const AppContainer = (props) => {
   useEffect(() => {
     let date = "";
     let categoriesList = [];
-    if (currentSlide === 0 && ShowShift === "Day") {
+    if (currentSlide === 1 && ShowShift === "Day") {
       categoriesList = [
         "09 - 10",
         "10 - 11",
@@ -279,7 +279,7 @@ const AppContainer = (props) => {
     });
     const dates = new Date();
     let temp = "";
-    if (currentSlide === 0 && ShowShift === "Day") {
+    if (currentSlide === 1 && ShowShift === "Day") {
       temp = shiftHours
         ? `&duration=6hrs&shift=${shiftType}`
         : `&duration=9hrs&shift=${shiftType}`;
@@ -582,7 +582,7 @@ const AppContainer = (props) => {
                 height: "94vh",
               }}
             >
-              {currentSlide === 0 ? (
+              {currentSlide === 1 ? (
                 <Box
                   sx={{
                     display: "flex",
@@ -616,7 +616,7 @@ const AppContainer = (props) => {
                       shiftType={shiftType}
                       handaleEvent={() => {
                         if (shiftHours) {
-                          if (shiftType === "2nd" && currentSlide === 0) {
+                          if (shiftType === "2nd" && currentSlide === 1) {
                             handleSlidechange();
                           } else {
                             setShiftType("2nd");
@@ -683,7 +683,7 @@ const AppContainer = (props) => {
               sx={{
                 background: primary.main,
                 fontWeight: "bold",
-                height: currentSlide !== 0 ? "100%" : "93.2vh",
+                height: currentSlide !== 1 ? "100%" : "93.2vh",
               }}
             >
               {currentSlide === 0 ? (

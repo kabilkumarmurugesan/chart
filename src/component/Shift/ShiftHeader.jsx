@@ -4,11 +4,12 @@ import { Box, Typography } from "@mui/material";
 const ShiftHeader = (props) => {
   const { date, cardData, time, overTimeRange } = props;
 
-  const [overTime, setOverTime] = useState(cardData?.overTime || 0);
+  const [overTime, setOverTime] = useState(
+    cardData?.overTime || "00:00 - 00:00"
+  );
 
   useEffect(() => {
-    props.isCurrentShift &&
-      props.cardData &&
+    if (props.isCurrentShift && props.cardData) {
       setOverTime(
         overTimeRange
           ? overTimeRange
@@ -16,6 +17,9 @@ const ShiftHeader = (props) => {
           ? cardData?.overTime
           : formatAMPM(new Date())
       );
+    } else if(props.cardData){
+      setOverTime(cardData?.overTime);
+    }
   }, [cardData]);
 
   const formatAMPM = (date) => {

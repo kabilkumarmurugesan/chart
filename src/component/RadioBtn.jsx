@@ -6,8 +6,8 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import RadioList from "../utilities/JSON/RadioList.json";
 import { useTheme } from "@emotion/react";
+import locale from '../utilities/local/local'
 
 function RadioBtn(props) {
   const theme = useTheme();
@@ -43,8 +43,7 @@ function RadioBtn(props) {
           value={inputs} // Bind the selected value to the RadioGroup
           onChange={handleInputChange}
         >
-          {RadioList &&
-            RadioList.map((item, index) => (
+          {locale.radio_list.map((item, index) => (
               <FormControlLabel
                 key={index}
                 id="control-radio"
