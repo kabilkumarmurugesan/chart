@@ -73,48 +73,50 @@ const BarChart = ({
   });
 
   useEffect(() => {
-    let temp = {};
-    let annotations = {};
-    let targetListMap =
-      shiftType === "1st" || shiftType === undefined
-        ? targetList
-        : targetList.slice(1);
-    let preT = 0;
-    if (targetListMap) {
-      targetListMap.forEach((item, i) => {
-        temp[`model_${i}`] = item.model;
-        temp[`target_${i}`] = item.target;
-        let timeT = CommonService.timeDifferenceInHours(item.time) + 0.5;
-        temp[`time_${i}`] = timeT;
-        let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
-        let xMax = i === 0 ? timeT : preT + timeT;
-        preT = xMax;
-        annotations[`label${i}`] = {
-          type: "label",
-          xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
-          yValue: item.target + 8,
-          content: [`${item.model}: ${Math.round(item.target)}`],
-          padding: 3,
-          borderColor: "#423595f0",
-          backgroundColor: "#423595f0",
-          color: "#fff",
-          font: {
-            weight: "bold",
-            size: 15,
-          },
-        };
+    if (targetList.length > 0) {
+      let temp = {};
+      let annotations = {};
+      let targetListMap =
+        shiftType === "1st" || shiftType === undefined
+          ? targetList
+          : targetList.slice(1);
+      let preT = 0;
+      if (targetListMap) {
+        targetListMap.forEach((item, i) => {
+          temp[`model_${i}`] = item.model;
+          temp[`target_${i}`] = item.target;
+          let timeT = CommonService.timeDifferenceInHours(item.time) + 0.5;
+          temp[`time_${i}`] = timeT;
+          let xMin = i === 0 ? i - 1 : i > 1 ? preT : temp[`time_${i - 1}`];
+          let xMax = i === 0 ? timeT : preT + timeT;
+          preT = xMax;
+          annotations[`label${i}`] = {
+            type: "label",
+            xValue: i === 0 ? timeT - 3 : timeT - timeT / 2,
+            yValue: item.target + 8,
+            content: [`${item.model}: ${Math.round(item.target)}`],
+            padding: 3,
+            borderColor: "#423595f0",
+            backgroundColor: "#423595f0",
+            color: "#fff",
+            font: {
+              weight: "bold",
+              size: 15,
+            },
+          };
 
-        annotations[`line${i}`] = {
-          type: "line",
-          yMin: item.target,
-          yMax: item.target,
-          xMin: xMin,
-          xMax: xMax,
-          borderColor: "#241773",
-          borderWidth: 4,
-        };
-      });
-      setAnnotationsList(annotations);
+          annotations[`line${i}`] = {
+            type: "line",
+            yMin: item.target,
+            yMax: item.target,
+            xMin: xMin,
+            xMax: xMax,
+            borderColor: "#241773",
+            borderWidth: 4,
+          };
+        });
+        setAnnotationsList(annotations);
+      }
     }
   }, [targetList, shiftType]);
 

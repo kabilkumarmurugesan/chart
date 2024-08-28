@@ -338,7 +338,7 @@ const SingleShift = ({
                 >
                   <Box
                     style={{
-                      height: ShowShiftDate === "Today" ? "40px" : "5px",
+                      height: "40px",
                     }}
                   >
                     {showMenu && ShowShiftDate === "Today" && (

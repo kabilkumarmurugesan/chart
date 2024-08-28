@@ -531,7 +531,7 @@ const AppContainer = (props) => {
     setDataSet((prevData) => {
       const newLabels = [...prevData.labels];
       const newBarData = [...prevData.datasets[1].data];
-      const newLineData = [...prevData.datasets[1].data];
+      const newLineData = [...prevData.datasets[0].data];
       result[`${locale.line}Details`].forEach((item) => {
         const [hours, minutes, seconds] = item.interval.split(":");
         const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
@@ -541,7 +541,6 @@ const AppContainer = (props) => {
           newLabels.push(time);
           newLineData.push(item.count);
         }
-        newLineData.push(item.count);
       });
 
       return {

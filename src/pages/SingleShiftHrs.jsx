@@ -70,9 +70,9 @@ const SingleShiftHrs = ({
               time={`${CommonService.timeFromater12(
                 currentHour - 2
               )} - ${CommonService.timeFromater12(currentHour)}`}
-              component={
-                <RadioBtn intervals={intervals} handleEvent={handleInterval} />
-              }
+              // component={
+              //   <RadioBtn intervals={intervals} handleEvent={handleInterval} />
+              // }
             />
             <StackedBarLineChart
               type={"chart"}

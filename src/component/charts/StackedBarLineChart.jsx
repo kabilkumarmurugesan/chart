@@ -79,6 +79,7 @@ const StackedBarLineChart = (props) => {
 
   useEffect(() => {
     if (currentHrs && currentHrs.count) {
+      setDataSet((prevData) => props.data);
       updateChartData(currentHrs);
       chartRef.current.update();
     }
@@ -124,10 +125,10 @@ const StackedBarLineChart = (props) => {
         const time = `${hours % 12 || 12}:${minutes}:${seconds} ${
           hours >= 12 ? "PM" : "AM"
         }`;
-
-        newLabels.push(time);
-        newLineData.push(data.count);
-
+        if (!newLabels.includes(time)) {
+          newLabels.push(time);
+          newLineData.push(data.count);
+        }
         return {
           labels: newLabels,
           datasets: [

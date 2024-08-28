@@ -167,7 +167,7 @@ const FullShiftOverall = ({
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: ShowShiftDate === "Today" ? "35px" : "5px",
+                      height: "35px",
                     }}
                   >
                     {ShowShiftDate === "Today" && showMenu && (
