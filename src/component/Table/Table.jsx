@@ -21,6 +21,8 @@ export default function BasicTable(props) {
             <TableCell
               key={i}
               style={{
+                fontWeight: "bold",
+                fontSize: "17px",
                 padding: "10px",
                 textAlign: "center",
               }}
@@ -35,6 +37,8 @@ export default function BasicTable(props) {
             <TableCell
               key={i}
               style={{
+                fontSize: "17px",
+
                 textAlign: "center",
                 padding: "10px",
               }}
@@ -49,6 +53,8 @@ export default function BasicTable(props) {
             <TableCell
               key={i}
               style={{
+                fontSize: "17px",
+
                 textAlign: "center",
                 padding: "10px",
               }}
@@ -63,6 +69,8 @@ export default function BasicTable(props) {
             <TableCell
               key={i}
               style={{
+                fontSize: "17px",
+
                 textAlign: "center",
                 padding: "10px",
               }}
@@ -77,6 +85,8 @@ export default function BasicTable(props) {
             <TableCell
               key={i}
               style={{
+                fontSize: "17px",
+
                 padding: "10px",
                 textAlign: "center",
               }}
@@ -95,7 +105,7 @@ function TableCellHeader(props) {
     <TableCell
       style={{
         fontWeight: "bold",
-        fontSize: "15px",
+        fontSize: "16px",
         color: "#fff",
         padding: "8px",
         width: "88px",
